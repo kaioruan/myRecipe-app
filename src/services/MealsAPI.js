@@ -3,7 +3,7 @@ const BASE_API = 'www.themealdb.com/api/json/v1/1';
 export const fetchMealById = async (id) => {
   const URL = `${BASE_API}/lookup.php?i=${id}`;
   const response = await fetch(URL);
-  const data = await await response.json();
+  const data = await response.json();
   return data;
 };
 
