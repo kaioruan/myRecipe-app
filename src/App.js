@@ -7,7 +7,7 @@ import RecipesProvider from './context/RecipesProvider';
 function App() {
   return (
     <RecipesProvider>
-      <p>Components</p>
+      <p>Componentes</p>
     </RecipesProvider>
     // <div className="meals">
     //   <span className="logo">TRYBE</span>
