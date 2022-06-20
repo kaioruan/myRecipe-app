@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import RecipesContext from './RecipesContext';
 
 function RecipesProvider({ children }) {
+  const contextType = {};
   return (
     <RecipesContext.Provider value={ contextType }>
       {children}
