@@ -3,10 +3,13 @@ const MEALS_TOKEN_KEY = 'mealsToken';
 const COCKTAILS_TOKEN_KEY = 'cocktailsToken';
 
 export const saveUser = (email) => {
-  localStorage.setItem(USER_KEY, { email });
+  localStorage.setItem(USER_KEY, JSON.stringify({ email }));
 };
 
-export const loadUser = () => localStorage.getItem(USER_KEY);
+export const loadUser = () => {
+  const storedUser = localStorage.getItem(USER_KEY);
+  return storedUser ? JSON.parse(storedUser) : null;
+};
 
 export const saveMealsToken = (token) => {
   localStorage.setItem(MEALS_TOKEN_KEY, token);
