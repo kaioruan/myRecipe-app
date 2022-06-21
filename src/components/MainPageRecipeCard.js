@@ -1,14 +1,18 @@
 import React from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 function MainPageRecipeCard(props) {
-  // const history = useHistory();
-  const { key, index, thumb, name } = props;
+  const history = useHistory();
+  const { recipeId, index, thumb, name } = props;
 
-  const onCardClicked = ({ target }) => {
-    console.log(target);
-    console.log(key);
+  const onCardClicked = () => {
+    const { pathname } = history.location;
+    console.log(history.location.pathname);
+    console.log(recipeId);
+    const newPath = `${pathname}/${recipeId}`;
+    console.log(newPath);
+    history.push(newPath);
   };
 
   return (
@@ -24,7 +28,7 @@ function MainPageRecipeCard(props) {
 }
 
 MainPageRecipeCard.propTypes = {
-  key: PropTypes.string.isRequired,
+  recipeId: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   thumb: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
