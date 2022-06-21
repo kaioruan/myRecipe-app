@@ -8,10 +8,7 @@ function MainPageRecipeCard(props) {
 
   const onCardClicked = () => {
     const { pathname } = history.location;
-    console.log(history.location.pathname);
-    console.log(recipeId);
     const newPath = `${pathname}/${recipeId}`;
-    console.log(newPath);
     history.push(newPath);
   };
 
