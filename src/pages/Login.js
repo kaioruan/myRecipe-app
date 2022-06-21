@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import {
   saveMealsToken, saveCocktailsToken, saveUser,
 } from '../services/StorageManager';
 
-function Login({ history }) {
+function Login() {
+  const history = useHistory();
   const [input, setInput] = useState({
     email: '',
     password: '',
@@ -66,11 +67,5 @@ function Login({ history }) {
     </form>
   );
 }
-
-Login.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
 
 export default Login;
