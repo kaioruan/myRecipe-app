@@ -27,7 +27,6 @@ function MainPage() {
       const correctURL = getURL(path);
       const response = await fetch(correctURL);
       const data = await response.json();
-      console.log(data);
       setRecipes(trimFetchedArray(data));
     };
     fetchAPI();

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import ProfileIcon from '../images/profileIcon.svg';
 import SearchIcon from '../images/searchIcon.svg';
@@ -13,17 +13,25 @@ function Header() {
   const [iconSearch, setIconSearch] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [inputFilter, setInputFilter] = useState('');
+  const [dataMeals, setDataMeals] = useState([]);
+  const [dataDrinks, setDataDrinks] = useState([]);
 
   const history = useHistory();
   const path = history.location.pathname;
 
-  console.log(path);
-
-  // if (path === '/foods')
+  useEffect(() => {
+    if (dataDrinks.length === 1) {
+      console.log(dataDrinks[0].idDrink);
+      history.push(`/drinks/${dataDrinks[0].idDrink}`);
+    }
+    if (dataMeals.length === 1) {
+      console.log(dataMeals[0].idMeal);
+      history.push(`/foods/${dataMeals[0].idMeal}`);
+    }
+  }, [dataDrinks, dataMeals, history]);
 
   const handleChangeFilters = ({ target }) => {
     setInputFilter(target.id);
-    console.log(target.id);
   };
 
   const handleIconSearch = () => {
@@ -37,42 +45,45 @@ function Header() {
     setSearchInput(target.value);
   };
 
-  const clickRequestFoods = () => {
+  const clickRequestFoods = async () => {
     if (searchInput.length > 1 && inputFilter === 'First-Letter') {
       global.alert('Your search must have only 1 (one) character');
     }
     if (searchInput.length === 1) {
-      fetchMealsbyFirstLetter(searchInput);
+      await fetchMealsbyFirstLetter(searchInput);
     }
     if (inputFilter === 'Ingredient') {
-      fetchMealsByIngredient(searchInput);
+      await fetchMealsByIngredient(searchInput);
     }
     if (inputFilter === 'Name') {
-      fetchMealByName(searchInput);
+      const response = await fetchMealByName(searchInput);
+      setDataMeals(response.meals);
     }
   };
+  console.log(dataMeals);
 
-  const clickRequestDrinks = () => {
+  const clickRequestDrinks = async () => {
     if (searchInput.length > 1 && inputFilter === 'First-Letter') {
       global.alert('Your search must have only 1 (one) character');
     }
     if (searchInput.length === 1) {
-      fetchDrinksbyFirstLetter(searchInput);
+      await fetchDrinksbyFirstLetter(searchInput);
     }
     if (inputFilter === 'Ingredient') {
-      fetchDrinksByIngredient(searchInput);
+      await fetchDrinksByIngredient(searchInput);
     }
     if (inputFilter === 'Name') {
-      fetchDrinkByName(searchInput);
+      const response = await fetchDrinkByName(searchInput);
+      setDataDrinks(response.drinks);
     }
   };
 
-  const handleClickSearch = () => {
+  const handleClickSearch = async () => {
     if (path === '/foods') {
-      clickRequestFoods();
+      await clickRequestFoods();
     }
     if (path === '/drinks') {
-      clickRequestDrinks();
+      await clickRequestDrinks();
     }
   };
 
