@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  saveMealsToken, saveCocktailsToken, saveUser, loadUser,
+  saveMealsToken, saveCocktailsToken, saveUser,
 } from '../services/StorageManager';
 
 function Login({ history }) {
