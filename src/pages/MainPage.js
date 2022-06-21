@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import Header from '../components/Header';
 import MainPageRecipeCard from '../components/MainPageRecipeCard';
 
 const RECIPES_NUMBER = 12;
@@ -33,26 +34,31 @@ function MainPage() {
   }, [path]);
 
   return (
-    <section>
-      {path === '/foods'
-        ? (
-          recipes.map((recipe, index) => (
-            <MainPageRecipeCard
-              key={ recipe.idMeal }
-              index={ index }
-              thumb={ recipe.strMealThumb }
-              name={ recipe.strMeal }
-            />))
-        ) : (
-          recipes.map((recipe, index) => (
-            <MainPageRecipeCard
-              key={ recipe.idDrink }
-              index={ index }
-              thumb={ recipe.strDrinkThumb }
-              name={ recipe.strDrink }
-            />))
-        )}
-    </section>
+    <div>
+      <Header />
+      <main>
+        <section>
+          {path === '/foods'
+            ? (
+              recipes.map((recipe, index) => (
+                <MainPageRecipeCard
+                  key={ recipe.idMeal }
+                  index={ index }
+                  thumb={ recipe.strMealThumb }
+                  name={ recipe.strMeal }
+                />))
+            ) : (
+              recipes.map((recipe, index) => (
+                <MainPageRecipeCard
+                  key={ recipe.idDrink }
+                  index={ index }
+                  thumb={ recipe.strDrinkThumb }
+                  name={ recipe.strDrink }
+                />))
+            )}
+        </section>
+      </main>
+    </div>
   );
 }
 
