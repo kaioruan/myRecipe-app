@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfileIcon from '../images/profileIcon.svg';
 import SearchIcon from '../images/searchIcon.svg';
+import HeaderSearchBar from './HeaderSearchBar';
 
 function Header() {
   const [iconSearch, setIconSearch] = useState(false);
@@ -18,41 +19,47 @@ function Header() {
     setSearchInput(target.value);
   };
   return (
-    <header>
-      <nav>
-        <Link
-          to="/profile"
+    <div>
+      <header>
+        <nav>
+          <Link
+            to="/profile"
+          >
+            <img
+              data-testid="profile-top-btn"
+              src={ ProfileIcon }
+              alt="ProfileIcon"
+            />
+          </Link>
+        </nav>
+        <button
+          data-testid="page-title"
+          type="button"
         >
-          <img
-            data-testid="profile-top-btn"
-            src={ ProfileIcon }
-            alt="ProfileIcon"
+          Page
+        </button>
+
+        <button
+          data-testid="search-top-btn"
+          type="button"
+          onClick={ handleIconSearch }
+        >
+          <img src={ SearchIcon } alt="SearchIcon" />
+        </button>
+        <br />
+        { iconSearch && (
+          <input
+            type="text"
+            data-testid="search-input"
+            name="searchInput"
+            value={ searchInput }
+            onChange={ handleChange }
           />
-        </Link>
-      </nav>
-      <button
-        data-testid="page-title"
-        type="button"
-      >
-        Page
-      </button>
-      <button
-        data-testid="search-top-btn"
-        type="button"
-        onClick={ handleIconSearch }
-      >
-        <img src={ SearchIcon } alt="SearchIcon" />
-      </button>
-      { iconSearch && (
-        <input
-          type="text"
-          data-testid="search-input"
-          name="searchInput"
-          value={ searchInput }
-          onChange={ handleChange }
-        />
-      )}
-    </header>
+        )}
+      </header>
+      <br />
+      <HeaderSearchBar />
+    </div>
   );
 }
 
