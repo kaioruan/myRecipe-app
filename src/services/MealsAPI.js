@@ -1,4 +1,4 @@
-const BASE_API = 'www.themealdb.com/api/json/v1/1';
+const BASE_API = 'https://www.themealdb.com/api/json/v1/1';
 
 export const fetchMealById = async (id) => {
   const URL = `${BASE_API}/lookup.php?i=${id}`;

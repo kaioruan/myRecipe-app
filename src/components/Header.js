@@ -2,11 +2,19 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfileIcon from '../images/profileIcon.svg';
 import SearchIcon from '../images/searchIcon.svg';
-import HeaderSearchBar from './HeaderSearchBar';
+import { fetchMealByName,
+  fetchMealsByIngredient,
+  fetchMealsbyFirstLetter } from '../services/MealsAPI';
 
 function Header() {
   const [iconSearch, setIconSearch] = useState(false);
   const [searchInput, setSearchInput] = useState('');
+  const [inputFilter, setInputFilter] = useState('');
+
+  const handleChangeFilters = ({ target }) => {
+    setInputFilter(target.id);
+    console.log(target.id);
+  };
 
   const handleIconSearch = () => {
     if (iconSearch) {
@@ -15,8 +23,23 @@ function Header() {
       setIconSearch(true);
     }
   };
-  const handleChange = ({ target }) => {
+  const handleChangeInputName = ({ target }) => {
     setSearchInput(target.value);
+  };
+
+  const handleClickSearch = () => {
+    if (searchInput.length > 1 && inputFilter === 'First-Letter') {
+      global.alert('Your search must have only 1 (one) character');
+    }
+    if (searchInput.length === 1) {
+      fetchMealsbyFirstLetter(searchInput);
+    }
+    if (inputFilter === 'Ingredient') {
+      fetchMealsByIngredient(searchInput);
+    }
+    if (inputFilter === 'Name') {
+      fetchMealByName(searchInput);
+    }
   };
   return (
     <div>
@@ -53,12 +76,55 @@ function Header() {
             data-testid="search-input"
             name="searchInput"
             value={ searchInput }
-            onChange={ handleChange }
+            onChange={ handleChangeInputName }
           />
         )}
       </header>
       <br />
-      <HeaderSearchBar />
+      <div>
+        <label htmlFor="Ingredient">
+          <input
+            data-testid="ingredient-search-radio"
+            id="Ingredient"
+            type="radio"
+            name="filter"
+            value={ inputFilter }
+            onChange={ handleChangeFilters }
+          />
+          Ingredient
+        </label>
+        <label htmlFor="Name">
+          <input
+            data-testid="name-search-radio"
+            id="Name"
+            type="radio"
+            name="filter"
+            value={ inputFilter }
+            onChange={ handleChangeFilters }
+          />
+          Name
+        </label>
+        <label htmlFor="First-Letter">
+          <input
+            data-testid="first-letter-search-radio"
+            id="First-Letter"
+            type="radio"
+            name="filter"
+            value={ inputFilter }
+            onChange={ handleChangeFilters }
+          />
+          First letter
+        </label>
+        <br />
+        <button
+          type="button"
+          data-testid="exec-search-btn"
+          onClick={ handleClickSearch }
+        >
+          Search
+        </button>
+      </div>
+
     </div>
   );
 }
