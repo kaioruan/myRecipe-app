@@ -12,8 +12,7 @@ import ExploreCategories from './pages/ExploreCategories';
 import ExploreByIngredients from './pages/ExploreByIngredients';
 import ExploreByNationalities from './pages/ExploreByNationalities';
 import UserProfile from './pages/UserProfile';
-import DoneRecipes from './pages/DoneRecipes';
-import FavoriteRecipes from './pages/FavoriteRecipes';
+import UserRecipes from './pages/UserRecipes';
 
 function App() {
   return (
@@ -21,24 +20,33 @@ function App() {
       <RecipesProvider>
         <Switch>
           <Route exact path="/" component={ Login } />
-          <Route path="/foods" component={ MainPage } />
-          <Route path="/drinks" component={ MainPage } />
-          <Route path="/foods/:foodId" component={ RecipeDetails } />
-          <Route path="/drinks/:drinkId" component={ RecipeDetails } />
-          <Route path="/foods/:foodId/in-progress" component={ RecipeProgress } />
-          <Route path="/drinks/:drinkId/in-progress" component={ RecipeProgress } />
-          <Route path="/explore" component={ Explore } />
-          <Route path="/explore/foods" component={ ExploreCategories } />
-          <Route path="/explore/drinks" component={ ExploreCategories } />
-          <Route path="/explore/foods/ingredients" component={ ExploreByIngredients } />
-          <Route path="/explore/drinks/ingredients" component={ ExploreByIngredients } />
+          <Route exact path="/foods" component={ MainPage } />
+          <Route exact path="/drinks" component={ MainPage } />
+          <Route exact path="/foods/:foodId" component={ RecipeDetails } />
+          <Route exact path="/drinks/:drinkId" component={ RecipeDetails } />
+          <Route exact path="/foods/:foodId/in-progress" component={ RecipeProgress } />
+          <Route exact path="/drinks/:drinkId/in-progress" component={ RecipeProgress } />
+          <Route exact path="/explore" component={ Explore } />
+          <Route exact path="/explore/foods" component={ ExploreCategories } />
+          <Route exact path="/explore/drinks" component={ ExploreCategories } />
           <Route
+            exact
+            path="/explore/foods/ingredients"
+            component={ ExploreByIngredients }
+          />
+          <Route
+            exact
+            path="/explore/drinks/ingredients"
+            component={ ExploreByIngredients }
+          />
+          <Route
+            exact
             path="/explore/foods/nationalities"
             component={ ExploreByNationalities }
           />
-          <Route path="/profile" component={ UserProfile } />
-          <Route path="/done-recipes" component={ DoneRecipes } />
-          <Route path="/favorite-recipes" component={ FavoriteRecipes } />
+          <Route exact path="/profile" component={ UserProfile } />
+          <Route exact path="/done-recipes" component={ UserRecipes } />
+          <Route exact path="/favorite-recipes" component={ UserRecipes } />
         </Switch>
       </RecipesProvider>
     </BrowserRouter>
