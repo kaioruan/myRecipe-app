@@ -1,63 +1,89 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Header from '../components/Header';
 import MainPageRecipeCard from '../components/MainPageRecipeCard';
+import {
+  fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
+} from '../services/CocktailsAPI';
+import {
+  fetchAllMealsCategories, fetchAllMeals, fetchMealsByCategory,
+} from '../services/MealsAPI';
 
 const RECIPES_NUMBER = 12;
-const MEALS_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-const DRINKS_URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+const CATEGORIES_NUMBER = 5;
 
 function MainPage() {
   const [recipes, setRecipes] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const history = useHistory();
   const path = history.location.pathname;
 
-  const getURL = (pathname) => {
-    if (pathname === '/foods') return MEALS_URL;
-    return DRINKS_URL;
-  };
-
   useEffect(() => {
     const fetchAPI = async () => {
-      const trimFetchedArray = (data) => {
-        if (path === '/foods') return data.meals.slice(0, RECIPES_NUMBER);
-        return data.drinks.slice(0, RECIPES_NUMBER);
+      const fetchMeals = async () => (
+        selectedCategory === 'All'
+          ? fetchAllMeals()
+          : fetchMealsByCategory(selectedCategory)
+      );
+
+      const fetchDrinks = async () => (
+        selectedCategory === 'All'
+          ? fetchAllDrinks()
+          : fetchDrinksByCategory(selectedCategory)
+      );
+
+      const trimArray = (data, size) => {
+        if (path === '/foods') return data.meals.slice(0, size);
+        return data.drinks.slice(0, size);
       };
 
-      const correctURL = getURL(path);
-      const response = await fetch(correctURL);
-      const data = await response.json();
-      setRecipes(trimFetchedArray(data));
+      const categoriesData = path === '/foods'
+        ? await fetchAllMealsCategories()
+        : await fetchAllDrinksCategories();
+
+      const recipesData = path === '/foods'
+        ? await fetchMeals()
+        : await fetchDrinks();
+
+      setRecipes(trimArray(recipesData, RECIPES_NUMBER));
+      let catArray = trimArray(categoriesData, CATEGORIES_NUMBER);
+      catArray = catArray.map((cat) => cat.strCategory);
+      catArray.unshift('All');
+      setCategories(catArray);
     };
     fetchAPI();
-  }, [path]);
+  }, [path, selectedCategory]);
+
+  const onCategoryButtonClicked = ({ target }) => {
+    const newCategory = target.innerText === selectedCategory ? 'All' : target.innerText;
+    setSelectedCategory(newCategory);
+  };
 
   return (
-    <div>
-      <Header />
-      <main>
-        <section>
-          {path === '/foods'
-            ? (
-              recipes.map((recipe, index) => (
-                <MainPageRecipeCard
-                  key={ recipe.idMeal }
-                  index={ index }
-                  thumb={ recipe.strMealThumb }
-                  name={ recipe.strMeal }
-                />))
-            ) : (
-              recipes.map((recipe, index) => (
-                <MainPageRecipeCard
-                  key={ recipe.idDrink }
-                  index={ index }
-                  thumb={ recipe.strDrinkThumb }
-                  name={ recipe.strDrink }
-                />))
-            )}
-        </section>
-      </main>
-    </div>
+    <section>
+      <nav>
+        {categories.map((cat, index) => (
+          <button
+            data-testid={ `${cat}-category-filter` }
+            key={ index }
+            type="button"
+            onClick={ onCategoryButtonClicked }
+          >
+            { cat }
+
+          </button>))}
+      </nav>
+      <div>
+        { recipes.map((recipe, index) => (
+          <MainPageRecipeCard
+            key={ recipe.idDrink || recipe.idMeal }
+            recipeId={ recipe.idDrink || recipe.idMeal }
+            index={ index }
+            thumb={ recipe.strDrinkThumb || recipe.strMealThumb }
+            name={ recipe.strDrink || recipe.strMeal }
+          />))}
+      </div>
+    </section>
   );
 }
 
