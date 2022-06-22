@@ -48,3 +48,17 @@ export const fetchRandomMeal = async () => {
   const data = await response.json();
   return data;
 };
+
+export const fetchAllMealsCategories = async () => {
+  const URL = `${BASE_API}/list.php?c=list`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  return data;
+};
+
+export const fetchAllMeals = async () => {
+  const URL = `${BASE_API}/search.php?s=`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  return data;
+};
