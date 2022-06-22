@@ -1,4 +1,4 @@
-const BASE_API = 'www.thecocktaildb.com/api/json/v1/1';
+const BASE_API = 'https://www.thecocktaildb.com/api/json/v1/1';
 
 export const fetchDrinkById = async (id) => {
   const URL = `${BASE_API}/lookup.php?i=${id}`;
