@@ -12,8 +12,7 @@ import ExploreCategories from './pages/ExploreCategories';
 import ExploreByIngredients from './pages/ExploreByIngredients';
 import ExploreByNationalities from './pages/ExploreByNationalities';
 import UserProfile from './pages/UserProfile';
-import DoneRecipes from './pages/DoneRecipes';
-import FavoriteRecipes from './pages/FavoriteRecipes';
+import UserRecipes from './pages/UserRecipes';
 
 function App() {
   return (
@@ -46,8 +45,8 @@ function App() {
             component={ ExploreByNationalities }
           />
           <Route exact path="/profile" component={ UserProfile } />
-          <Route exact path="/done-recipes" component={ DoneRecipes } />
-          <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
+          <Route exact path="/done-recipes" component={ UserRecipes } />
+          <Route exact path="/favorite-recipes" component={ UserRecipes } />
         </Switch>
       </RecipesProvider>
     </BrowserRouter>
