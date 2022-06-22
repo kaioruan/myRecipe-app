@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import MainPageRecipeCard from '../components/MainPageRecipeCard';
 import {
   fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
@@ -89,6 +90,7 @@ function MainPage() {
             />))}
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
