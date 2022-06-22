@@ -1,10 +1,11 @@
-import React from 'react';
-// import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import RecipesContext from './RecipesContext';
 
 function RecipesProvider({ children }) {
-  const contextType = {};
+  const [recipes, setRecipes] = useState([]);
+
+  const contextType = { recipes, setRecipes };
   return (
     <RecipesContext.Provider value={ contextType }>
       {children}

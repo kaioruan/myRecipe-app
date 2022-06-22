@@ -1,4 +1,4 @@
-const BASE_API = 'www.themealdb.com/api/json/v1/1';
+const BASE_API = 'https://www.themealdb.com/api/json/v1/1';
 
 export const fetchMealById = async (id) => {
   const URL = `${BASE_API}/lookup.php?i=${id}`;
@@ -44,6 +44,20 @@ export const fetchMealsByArea = async (area) => {
 
 export const fetchRandomMeal = async () => {
   const URL = `${BASE_API}/random.php`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  return data;
+};
+
+export const fetchAllMealsCategories = async () => {
+  const URL = `${BASE_API}/list.php?c=list`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  return data;
+};
+
+export const fetchAllMeals = async () => {
+  const URL = `${BASE_API}/search.php?s=`;
   const response = await fetch(URL);
   const data = await response.json();
   return data;
