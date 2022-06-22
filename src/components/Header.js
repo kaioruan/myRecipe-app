@@ -1,19 +1,37 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import ProfileIcon from '../images/profileIcon.svg';
 import SearchIcon from '../images/searchIcon.svg';
 import { fetchMealByName,
   fetchMealsByIngredient,
   fetchMealsbyFirstLetter } from '../services/MealsAPI';
+import { fetchDrinksByIngredient,
+  fetchDrinkByName,
+  fetchDrinksbyFirstLetter } from '../services/CocktailsAPI';
 
 function Header() {
   const [iconSearch, setIconSearch] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [inputFilter, setInputFilter] = useState('');
+  const [dataMeals, setDataMeals] = useState([]);
+  const [dataDrinks, setDataDrinks] = useState([]);
+
+  const history = useHistory();
+  const path = history.location.pathname;
+
+  useEffect(() => {
+    if (dataDrinks.length === 1) {
+      console.log(dataDrinks[0].idDrink);
+      history.push(`/drinks/${dataDrinks[0].idDrink}`);
+    }
+    if (dataMeals.length === 1) {
+      console.log(dataMeals[0].idMeal);
+      history.push(`/foods/${dataMeals[0].idMeal}`);
+    }
+  }, [dataDrinks, dataMeals, history]);
 
   const handleChangeFilters = ({ target }) => {
     setInputFilter(target.id);
-    console.log(target.id);
   };
 
   const handleIconSearch = () => {
@@ -27,20 +45,48 @@ function Header() {
     setSearchInput(target.value);
   };
 
-  const handleClickSearch = () => {
+  const clickRequestFoods = async () => {
     if (searchInput.length > 1 && inputFilter === 'First-Letter') {
       global.alert('Your search must have only 1 (one) character');
     }
     if (searchInput.length === 1) {
-      fetchMealsbyFirstLetter(searchInput);
+      await fetchMealsbyFirstLetter(searchInput);
     }
     if (inputFilter === 'Ingredient') {
-      fetchMealsByIngredient(searchInput);
+      await fetchMealsByIngredient(searchInput);
     }
     if (inputFilter === 'Name') {
-      fetchMealByName(searchInput);
+      const response = await fetchMealByName(searchInput);
+      setDataMeals(response.meals);
     }
   };
+  console.log(dataMeals);
+
+  const clickRequestDrinks = async () => {
+    if (searchInput.length > 1 && inputFilter === 'First-Letter') {
+      global.alert('Your search must have only 1 (one) character');
+    }
+    if (searchInput.length === 1) {
+      await fetchDrinksbyFirstLetter(searchInput);
+    }
+    if (inputFilter === 'Ingredient') {
+      await fetchDrinksByIngredient(searchInput);
+    }
+    if (inputFilter === 'Name') {
+      const response = await fetchDrinkByName(searchInput);
+      setDataDrinks(response.drinks);
+    }
+  };
+
+  const handleClickSearch = async () => {
+    if (path === '/foods') {
+      await clickRequestFoods();
+    }
+    if (path === '/drinks') {
+      await clickRequestDrinks();
+    }
+  };
+
   return (
     <div>
       <header>
