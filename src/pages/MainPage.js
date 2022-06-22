@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
-import MainPageRecipeCard from '../components/MainPageRecipeCard';
+import DefaultRecipeCard from '../components/DefaultRecipeCard';
 import {
   fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
 } from '../services/CocktailsAPI';
@@ -79,14 +79,17 @@ function MainPage() {
 
             </button>))}
         </nav>
-        <div>
+        <div className="main-page-recipes">
           { recipes.map((recipe, index) => (
-            <MainPageRecipeCard
+            <DefaultRecipeCard
               key={ recipe.idDrink || recipe.idMeal }
+              cardTestId={ `${index}-recipe-card` }
+              titleTestId={ `${index}-card-name` }
               recipeId={ recipe.idDrink || recipe.idMeal }
               index={ index }
               thumb={ recipe.strDrinkThumb || recipe.strMealThumb }
               name={ recipe.strDrink || recipe.strMeal }
+              category={ recipe.strCategory }
             />))}
         </div>
       </section>
