@@ -1,26 +1,24 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 function MainPageRecipeCard(props) {
   const history = useHistory();
+  const { pathname } = history.location;
   const { recipeId, index, thumb, name } = props;
 
-  const onCardClicked = () => {
-    const { pathname } = history.location;
-    const newPath = `${pathname}/${recipeId}`;
-    history.push(newPath);
-  };
-
   return (
-    <button
+    <Link
       data-testid={ `${index}-recipe-card` }
-      type="button"
-      onClick={ onCardClicked }
+      to={ `${pathname}/${recipeId}` }
     >
-      <img data-testid={ `${index}-card-image` } src={ thumb } alt="card thumb" />
-      <p>{ name }</p>
-    </button>
+      <img
+        data-testid={ `${index}-card-img` }
+        src={ thumb }
+        alt="card thumb"
+      />
+      <p data-testid={ `${index}-card-name` }>{ name }</p>
+    </Link>
   );
 }
 

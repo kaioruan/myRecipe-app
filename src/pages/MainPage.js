@@ -1,83 +1,95 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import MainPageRecipeCard from '../components/MainPageRecipeCard';
+import {
+  fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
+} from '../services/CocktailsAPI';
+import {
+  fetchAllMealsCategories, fetchAllMeals, fetchMealsByCategory,
+} from '../services/MealsAPI';
+import RecipesContext from '../context/RecipesContext';
 
 const RECIPES_NUMBER = 12;
 const CATEGORIES_NUMBER = 5;
-const MEALS_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-const DRINKS_URL = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-const MEALS_CAT_URL = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
-const DRINKS_CAT_URL = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
 
 function MainPage() {
-  const [recipes, setRecipes] = useState([]);
+  const { recipes, setRecipes } = useContext(RecipesContext);
+  console.log(recipes);
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const history = useHistory();
   const path = history.location.pathname;
 
-  const getURL = (pathname) => {
-    if (pathname === '/foods') return MEALS_URL;
-    return DRINKS_URL;
-  };
-
-  const getCategoryURL = (pathname) => {
-    if (pathname === '/foods') return MEALS_CAT_URL;
-    return DRINKS_CAT_URL;
-  };
-
   useEffect(() => {
     const fetchAPI = async () => {
+      const fetchMeals = async () => (
+        selectedCategory === 'All'
+          ? fetchAllMeals()
+          : fetchMealsByCategory(selectedCategory)
+      );
+
+      const fetchDrinks = async () => (
+        selectedCategory === 'All'
+          ? fetchAllDrinks()
+          : fetchDrinksByCategory(selectedCategory)
+      );
+
       const trimArray = (data, size) => {
         if (path === '/foods') return data.meals.slice(0, size);
         return data.drinks.slice(0, size);
       };
 
-      const categoriesURL = getCategoryURL(path);
-      const categoriesResponse = await fetch(categoriesURL);
-      const categoriesData = await categoriesResponse.json();
+      const categoriesData = path === '/foods'
+        ? await fetchAllMealsCategories()
+        : await fetchAllDrinksCategories();
 
-      const recipesURL = getURL(path);
-      const recipesResponse = await fetch(recipesURL);
-      const recipesData = await recipesResponse.json();
+      const recipesData = path === '/foods'
+        ? await fetchMeals()
+        : await fetchDrinks();
 
       setRecipes(trimArray(recipesData, RECIPES_NUMBER));
+
       let catArray = trimArray(categoriesData, CATEGORIES_NUMBER);
       catArray = catArray.map((cat) => cat.strCategory);
       catArray.unshift('All');
       setCategories(catArray);
     };
     fetchAPI();
-  }, [path]);
+  }, [path, selectedCategory, setRecipes]);
+
+  const onCategoryButtonClicked = ({ target }) => {
+    const newCategory = target.innerText === selectedCategory ? 'All' : target.innerText;
+    setSelectedCategory(newCategory);
+  };
 
   return (
     <div>
       <Header />
-      <main>
-        <section>
-          <nav>
-            {categories.map((cat, index) => (
-              <button
-                data-testid={ `${cat}-category-filter` }
-                key={ index }
-                type="button"
-              >
-                { cat }
+      <section>
+        <nav>
+          {categories.map((cat, index) => (
+            <button
+              data-testid={ `${cat}-category-filter` }
+              key={ index }
+              type="button"
+              onClick={ onCategoryButtonClicked }
+            >
+              { cat }
 
-              </button>))}
-          </nav>
-          <div>
-            { recipes.map((recipe, index) => (
-              <MainPageRecipeCard
-                key={ recipe.idDrink || recipe.idMeal }
-                recipeId={ recipe.idDrink || recipe.idMeal }
-                index={ index }
-                thumb={ recipe.strDrinkThumb || recipe.strMealThumb }
-                name={ recipe.strDrink || recipe.strMeal }
-              />))}
-          </div>
-        </section>
-      </main>
+            </button>))}
+        </nav>
+        <div>
+          { recipes.map((recipe, index) => (
+            <MainPageRecipeCard
+              key={ recipe.idDrink || recipe.idMeal }
+              recipeId={ recipe.idDrink || recipe.idMeal }
+              index={ index }
+              thumb={ recipe.strDrinkThumb || recipe.strMealThumb }
+              name={ recipe.strDrink || recipe.strMeal }
+            />))}
+        </div>
+      </section>
     </div>
   );
 }
