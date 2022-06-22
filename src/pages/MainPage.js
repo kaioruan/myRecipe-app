@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import Header from '../components/Header';
 import MainPageRecipeCard from '../components/MainPageRecipeCard';
 import {
   fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
@@ -7,12 +8,14 @@ import {
 import {
   fetchAllMealsCategories, fetchAllMeals, fetchMealsByCategory,
 } from '../services/MealsAPI';
+import RecipesContext from '../context/RecipesContext';
 
 const RECIPES_NUMBER = 12;
 const CATEGORIES_NUMBER = 5;
 
 function MainPage() {
-  const [recipes, setRecipes] = useState([]);
+  const { recipes, setRecipes } = useContext(RecipesContext);
+  console.log(recipes);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const history = useHistory();
@@ -46,13 +49,14 @@ function MainPage() {
         : await fetchDrinks();
 
       setRecipes(trimArray(recipesData, RECIPES_NUMBER));
+
       let catArray = trimArray(categoriesData, CATEGORIES_NUMBER);
       catArray = catArray.map((cat) => cat.strCategory);
       catArray.unshift('All');
       setCategories(catArray);
     };
     fetchAPI();
-  }, [path, selectedCategory]);
+  }, [path, selectedCategory, setRecipes]);
 
   const onCategoryButtonClicked = ({ target }) => {
     const newCategory = target.innerText === selectedCategory ? 'All' : target.innerText;
@@ -60,30 +64,33 @@ function MainPage() {
   };
 
   return (
-    <section>
-      <nav>
-        {categories.map((cat, index) => (
-          <button
-            data-testid={ `${cat}-category-filter` }
-            key={ index }
-            type="button"
-            onClick={ onCategoryButtonClicked }
-          >
-            { cat }
+    <div>
+      <Header />
+      <section>
+        <nav>
+          {categories.map((cat, index) => (
+            <button
+              data-testid={ `${cat}-category-filter` }
+              key={ index }
+              type="button"
+              onClick={ onCategoryButtonClicked }
+            >
+              { cat }
 
-          </button>))}
-      </nav>
-      <div>
-        { recipes.map((recipe, index) => (
-          <MainPageRecipeCard
-            key={ recipe.idDrink || recipe.idMeal }
-            recipeId={ recipe.idDrink || recipe.idMeal }
-            index={ index }
-            thumb={ recipe.strDrinkThumb || recipe.strMealThumb }
-            name={ recipe.strDrink || recipe.strMeal }
-          />))}
-      </div>
-    </section>
+            </button>))}
+        </nav>
+        <div>
+          { recipes.map((recipe, index) => (
+            <MainPageRecipeCard
+              key={ recipe.idDrink || recipe.idMeal }
+              recipeId={ recipe.idDrink || recipe.idMeal }
+              index={ index }
+              thumb={ recipe.strDrinkThumb || recipe.strMealThumb }
+              name={ recipe.strDrink || recipe.strMeal }
+            />))}
+        </div>
+      </section>
+    </div>
   );
 }
 
