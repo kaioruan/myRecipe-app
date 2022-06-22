@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import ProfileIcon from '../images/profileIcon.svg';
 import SearchIcon from '../images/searchIcon.svg';
@@ -8,6 +8,10 @@ import { fetchMealByName,
 import { fetchDrinksByIngredient,
   fetchDrinkByName,
   fetchDrinksbyFirstLetter } from '../services/CocktailsAPI';
+import RecipesContext from '../context/RecipesContext';
+
+const RECIPES_NUMBER = 12;
+const ERROR_MESSAGE = 'Sorry, we haven\'t found any recipes for these filters.';
 
 function Header() {
   const [iconSearch, setIconSearch] = useState(false);
@@ -15,20 +19,28 @@ function Header() {
   const [inputFilter, setInputFilter] = useState('');
   const [dataMeals, setDataMeals] = useState([]);
   const [dataDrinks, setDataDrinks] = useState([]);
+  const { recipes, setRecipes } = useContext(RecipesContext);
 
   const history = useHistory();
   const path = history.location.pathname;
 
   useEffect(() => {
-    if (dataDrinks.length === 1) {
-      console.log(dataDrinks[0].idDrink);
+    if (dataDrinks?.length === 1) { // se dataDrinks for null, não faz a checagem
       history.push(`/drinks/${dataDrinks[0].idDrink}`);
     }
-    if (dataMeals.length === 1) {
-      console.log(dataMeals[0].idMeal);
+    if (recipes === null) {
+      global.alert(ERROR_MESSAGE);
+    }
+    if (dataMeals?.length === 1) {
       history.push(`/foods/${dataMeals[0].idMeal}`);
     }
-  }, [dataDrinks, dataMeals, history]);
+  }, [dataDrinks, dataMeals, history, recipes]);
+
+  // useEffect(() => {
+  //   if (recipes.length === 0) {
+  //     global.alert(ERROR_MESSAGE);
+  //   }
+  // });
 
   const handleChangeFilters = ({ target }) => {
     setInputFilter(target.id);
@@ -45,6 +57,13 @@ function Header() {
     setSearchInput(target.value);
   };
 
+  const trimArray = (data, size) => {
+    if (path === '/foods' && !data.meals) return data.meals;
+    if (path === '/drinks' && !data.drinks) return data.drinks;
+    if (path === '/foods') return data.meals.slice(0, size);
+    return data.drinks.slice(0, size);
+  };
+
   const clickRequestFoods = async () => {
     if (searchInput.length > 1 && inputFilter === 'First-Letter') {
       global.alert('Your search must have only 1 (one) character');
@@ -58,9 +77,9 @@ function Header() {
     if (inputFilter === 'Name') {
       const response = await fetchMealByName(searchInput);
       setDataMeals(response.meals);
+      setRecipes(trimArray(response, RECIPES_NUMBER));
     }
   };
-  console.log(dataMeals);
 
   const clickRequestDrinks = async () => {
     if (searchInput.length > 1 && inputFilter === 'First-Letter') {
@@ -75,6 +94,7 @@ function Header() {
     if (inputFilter === 'Name') {
       const response = await fetchDrinkByName(searchInput);
       setDataDrinks(response.drinks);
+      setRecipes(trimArray(response, RECIPES_NUMBER));
     }
   };
 

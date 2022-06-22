@@ -15,7 +15,6 @@ const CATEGORIES_NUMBER = 5;
 
 function MainPage() {
   const { recipes, setRecipes } = useContext(RecipesContext);
-  console.log(recipes);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const history = useHistory();
@@ -80,7 +79,7 @@ function MainPage() {
             </button>))}
         </nav>
         <div>
-          { recipes.map((recipe, index) => (
+          { recipes && recipes.map((recipe, index) => ( // se recipes for null, não faz o map
             <MainPageRecipeCard
               key={ recipe.idDrink || recipe.idMeal }
               recipeId={ recipe.idDrink || recipe.idMeal }
