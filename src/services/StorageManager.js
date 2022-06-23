@@ -11,7 +11,7 @@ export const saveUser = (email) => {
 
 export const loadUser = () => {
   const storedUser = localStorage.getItem(USER);
-  return storedUser ? JSON.parse(storedUser) : null;
+  return storedUser ? JSON.parse(storedUser) : '';
 };
 
 export const saveMealsToken = (token) => {
@@ -120,10 +120,8 @@ export const removeInProgressRecipe = (recipe) => {
   const id = recipe.idMeal || recipe.idDrink;
 
   if (isFood) {
-    delete recipes.meals[id];
-  } else {
-    delete recipes.cocktails[id];
-  }
+    if (recipes.meals[id] !== undefined) delete recipes.meals[id];
+  } else if (recipes.cocktails[id] !== undefined) delete recipes.cocktails[id];
 
   localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(recipes));
 };
@@ -131,13 +129,16 @@ export const removeInProgressRecipe = (recipe) => {
 // export const loadInProgressRecipeById = (recipeId) => {
 
 // };
+
+export const loadDoneRecipes = () => JSON.parse(localStorage.getItem(DONE_RECIPES)) || [];
+
 export const saveDoneRecipe = (recipe) => {
-  const doneRecipes = JSON.parse(localStorage.getItem(DONE_RECIPES));
+  const doneRecipes = loadDoneRecipes();
   const recipeId = recipe.idMeal || recipe.idDrink;
 
   removeInProgressRecipe(recipe);
 
-  if (doneRecipes !== null && doneRecipes.some((r) => r.id === recipeId)) return;
+  if (doneRecipes.some((r) => r.id === recipeId)) return;
 
   const date = new Date();
   const formatedRecipe = {
@@ -152,17 +153,11 @@ export const saveDoneRecipe = (recipe) => {
     tags: recipe.strTags || '',
   };
 
-  if (doneRecipes === null) {
-    localStorage.setItem(DONE_RECIPES, JSON.stringify([formatedRecipe]));
-  } else {
-    localStorage.setItem(DONE_RECIPES, JSON.stringify([...doneRecipes, formatedRecipe]));
-  }
+  localStorage.setItem(DONE_RECIPES, JSON.stringify([...doneRecipes, formatedRecipe]));
 };
-
-export const loadDoneRecipes = () => JSON.parse(localStorage.getItem(DONE_RECIPES));
 
 export const recipeIsDone = (recipeId) => {
   const doneRecipes = loadDoneRecipes();
-  if (doneRecipes === null) return false;
+  if (doneRecipes.length === 0) return false;
   return doneRecipes.some((r) => r.id === recipeId);
 };
