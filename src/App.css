@@ -67,34 +67,34 @@
   }
 }
 
-.main-page-content{
+.main-page-content {
   border: 15px red;
   display: block;
   width: 360px;
 }
 
-/* .recipes-list{
+/* .recipes-list {
   border: 15px red;
   display: flex;
 } */
 
 .recommendations {
   display: flex;
-  width: 100%;
   overflow: scroll;
+  width: 100%;
 }
 
-.recipe-card{
-  width: 180px;
+.recipe-card {
   height: 180px;
+  width: 180px;
 }
 
 .test {
-  width: 180px;
   height: 180px;
+  width: 180px;
 }
 
-#details-button{
+#details-button {
+  bottom: 0;
   position: fixed;
-  bottom: 0px;
 }
