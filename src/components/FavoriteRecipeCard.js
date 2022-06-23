@@ -1,26 +1,33 @@
+import { remove } from 'lodash';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeart from '../images/whiteHeartIcon.svg';
 
 function FavoriteRecipeCard() {
   const [copied, setCopied] = useState(false);
 
-  const history = useHistory();
-  const path = history.location.pathname;
+  // const history = useHistory();
+  // const path = history.location.pathname;
   const id = '52771';
 
   const index = '0';
-  const urlFood = localKey === 'foods'   `http://localhost:3000/foods/${id}`;
+  const urlFood = `http://localhost:3000/foods/${id}`;
 
   const handleShareButton = () => {
     navigator.clipboard.writeText(urlFood);
     setCopied(true);
   };
 
+  const handleFavoriteInput = () => {
+    remove.localStorage('foods');
+  };
+
   return (
     <section className="recipeContainter">
-      <img src="" alt="" data-testid={ `${index}-horizontal-image` } />
+      <Link to={ `/${type}/${id}` }>
+        <img src="" alt="" data-testid={ `${index}-horizontal-image` } />
+      </Link>
       <div className="infoRecipes">
         <div>
           <p data-testid={ `${index}-horizontal-top-text` }>
@@ -45,7 +52,7 @@ function FavoriteRecipeCard() {
             data-testid="0-horizontal-favorite-btn"
           >
             <img src={ whiteHeart } alt="share logo" />
-            <input id="favorite" type="checkbox" />
+            <input id="favorite" type="checkbox" onChange={ handleFavoriteInput } />
           </label>
         </div>
       </div>
