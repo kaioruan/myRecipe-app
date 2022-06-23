@@ -1,8 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeart from '../images/whiteHeartIcon.svg';
 
 function FavoriteRecipeCard() {
+  const [copied, setCopied] = useState(false);
+
+  const history = useHistory();
+  const path = history.location.pathname;
+  const id = '52771';
+
+  const index = '0';
+  const urlFood = localKey === 'foods'   `http://localhost:3000/foods/${id}`;
+
+  const handleShareButton = () => {
+    navigator.clipboard.writeText(urlFood);
+    setCopied(true);
+  };
+
   return (
     <section className="recipeContainter">
       <img src="" alt="" data-testid={ `${index}-horizontal-image` } />
@@ -19,11 +34,17 @@ function FavoriteRecipeCard() {
           <button
             data-testid={ `${index}-horizontal-share-btn` }
             type="button"
+            onClick={ handleShareButton }
+            title="share icon"
           >
-            {shareIcon}
+            <img src={ shareIcon } alt="share logo" />
           </button>
-          <label htmlFor="favorite">
-            {whiteHeart}
+          {copied && <p>Link copied!</p>}
+          <label
+            htmlFor="favorite"
+            data-testid="0-horizontal-favorite-btn"
+          >
+            <img src={ whiteHeart } alt="share logo" />
             <input id="favorite" type="checkbox" />
           </label>
         </div>

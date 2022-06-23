@@ -1,14 +1,15 @@
 import React from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export default function RecipesHeader() {
-  // // const path = history.location.pathname;
-  // console.log(path);
+  const history = useHistory();
+  const path = history.location.pathname;
+  // console.log(path, 'log header');
 
   return (
     <header>
       <h1>
-        Done Recipes
+        {path === '/favorite-recipes' ? 'Favorite Recipes' : 'Done Recipes'}
       </h1>
       <button
         data-testid="filter-by-all-btn"
