@@ -157,7 +157,7 @@ function RecipePage() {
       {!recipeIsDone(id) && !isInProgressPath
       && (
         <button
-          id="details-button"
+          className="details-button"
           data-testid="start-recipe-btn"
           type="button"
           onClick={ onClickStart }
@@ -168,7 +168,7 @@ function RecipePage() {
 
       {isInProgressPath && (
         <button
-          id="details-button"
+          className="details-button"
           data-testid="finish-recipe-btn"
           type="button"
           onClick={ onClickFinish }
