@@ -67,8 +67,34 @@
   }
 }
 
-/* .image-test {
-  width: 50px;
-  height: 50px;
-  border: red;
+.main-page-content{
+  border: 15px red;
+  display: block;
+  width: 360px;
+}
+
+/* .recipes-list{
+  border: 15px red;
+  display: flex;
 } */
+
+.recommendations {
+  display: flex;
+  width: 100%;
+  overflow: scroll;
+}
+
+.recipe-card{
+  width: 180px;
+  height: 180px;
+}
+
+.test {
+  width: 180px;
+  height: 180px;
+}
+
+#details-button{
+  position: fixed;
+  bottom: 0px;
+}
