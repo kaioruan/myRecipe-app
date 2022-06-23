@@ -67,10 +67,16 @@
   }
 }
 
-#main-page-recipes{
-  display: flex;
-  width: 100%;
+.main-page-content{
+  border: 15px red;
+  display: block;
+  width: 360px;
 }
+
+/* .recipes-list{
+  border: 15px red;
+  display: flex;
+} */
 
 .recommendations {
   display: flex;
@@ -88,7 +94,7 @@
   height: 180px;
 }
 
-#details-start-button{
+#details-button{
   position: fixed;
   bottom: 0px;
 }
