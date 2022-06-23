@@ -9,6 +9,7 @@ import {
   fetchAllMealsCategories, fetchAllMeals, fetchMealsByCategory,
 } from '../services/MealsAPI';
 import RecipesContext from '../context/RecipesContext';
+import Footer from '../components/Footer';
 
 const RECIPES_NUMBER = 12;
 const CATEGORIES_NUMBER = 5;
