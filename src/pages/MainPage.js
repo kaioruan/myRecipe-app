@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
-import Footer from '../components/Footer';
-import MainPageRecipeCard from '../components/MainPageRecipeCard';
+import DefaultRecipeCard from '../components/DefaultRecipeCard';
 import {
   fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
 } from '../services/CocktailsAPI';
@@ -10,6 +9,7 @@ import {
   fetchAllMealsCategories, fetchAllMeals, fetchMealsByCategory,
 } from '../services/MealsAPI';
 import RecipesContext from '../context/RecipesContext';
+import Footer from '../components/Footer';
 
 const RECIPES_NUMBER = 12;
 const CATEGORIES_NUMBER = 5;
@@ -66,7 +66,7 @@ function MainPage() {
   return (
     <div>
       <Header />
-      <section>
+      <section className="main-page-content">
         <nav>
           {categories.map((cat, index) => (
             <button
@@ -79,14 +79,17 @@ function MainPage() {
 
             </button>))}
         </nav>
-        <div>
-          { recipes && recipes.map((recipe, index) => ( // se recipes for null, não faz o map
-            <MainPageRecipeCard
+        <div className="recipes-list">
+          { recipes.map((recipe, index) => (
+            <DefaultRecipeCard
               key={ recipe.idDrink || recipe.idMeal }
+              cardTestId={ `${index}-recipe-card` }
+              titleTestId={ `${index}-card-name` }
               recipeId={ recipe.idDrink || recipe.idMeal }
               index={ index }
               thumb={ recipe.strDrinkThumb || recipe.strMealThumb }
               name={ recipe.strDrink || recipe.strMeal }
+              category={ recipe.strCategory }
             />))}
         </div>
       </section>

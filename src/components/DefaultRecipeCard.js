@@ -2,31 +2,45 @@ import React from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-function MainPageRecipeCard(props) {
+function DefaultRecipeCard(props) {
   const history = useHistory();
   const { pathname } = history.location;
-  const { recipeId, index, thumb, name } = props;
+  const {
+    cardTestId,
+    titleTestId,
+    recipeId,
+    index,
+    name,
+    thumb,
+    category,
+  } = props;
 
   return (
     <Link
-      data-testid={ `${index}-recipe-card` }
+      className="recipe-card"
+      data-testid={ cardTestId }
       to={ `${pathname}/${recipeId}` }
     >
       <img
+        className="test"
         data-testid={ `${index}-card-img` }
         src={ thumb }
         alt="card thumb"
       />
-      <p data-testid={ `${index}-card-name` }>{ name }</p>
+      <p>{ category }</p>
+      <h3 data-testid={ titleTestId }>{ name }</h3>
     </Link>
   );
 }
 
-MainPageRecipeCard.propTypes = {
+DefaultRecipeCard.propTypes = {
+  cardTestId: PropTypes.string.isRequired,
+  titleTestId: PropTypes.string.isRequired,
   recipeId: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   thumb: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
 };
 
-export default MainPageRecipeCard;
+export default DefaultRecipeCard;
