@@ -1,9 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 export default function RecipesHeader() {
-  const path = history.location.pathname;
-  console.log(path);
+  // // const path = history.location.pathname;
+  // console.log(path);
 
   return (
     <header>

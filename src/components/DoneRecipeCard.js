@@ -1,39 +1,39 @@
 import React from 'react';
-import RecipesHeader from './RecipesHeader';
+import shareIcon from '../images/shareIcon.svg';
 
 function DoneRecipeCard() {
+  const index = '0';
+  const thumb = 'teste';
+  const tagName = 'teste';
+
   return (
-    <div>
-      <RecipesHeader />
-      <main>
-        <img
-          data-testid={ `${index}-horizontal-image` }
-          src={ thumb }
-          alt="card thumb"
-        />
-        <p
-          data-testid={ `${index}-horizontal-top-text` }
-        >
+    <section>
+      <img
+        data-testid={ `${index}-horizontal-image` }
+        src={ thumb }
+        alt="card thumb"
+      />
+      <div className="recipeInfoContainer">
+        <p data-testid={ `${index}-horizontal-top-text` }>
           Texto Categoria
         </p>
-        <p
-          data-testid={ `${index}-horizontal-name` }
-        >
+        <p data-testid={ `${index}-horizontal-name` }>
           Texto Nome
-        </p>
-        <p
-          data-testid={ `${index}-horizontal-done-date` }
-        >
-          Texto Data que foi feito
         </p>
         <button
           data-testid={ `${index}-horizontal-share-btn` }
           type="button"
         >
-          Share
+          {shareIcon}
         </button>
-      </main>
-    </div>
+        <p data-testid={ `${index}-horizontal-done-date` }>
+          Texto Data que foi feito
+        </p>
+      </div>
+      <div className="tagContainer">
+        <p data-testid={ `${index}-${tagName}-horizontal-tag` }>texto</p>
+      </div>
+    </section>
   );
 }
 
