@@ -43,12 +43,12 @@ export const saveFavoriteRecipe = (recipe) => {
 
   const formatedRecipe = {
     id: recipe.idMeal || recipe.idDrink,
-    type: recipe.idMeal ? 'Food' : 'Drink',
+    type: recipe.idMeal ? 'food' : 'drink',
     nationality: recipe.strArea || '',
     category: recipe.strCategory || '',
     alcoholicOrNot: getAlcoholicString(recipe),
     name: recipe.strMeal || recipe.strDrink,
-    image: recipe.strMealThumb || recipe.strMealDrink,
+    image: recipe.strMealThumb || recipe.strDrinkThumb,
   };
 
   if (doneRecipes === null) {
@@ -109,7 +109,9 @@ export const saveInProgressRecipe = (recipe, usedIngredients) => {
 
 export const recipeIsInProgress = (recipeId) => {
   const recipes = loadInProgressRecipes();
-  const allKeys = [...Object.keys(recipes.meals), ...Object.keys(recipes.cocktails)];
+  let allKeys = [];
+  if (recipes.cocktails) allKeys = [...Object.keys(recipes.cocktails)];
+  if (recipes.meals) allKeys = [...allKeys, ...Object.keys(recipes.meals)];
   const result = allKeys.includes(recipeId);
   return result;
 };
