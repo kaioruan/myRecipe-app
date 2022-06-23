@@ -20,6 +20,7 @@ import blackHeartIcon from '../images/blackHeartIcon.svg';
 const RECOMMENDATIONS_NUMBER = 6;
 
 function RecipePage() {
+  const [copied, setCopied] = useState(false);
   const [heartIcon, setHeartIcon] = useState(whiteHeartIcon);
   const [recipe, setRecipe] = useState({});
   const [recommendations, setRecommendations] = useState([]);
@@ -62,8 +63,9 @@ function RecipePage() {
     .filter((obj) => obj[0].includes('Measure') && obj[1] !== ' ');
 
   const onClickShare = () => {
-    navigator.clipboard.writeText(recipe.strSource);
-    global.alert('Link copied!');
+    const url = `http://localhost:3000${path}`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
   };
 
   const onClickFavorite = () => {
@@ -102,6 +104,8 @@ function RecipePage() {
       >
         <img src={ shareIcon } alt="share icon" />
       </button>
+
+      {copied && <p>Link copied!</p>}
 
       <button type="button" onClick={ onClickFavorite }>
         <img data-testid="favorite-btn" src={ heartIcon } alt="favorite icon" />
