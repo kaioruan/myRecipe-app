@@ -66,7 +66,7 @@ function MainPage() {
   return (
     <div>
       <Header />
-      <section>
+      <section className="main-page-content">
         <nav>
           {categories.map((cat, index) => (
             <button
@@ -79,7 +79,7 @@ function MainPage() {
 
             </button>))}
         </nav>
-        <div className="main-page-recipes">
+        <div className="recipes-list">
           { recipes.map((recipe, index) => (
             <DefaultRecipeCard
               key={ recipe.idDrink || recipe.idMeal }
