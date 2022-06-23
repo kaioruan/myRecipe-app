@@ -94,7 +94,7 @@
   width: 180px;
 }
 
-#details-button {
+.details-button {
   bottom: 0;
   position: fixed;
 }
