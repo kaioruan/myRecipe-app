@@ -9,13 +9,13 @@ import {
   fetchAllMealsCategories, fetchAllMeals, fetchMealsByCategory,
 } from '../services/MealsAPI';
 import RecipesContext from '../context/RecipesContext';
+import Footer from '../components/Footer';
 
 const RECIPES_NUMBER = 12;
 const CATEGORIES_NUMBER = 5;
 
 function MainPage() {
   const { recipes, setRecipes } = useContext(RecipesContext);
-  console.log(recipes);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const history = useHistory();
@@ -93,6 +93,7 @@ function MainPage() {
             />))}
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
