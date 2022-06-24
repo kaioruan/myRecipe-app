@@ -21,6 +21,12 @@ const getStartButtonInnerText = (inProgress) => (
 const getRecipeCategoryText = (isFood, recipe) => (
   isFood ? recipe.strCategory : recipe.strAlcoholic);
 
+const renderVideo = (isFood, url) => (isFood && (
+  <div>
+    <h3>Video</h3>
+    <ReactPlayer data-testid="video" url={ url } />
+  </div>));
+
 function RecipePage() {
   const [copied, setCopied] = useState(false);
   const [heartIcon, setHeartIcon] = useState(whiteHeartIcon);
@@ -133,12 +139,7 @@ function RecipePage() {
       <p data-testid="instructions">{ recipe.strInstructions }</p>
       {!isInProgressPath && (
         <div>
-          {isFood && (
-            <div>
-              <h3>Video</h3>
-              <ReactPlayer data-testid="video" url={ recipe.strYoutube } />
-            </div>
-          )}
+          {renderVideo(isFood, recipe.strYoutube)}
 
           <h3>Recommended</h3>
           <div className="recommendations">
@@ -154,11 +155,6 @@ function RecipePage() {
                 category={ isFood ? rec.strAlcoholic : rec.strCategory }
               />))}
           </div>
-          {isInProgressPath && <div>icon</div>}
-          {isInProgressPath && <div>icon</div>}
-          {isInProgressPath && <div>icon</div>}
-          {isInProgressPath && <div>icon</div>}
-          {isInProgressPath && <div>icon</div>}
         </div>)}
       {!recipeIsDone(id) && !isInProgressPath
       && (
