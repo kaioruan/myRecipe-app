@@ -18,6 +18,9 @@ function ExploreCategories() {
     history.push('/explore/foods/nationalities');
   };
 
+  const onClickToSurprise = () => {
+  };
+
   return (
     <div>
       <Header />
@@ -39,7 +42,13 @@ function ExploreCategories() {
             By Nationality
 
           </button>)}
-        <button data-testid="explore-surprise" type="button">Surprise me!</button>
+        <button
+          data-testid="explore-surprise"
+          type="button"
+          onClick={ onClickToSurprise }
+        >
+          Surprise me!
+        </button>
       </div>
       <Footer />
     </div>
