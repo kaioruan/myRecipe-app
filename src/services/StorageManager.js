@@ -10,8 +10,8 @@ export const saveUser = (email) => {
 };
 
 export const loadUser = () => {
-  const storedUser = localStorage.getItem(USER);
-  return storedUser ? JSON.parse(storedUser) : '';
+  const storedUser = JSON.parse(localStorage.getItem(USER));
+  return storedUser || { email: '' };
 };
 
 export const saveMealsToken = (token) => {
@@ -117,13 +117,14 @@ export const recipeIsInProgress = (recipeId) => {
 };
 
 export const removeInProgressRecipe = (recipe) => {
+  const id = recipe.idMeal || recipe.idDrink;
+  if (!recipeIsInProgress(id)) return;
   const recipes = loadInProgressRecipes();
   const isFood = recipe.idMeal !== undefined;
-  const id = recipe.idMeal || recipe.idDrink;
 
   if (isFood) {
-    if (recipes.meals[id] !== undefined) delete recipes.meals[id];
-  } else if (recipes.cocktails[id] !== undefined) delete recipes.cocktails[id];
+    delete recipes.meals[id];
+  } else delete recipes.cocktails[id];
 
   localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(recipes));
 };
@@ -133,6 +134,7 @@ export const loadInProgressRecipeIngredients = (recipeId) => {
   let allEntries = [];
   if (recipes.cocktails) allEntries = [...Object.entries(recipes.cocktails)];
   if (recipes.meals) allEntries = [...allEntries, ...Object.entries(recipes.meals)];
+  console.log(allEntries);
   return allEntries.length > 0
     ? allEntries.find((entry) => entry[0] === recipeId)[1]
     : [];
