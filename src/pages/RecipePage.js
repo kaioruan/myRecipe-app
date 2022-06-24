@@ -110,12 +110,17 @@ function RecipePage() {
     console.log(history);
   };
 
-  const onProgressChanged = () => {
+  const handleProgressChange = () => {
     const checkedIngredients = getCheckboxes()
       .filter((box) => box.checked)
       .map((box) => box.name);
     saveInProgressRecipe(recipe, checkedIngredients);
     setUsedIngredients(checkedIngredients);
+  };
+
+  const areAllIngredientsChecked = () => {
+    const result = getCheckboxes().every((box) => usedIngredients.includes(box.name));
+    return result;
   };
 
   const renderIngredientsList = () => {
@@ -132,7 +137,7 @@ function RecipePage() {
                 className="ingredient-checkbox"
                 type="checkbox"
                 defaultChecked={ usedIngredients.includes(el.ingredient) }
-                onChange={ onProgressChanged }
+                onChange={ handleProgressChange }
               />
               { `${el.ingredient} - ${el.measure}` }
             </li>
@@ -217,6 +222,7 @@ function RecipePage() {
           data-testid="finish-recipe-btn"
           type="button"
           onClick={ onClickFinish }
+          disabled={ !areAllIngredientsChecked() }
         >
           Finish Recipe
         </button>)}
