@@ -127,7 +127,6 @@ function Header() {
         >
           Page
         </button>
-
         <button
           data-testid="search-top-btn"
           type="button"
