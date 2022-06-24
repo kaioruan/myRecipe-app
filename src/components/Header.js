@@ -144,7 +144,6 @@ function Header() {
               alt="ProfileIcon"
             />
           </Link>
-
           <h2 data-testid="page-title">{pageTitle}</h2>
           {renderIconSearch && (
             <button

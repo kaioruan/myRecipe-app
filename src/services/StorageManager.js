@@ -10,8 +10,8 @@ export const saveUser = (email) => {
 };
 
 export const loadUser = () => {
-  const storedUser = localStorage.getItem(USER);
-  return storedUser ? JSON.parse(storedUser) : '';
+  const storedUser = JSON.parse(localStorage.getItem(USER));
+  return storedUser || { email: '' };
 };
 
 export const saveMealsToken = (token) => {
