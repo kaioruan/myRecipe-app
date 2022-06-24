@@ -1,10 +1,24 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { loadUser } from '../services/StorageManager';
 
 function UserProfile() {
+  const history = useHistory();
   const storedUser = loadUser();
-  console.log(storedUser.email);
+
+  const onClickDone = () => {
+    history.push('/done-recipes');
+  };
+
+  const onClickFavorite = () => {
+    history.push('/favorite-recipes');
+  };
+
+  const onClickLogin = () => {
+    localStorage.clear();
+    history.push('/');
+  };
 
   return (
     <div>
@@ -13,6 +27,7 @@ function UserProfile() {
       <button
         type="button"
         data-testid="profile-done-btn"
+        onClick={ onClickDone }
       >
         Done Recipes
       </button>
@@ -20,6 +35,7 @@ function UserProfile() {
       <button
         type="button"
         data-testid="profile-favorite-btn"
+        onClick={ onClickFavorite }
       >
         Favorite Recipes
       </button>
@@ -27,6 +43,7 @@ function UserProfile() {
       <button
         type="button"
         data-testid="profile-logout-btn"
+        onClick={ onClickLogin }
       >
         Logout
       </button>
