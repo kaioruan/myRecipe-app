@@ -2,6 +2,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import { fetchRandomMeal } from '../services/MealsAPI';
+import { fetchRandomDrink } from '../services/CocktailsAPI';
 
 function ExploreCategories() {
   const history = useHistory();
@@ -18,7 +20,17 @@ function ExploreCategories() {
     history.push('/explore/foods/nationalities');
   };
 
-  const onClickToSurprise = () => {
+  const onClickToSurprise = async () => {
+    const randomRecipes = path === '/explore/drinks'
+      ? await fetchRandomDrink()
+      : await fetchRandomMeal();
+    if (randomRecipes.drinks) {
+      const idRandom = randomRecipes.drinks[0].idDrink;
+      history.push(`/drinks/${idRandom}`);
+    } else {
+      const idRandom = randomRecipes.meals[0].idMeal;
+      history.push(`/foods/${idRandom}`);
+    }
   };
 
   return (
