@@ -82,7 +82,8 @@ function RecipePage() {
   }, [id, path, isFood, setIngredientsList]);
 
   const onClickShare = () => {
-    const url = `http://localhost:3000${path}`;
+    const url = `http://localhost:3000${path.split('/in')[0]}`;
+    console.log(url);
     navigator.clipboard.writeText(url);
     setCopied(true);
   };
@@ -106,6 +107,7 @@ function RecipePage() {
 
   const onClickFinish = () => {
     saveDoneRecipe(recipe);
+    console.log(history);
   };
 
   const onProgressChanged = () => {
