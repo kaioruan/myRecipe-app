@@ -150,11 +150,10 @@ function Header() {
           <h2 data-testid="page-title">{pageTitle}</h2>
           {renderIconSearch && (
             <button
-              data-testid="search-top-btn"
               type="button"
               onClick={ handleIconSearch }
             >
-              <img src={ SearchIcon } alt="SearchIcon" />
+              <img data-testid="search-top-btn" src={ SearchIcon } alt="SearchIcon" />
             </button>)}
           {renderSelect && (
             <select type="dropdown">
