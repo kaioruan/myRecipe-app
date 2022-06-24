@@ -58,6 +58,8 @@ function Header() {
     setNationalitiesList(response.meals);
   };
 
+  console.log('teste');
+
   useEffect(() => {
     if (path === '/foods'
     || path === '/drinks'
