@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 export default function RecipesHeader() {
   const history = useHistory();
   const path = history.location.pathname;
-  // console.log(path, 'log header');
 
   return (
     <header>

@@ -80,7 +80,7 @@ function MainPage() {
             </button>))}
         </nav>
         <div className="recipes-list">
-          { recipes.map((recipe, index) => (
+          { recipes && recipes.map((recipe, index) => (
             <DefaultRecipeCard
               key={ recipe.idDrink || recipe.idMeal }
               cardTestId={ `${index}-recipe-card` }
