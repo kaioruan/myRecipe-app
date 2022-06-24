@@ -5,12 +5,8 @@ import { fetchMealById, fetchAllMeals } from '../services/MealsAPI';
 import { fetchDrinkById, fetchAllDrinks } from '../services/CocktailsAPI';
 import DefaultRecipeCard from '../components/DefaultRecipeCard';
 import {
-  recipeIsDone,
-  recipeIsInProgress,
-  recipeIsFavorite,
-  saveFavoriteRecipe,
-  saveInProgressRecipe,
-  saveDoneRecipe,
+  recipeIsDone, recipeIsInProgress, recipeIsFavorite,
+  saveFavoriteRecipe, saveInProgressRecipe, saveDoneRecipe,
   removeFavoriteRecipe,
 } from '../services/StorageManager';
 import shareIcon from '../images/shareIcon.svg';
@@ -18,6 +14,12 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const RECOMMENDATIONS_NUMBER = 6;
+
+const getStartButtonInnerText = (inProgress) => (
+  inProgress ? 'Continue Recipe' : 'Start Recipe');
+
+const getRecipeCategoryText = (isFood, recipe) => (
+  isFood ? recipe.strCategory : recipe.strAlcoholic);
 
 function RecipePage() {
   const [copied, setCopied] = useState(false);
@@ -112,8 +114,7 @@ function RecipePage() {
       </button>
 
       <p data-testid="recipe-category">
-        { isFood && recipe.strCategory }
-        { !isFood && recipe.strAlcoholic }
+        {getRecipeCategoryText(isFood, recipe)}
       </p>
       <h3>Ingredients</h3>
 
@@ -153,6 +154,11 @@ function RecipePage() {
                 category={ isFood ? rec.strAlcoholic : rec.strCategory }
               />))}
           </div>
+          {isInProgressPath && <div>icon</div>}
+          {isInProgressPath && <div>icon</div>}
+          {isInProgressPath && <div>icon</div>}
+          {isInProgressPath && <div>icon</div>}
+          {isInProgressPath && <div>icon</div>}
         </div>)}
       {!recipeIsDone(id) && !isInProgressPath
       && (
@@ -162,8 +168,7 @@ function RecipePage() {
           type="button"
           onClick={ onClickStart }
         >
-          { recipeIsInProgress(id) && 'Continue Recipe' }
-          { !recipeIsInProgress(id) && 'Start Recipe' }
+          { getStartButtonInnerText(recipeIsInProgress(id)) }
         </button>)}
 
       {isInProgressPath && (
