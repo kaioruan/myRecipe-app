@@ -8,12 +8,15 @@ import {
   recipeIsDone, recipeIsInProgress, recipeIsFavorite,
   saveFavoriteRecipe, saveInProgressRecipe, saveDoneRecipe,
   removeFavoriteRecipe,
+  loadInProgressRecipeIngredients,
 } from '../services/StorageManager';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 const RECOMMENDATIONS_NUMBER = 6;
+
+const getCheckboxes = () => Array.from(document.querySelectorAll('.ingredient-checkbox'));
 
 const getStartButtonInnerText = (inProgress) => (
   inProgress ? 'Continue Recipe' : 'Start Recipe');
@@ -28,6 +31,8 @@ const renderVideo = (isFood, url) => (isFood && (
   </div>));
 
 function RecipePage() {
+  const [usedIngredients, setUsedIngredients] = useState([]);
+  const [ingredientsList, setIngredientsList] = useState([]);
   const [copied, setCopied] = useState(false);
   const [heartIcon, setHeartIcon] = useState(whiteHeartIcon);
   const [recipe, setRecipe] = useState({});
@@ -57,18 +62,24 @@ function RecipePage() {
         ? recommendationsData.drinks.slice(0, RECOMMENDATIONS_NUMBER)
         : recommendationsData.meals.slice(0, RECOMMENDATIONS_NUMBER));
 
+      const entries = Object.entries(recipeObject);
+      const ingredientsNumber = entries.filter((e) => e[0].includes('Ingredient')).length;
+      const list = [];
+      for (let i = 1; i <= ingredientsNumber; i += 1) {
+        list.push({
+          ingredient: entries.find((e) => e[0].includes(`Ingredient${i}`))[1],
+          measure: entries.find((e) => e[0].includes(`Measure${i}`))[1],
+        });
+      }
+
+      setIngredientsList(list.filter((el) => el.ingredient));
+      setUsedIngredients(loadInProgressRecipeIngredients(id));
       setHeartIcon(recipeIsFavorite(id) ? blackHeartIcon : whiteHeartIcon);
       setRecipe(recipeObject);
     };
 
     fetchAPI();
-  }, [id, path, isFood]);
-
-  const ingredients = Object.entries(recipe)
-    .filter((obj) => obj[0].includes('Ingredient') && obj[1]);
-
-  const measures = Object.entries(recipe)
-    .filter((obj) => obj[0].includes('Measure') && obj[1] !== ' ');
+  }, [id, path, isFood, setIngredientsList]);
 
   const onClickShare = () => {
     const url = `http://localhost:3000${path}`;
@@ -97,6 +108,48 @@ function RecipePage() {
     saveDoneRecipe(recipe);
   };
 
+  const onProgressChanged = () => {
+    const checkedIngredients = getCheckboxes()
+      .filter((box) => box.checked)
+      .map((box) => box.name);
+    saveInProgressRecipe(recipe, checkedIngredients);
+    setUsedIngredients(checkedIngredients);
+  };
+
+  const renderIngredientsList = () => {
+    if (isInProgressPath) {
+      return (
+        <ul>
+          {ingredientsList.map((el, index) => (
+            <li
+              key={ `${el.ingredient}${index}` }
+              data-testid={ `${index}-ingredient-step` }
+            >
+              <input
+                name={ el.ingredient }
+                className="ingredient-checkbox"
+                type="checkbox"
+                defaultChecked={ usedIngredients.includes(el.ingredient) }
+                onChange={ onProgressChanged }
+              />
+              { `${el.ingredient} - ${el.measure}` }
+            </li>
+          ))}
+        </ul>);
+    }
+    return (
+      <ul>
+        {ingredientsList.map((el, index) => (
+          <li
+            key={ `${el.ingredient}${index}` }
+            data-testid={ `${index}-ingredient-name-and-measure` }
+          >
+            { `${el.ingredient} - ${el.measure}` }
+          </li>
+        ))}
+      </ul>);
+  };
+
   return (
     <div>
       <img
@@ -123,18 +176,7 @@ function RecipePage() {
         {getRecipeCategoryText(isFood, recipe)}
       </p>
       <h3>Ingredients</h3>
-
-      <ul>
-        {ingredients.map((ingredient, index) => (
-          <li
-            key={ `${ingredient}${index}` }
-            data-testid={ `${index}-ingredient-name-and-measure` }
-          >
-            { `${ingredient[1]} - ${measures[index][1]}` }
-          </li>
-        ))}
-      </ul>
-
+      {renderIngredientsList()}
       <h3>Instructions</h3>
       <p data-testid="instructions">{ recipe.strInstructions }</p>
       {!isInProgressPath && (
