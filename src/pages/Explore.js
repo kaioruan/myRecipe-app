@@ -31,7 +31,6 @@ function Explore() {
       >
         Explore Drinks
       </button>
-
       <Footer />
     </div>
   );
