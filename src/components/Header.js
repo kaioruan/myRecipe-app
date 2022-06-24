@@ -58,8 +58,6 @@ function Header() {
     setNationalitiesList(response.meals);
   };
 
-  console.log('teste');
-
   useEffect(() => {
     if (path === '/foods'
     || path === '/drinks'
@@ -103,7 +101,7 @@ function Header() {
     if (inputFilter === 'Name') {
       const response = await fetchMealByName(searchInput);
       setDataMeals(response.meals);
-      setRecipes(trimArray(response, RECIPES_NUMBER));
+      setRecipes(trimArray(response, RECIPES_NUMBER, path));
     }
   };
 
@@ -120,7 +118,7 @@ function Header() {
     if (inputFilter === 'Name') {
       const response = await fetchDrinkByName(searchInput);
       setDataDrinks(response.drinks);
-      setRecipes(trimArray(response, RECIPES_NUMBER));
+      setRecipes(trimArray(response, RECIPES_NUMBER, path));
     }
   };
 

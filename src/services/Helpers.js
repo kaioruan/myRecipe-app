@@ -38,7 +38,7 @@ export const verifyPageTitle = (path, setPageTitle) => {
   }
 };
 
-export const trimArray = (data, size) => {
+export const trimArray = (data, size, path) => {
   if (path === '/foods' && !data.meals) return data.meals;
   if (path === '/drinks' && !data.drinks) return data.drinks;
   if (path === '/foods') return data.meals.slice(0, size);
