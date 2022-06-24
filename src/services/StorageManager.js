@@ -128,9 +128,15 @@ export const removeInProgressRecipe = (recipe) => {
   localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(recipes));
 };
 
-// export const loadInProgressRecipeById = (recipeId) => {
-
-// };
+export const loadInProgressRecipeIngredients = (recipeId) => {
+  const recipes = loadInProgressRecipes();
+  let allEntries = [];
+  if (recipes.cocktails) allEntries = [...Object.entries(recipes.cocktails)];
+  if (recipes.meals) allEntries = [...allEntries, ...Object.entries(recipes.meals)];
+  return allEntries.length > 0
+    ? allEntries.find((entry) => entry[0] === recipeId)[1]
+    : [];
+};
 
 export const loadDoneRecipes = () => JSON.parse(localStorage.getItem(DONE_RECIPES)) || [];
 
