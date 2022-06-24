@@ -107,7 +107,7 @@ function RecipePage() {
 
   const onClickFinish = () => {
     saveDoneRecipe(recipe);
-    console.log(history);
+    history.push('/done-recipes');
   };
 
   const handleProgressChange = () => {
@@ -118,10 +118,8 @@ function RecipePage() {
     setUsedIngredients(checkedIngredients);
   };
 
-  const areAllIngredientsChecked = () => {
-    const result = getCheckboxes().every((box) => usedIngredients.includes(box.name));
-    return result;
-  };
+  const areAllIngredientsChecked = () => getCheckboxes()
+    .every((box) => usedIngredients.includes(box.name));
 
   const renderIngredientsList = () => {
     if (isInProgressPath) {
