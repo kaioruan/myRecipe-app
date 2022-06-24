@@ -9,8 +9,6 @@ function UserRecipes() {
   const history = useHistory();
   const path = history.location.pathname;
 
-  // console.log(path);
-
   return (
     <div>
       <RecipesHeader />

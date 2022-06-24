@@ -128,10 +128,6 @@ export const removeInProgressRecipe = (recipe) => {
   localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(recipes));
 };
 
-// export const loadInProgressRecipeById = (recipeId) => {
-
-// };
-
 export const loadDoneRecipes = () => JSON.parse(localStorage.getItem(DONE_RECIPES)) || [];
 
 export const saveDoneRecipe = (recipe) => {
