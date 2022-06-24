@@ -91,90 +91,92 @@ function RecipePage() {
 
   return (
     <div>
-      <img
-        data-testid="recipe-photo"
-        src={ recipe.strMealThumb || recipe.strDrinkThumb }
-        alt="recipe thumb"
-      />
-      <h2 data-testid="recipe-title">{ recipe.strMeal || recipe.strDrink }</h2>
-      <button
-        type="button"
-        data-testid="share-btn"
-        onClick={ onClickShare }
-      >
-        <img src={ shareIcon } alt="share icon" />
-      </button>
+      <main>
+        <img
+          data-testid="recipe-photo"
+          src={ recipe.strMealThumb || recipe.strDrinkThumb }
+          alt="recipe thumb"
+        />
+        <h2 data-testid="recipe-title">{ recipe.strMeal || recipe.strDrink }</h2>
+        <button
+          type="button"
+          data-testid="share-btn"
+          onClick={ onClickShare }
+        >
+          <img src={ shareIcon } alt="share icon" />
+        </button>
 
-      {copied && <p>Link copied!</p>}
+        {copied && <p>Link copied!</p>}
 
-      <button type="button" onClick={ onClickFavorite }>
-        <img data-testid="favorite-btn" src={ heartIcon } alt="favorite icon" />
-      </button>
+        <button type="button" onClick={ onClickFavorite }>
+          <img data-testid="favorite-btn" src={ heartIcon } alt="favorite icon" />
+        </button>
 
-      <p data-testid="recipe-category">
-        { isFood && recipe.strCategory }
-        { !isFood && recipe.strAlcoholic }
-      </p>
-      <h3>Ingredients</h3>
+        <p data-testid="recipe-category">
+          { isFood && recipe.strCategory }
+          { !isFood && recipe.strAlcoholic }
+        </p>
+        <h3>Ingredients</h3>
 
-      <ul>
-        {ingredients.map((ingredient, index) => (
-          <li
-            key={ `${ingredient}${index}` }
-            data-testid={ `${index}-ingredient-name-and-measure` }
-          >
-            { `${ingredient[1]} - ${measures[index][1]}` }
-          </li>
-        ))}
-      </ul>
+        <ul>
+          {ingredients.map((ingredient, index) => (
+            <li
+              key={ `${ingredient}${index}` }
+              data-testid={ `${index}-ingredient-name-and-measure` }
+            >
+              { `${ingredient[1]} - ${measures[index][1]}` }
+            </li>
+          ))}
+        </ul>
 
-      <h3>Instructions</h3>
-      <p data-testid="instructions">{ recipe.strInstructions }</p>
-      {!isInProgressPath && (
-        <div>
-          {isFood && (
-            <div>
-              <h3>Video</h3>
-              <ReactPlayer data-testid="video" url={ recipe.strYoutube } />
+        <h3>Instructions</h3>
+        <p data-testid="instructions">{ recipe.strInstructions }</p>
+        {!isInProgressPath && (
+          <div>
+            {isFood && (
+              <div>
+                <h3>Video</h3>
+                <ReactPlayer data-testid="video" url={ recipe.strYoutube } />
+              </div>
+            )}
+
+            <h3>Recommended</h3>
+            <div className="recommendations">
+              {recommendations.map((rec, index) => (
+                <DefaultRecipeCard
+                  cardTestId={ `${index}-recomendation-card` }
+                  titleTestId={ `${index}-recomendation-title` }
+                  key={ rec.idDrink || rec.idMeal }
+                  recipeId={ rec.idDrink || rec.idMeal }
+                  index={ index }
+                  thumb={ rec.strDrinkThumb || rec.strMealThumb }
+                  name={ rec.strDrink || rec.strMeal }
+                  category={ isFood ? rec.strAlcoholic : rec.strCategory }
+                />))}
             </div>
-          )}
+          </div>)}
+        {!recipeIsDone(id) && !isInProgressPath
+        && (
+          <button
+            className="details-button"
+            data-testid="start-recipe-btn"
+            type="button"
+            onClick={ onClickStart }
+          >
+            { recipeIsInProgress(id) && 'Continue Recipe' }
+            { !recipeIsInProgress(id) && 'Start Recipe' }
+          </button>)}
 
-          <h3>Recommended</h3>
-          <div className="recommendations">
-            {recommendations.map((rec, index) => (
-              <DefaultRecipeCard
-                cardTestId={ `${index}-recomendation-card` }
-                titleTestId={ `${index}-recomendation-title` }
-                key={ rec.idDrink || rec.idMeal }
-                recipeId={ rec.idDrink || rec.idMeal }
-                index={ index }
-                thumb={ rec.strDrinkThumb || rec.strMealThumb }
-                name={ rec.strDrink || rec.strMeal }
-                category={ isFood ? rec.strAlcoholic : rec.strCategory }
-              />))}
-          </div>
-        </div>)}
-      {!recipeIsDone(id) && !isInProgressPath
-      && (
-        <button
-          className="details-button"
-          data-testid="start-recipe-btn"
-          type="button"
-          onClick={ onClickStart }
-        >
-          { recipeIsInProgress(id) && 'Continue Recipe' }
-          { !recipeIsInProgress(id) && 'Start Recipe' }
-        </button>)}
-
-      {isInProgressPath && (
-        <button
-          className="details-button"
-          data-testid="finish-recipe-btn"
-          type="button"
-          onClick={ onClickFinish }
-        >
-          Finish Recipe
-        </button>)}
+        {isInProgressPath && (
+          <button
+            className="details-button"
+            data-testid="finish-recipe-btn"
+            type="button"
+            onClick={ onClickFinish }
+          >
+            Finish Recipe
+          </button>)}
+      </main>
     </div>
   );
 }

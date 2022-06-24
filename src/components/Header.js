@@ -1,17 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import ProfileIcon from '../images/profileIcon.svg';
-import SearchIcon from '../images/searchIcon.svg';
+import RecipesContext from '../context/RecipesContext';
 import { fetchMealByName,
   fetchMealsByIngredient,
-  fetchMealsbyFirstLetter } from '../services/MealsAPI';
+  fetchMealsbyFirstLetter, fetchListAllNationalities } from '../services/MealsAPI';
 import { fetchDrinksByIngredient,
   fetchDrinkByName,
   fetchDrinksbyFirstLetter } from '../services/CocktailsAPI';
-import RecipesContext from '../context/RecipesContext';
+import { trimArray, verifyPageTitle } from '../services/Helpers';
+import ProfileIcon from '../images/profileIcon.svg';
+import SearchIcon from '../images/searchIcon.svg';
 
 const RECIPES_NUMBER = 12;
 const ERROR_MESSAGE = 'Sorry, we haven\'t found any recipes for these filters.';
+// const pageTitles = [
+//   'Foods',
+//   'Drinks',
+//   'Explore',
+//   'Explore Foods',
+//   'Explore Ingredients',
+//   'Explore Nationalities',
+//   'Done Recipes',
+//   'Favorite Recipes',
+//   'Profile',
+// ];
 
 function Header() {
   const [iconSearch, setIconSearch] = useState(false);
@@ -19,10 +31,15 @@ function Header() {
   const [inputFilter, setInputFilter] = useState('');
   const [dataMeals, setDataMeals] = useState([]);
   const [dataDrinks, setDataDrinks] = useState([]);
+  const [renderIconSearch, setRenderIconSearch] = useState(false);
+  const [pageTitle, setPageTitle] = useState('');
+  const [renderSelect, setRenderSelect] = useState(false);
+  const [nationalitiesList, setNationalitiesList] = useState([]);
   const { recipes, setRecipes } = useContext(RecipesContext);
 
   const history = useHistory();
   const path = history.location.pathname;
+  const nationalitiesPath = '/explore/foods/nationalities';
 
   useEffect(() => {
     if (dataDrinks?.length === 1) { // se dataDrinks for null, não faz a checagem
@@ -36,11 +53,24 @@ function Header() {
     }
   }, [dataDrinks, dataMeals, history, recipes]);
 
-  // useEffect(() => {
-  //   if (recipes.length === 0) {
-  //     global.alert(ERROR_MESSAGE);
-  //   }
-  // });
+  const fetchNationalities = async () => {
+    const response = await fetchListAllNationalities();
+    setNationalitiesList(response.meals);
+  };
+
+  useEffect(() => {
+    if (path === '/foods'
+    || path === '/drinks'
+    || path === nationalitiesPath) setRenderIconSearch(true);
+    if (path === '/explore/foods/nationalities') {
+      setRenderSelect(true);
+      fetchNationalities();
+    }
+  }, [path]);
+
+  useEffect(() => {
+    verifyPageTitle(path, setPageTitle);
+  }, [path]);
 
   const handleChangeFilters = ({ target }) => {
     setInputFilter(target.id);
@@ -53,15 +83,9 @@ function Header() {
       setIconSearch(true);
     }
   };
+
   const handleChangeInputName = ({ target }) => {
     setSearchInput(target.value);
-  };
-
-  const trimArray = (data, size) => {
-    if (path === '/foods' && !data.meals) return data.meals;
-    if (path === '/drinks' && !data.drinks) return data.drinks;
-    if (path === '/foods') return data.meals.slice(0, size);
-    return data.drinks.slice(0, size);
   };
 
   const clickRequestFoods = async () => {
@@ -77,7 +101,7 @@ function Header() {
     if (inputFilter === 'Name') {
       const response = await fetchMealByName(searchInput);
       setDataMeals(response.meals);
-      setRecipes(trimArray(response, RECIPES_NUMBER));
+      setRecipes(trimArray(response, RECIPES_NUMBER, path));
     }
   };
 
@@ -94,7 +118,7 @@ function Header() {
     if (inputFilter === 'Name') {
       const response = await fetchDrinkByName(searchInput);
       setDataDrinks(response.drinks);
-      setRecipes(trimArray(response, RECIPES_NUMBER));
+      setRecipes(trimArray(response, RECIPES_NUMBER, path));
     }
   };
 
@@ -108,9 +132,9 @@ function Header() {
   };
 
   return (
-    <div>
-      <header>
-        <nav>
+    <header>
+      <div>
+        <section>
           <Link
             to="/profile"
           >
@@ -120,77 +144,82 @@ function Header() {
               alt="ProfileIcon"
             />
           </Link>
-        </nav>
-        <button
-          data-testid="page-title"
-          type="button"
-        >
-          Page
-        </button>
-        <button
-          data-testid="search-top-btn"
-          type="button"
-          onClick={ handleIconSearch }
-        >
-          <img src={ SearchIcon } alt="SearchIcon" />
-        </button>
+          <h2 data-testid="page-title">{pageTitle}</h2>
+          {renderIconSearch && (
+            <button
+              type="button"
+              onClick={ handleIconSearch }
+            >
+              <img data-testid="search-top-btn" src={ SearchIcon } alt="SearchIcon" />
+            </button>)}
+          {renderSelect && (
+            <select type="dropdown">
+              {nationalitiesList
+                .map((area, i) => <option key={ i }>{area.strArea}</option>)}
+            </select>
+          )}
+          {iconSearch && (
+            <input
+              type="text"
+              data-testid="search-input"
+              name="searchInput"
+              value={ searchInput }
+              onChange={ handleChangeInputName }
+            />
+          )}
+        </section>
         <br />
-        { iconSearch && (
-          <input
-            type="text"
-            data-testid="search-input"
-            name="searchInput"
-            value={ searchInput }
-            onChange={ handleChangeInputName }
-          />
-        )}
-      </header>
+      </div>
       <br />
       <div>
-        <label htmlFor="Ingredient">
-          <input
-            data-testid="ingredient-search-radio"
-            id="Ingredient"
-            type="radio"
-            name="filter"
-            value={ inputFilter }
-            onChange={ handleChangeFilters }
-          />
-          Ingredient
-        </label>
-        <label htmlFor="Name">
-          <input
-            data-testid="name-search-radio"
-            id="Name"
-            type="radio"
-            name="filter"
-            value={ inputFilter }
-            onChange={ handleChangeFilters }
-          />
-          Name
-        </label>
-        <label htmlFor="First-Letter">
-          <input
-            data-testid="first-letter-search-radio"
-            id="First-Letter"
-            type="radio"
-            name="filter"
-            value={ inputFilter }
-            onChange={ handleChangeFilters }
-          />
-          First letter
-        </label>
-        <br />
-        <button
-          type="button"
-          data-testid="exec-search-btn"
-          onClick={ handleClickSearch }
-        >
-          Search
-        </button>
+        {renderIconSearch && (
+          <section>
+            <label htmlFor="Ingredient">
+              <input
+                data-testid="ingredient-search-radio"
+                id="Ingredient"
+                type="radio"
+                name="filter"
+                value={ inputFilter }
+                onChange={ handleChangeFilters }
+              />
+              Ingredient
+            </label>
+            <label htmlFor="Name">
+              <input
+                data-testid="name-search-radio"
+                id="Name"
+                type="radio"
+                name="filter"
+                value={ inputFilter }
+                onChange={ handleChangeFilters }
+              />
+              Name
+            </label>
+            <label htmlFor="First-Letter">
+              <input
+                data-testid="first-letter-search-radio"
+                id="First-Letter"
+                type="radio"
+                name="filter"
+                value={ inputFilter }
+                onChange={ handleChangeFilters }
+              />
+              First letter
+            </label>
+            <br />
+            <button
+              type="button"
+              data-testid="exec-search-btn"
+              onClick={ handleClickSearch }
+            >
+              Search
+            </button>
+          </section>
+        )}
       </div>
 
-    </div>
+    </header>
   );
 }
 

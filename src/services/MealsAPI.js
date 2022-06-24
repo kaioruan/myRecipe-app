@@ -42,6 +42,13 @@ export const fetchMealsByArea = async (area) => {
   return data;
 };
 
+export const fetchListAllNationalities = async () => {
+  const URL = `${BASE_API}/list.php?a=list`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  return data;
+};
+
 export const fetchRandomMeal = async () => {
   const URL = `${BASE_API}/random.php`;
   const response = await fetch(URL);

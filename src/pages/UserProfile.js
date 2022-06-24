@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 import { loadUser } from '../services/StorageManager';
 
 function UserProfile() {
@@ -22,7 +23,7 @@ function UserProfile() {
 
   return (
     <div>
-      <h1>Profile</h1>
+      <Header />
       <p data-testid="profile-email">{`Usuário: ${storedUser.email}`}</p>
       <button
         type="button"
