@@ -8,8 +8,8 @@ import MainPage from './pages/MainPage';
 import RecipePage from './pages/RecipePage';
 import Explore from './pages/Explore';
 import ExploreCategories from './pages/ExploreCategories';
-import ExploreIngredients from './pages/ExploreIngredients';
-import ExploreNationalities from './pages/ExploreNationalities';
+import ExploreByIngredients from './pages/ExploreByIngredients';
+import ExploreByNationalities from './pages/ExploreByNationalities';
 import UserProfile from './pages/UserProfile';
 import UserRecipes from './pages/UserRecipes';
 import NotFound from './pages/NotFound';
@@ -32,17 +32,17 @@ function App() {
           <Route
             exact
             path="/explore/foods/ingredients"
-            component={ ExploreIngredients }
+            component={ ExploreByIngredients }
           />
           <Route
             exact
             path="/explore/drinks/ingredients"
-            component={ ExploreIngredients }
+            component={ ExploreByIngredients }
           />
           <Route
             exact
             path="/explore/foods/nationalities"
-            component={ ExploreNationalities }
+            component={ ExploreByNationalities }
           />
           <Route exact path="/profile" component={ UserProfile } />
           <Route exact path="/done-recipes" component={ UserRecipes } />
