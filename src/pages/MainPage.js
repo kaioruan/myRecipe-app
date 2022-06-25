@@ -10,6 +10,7 @@ import {
 } from '../services/MealsAPI';
 import RecipesContext from '../context/RecipesContext';
 import Footer from '../components/Footer';
+import { trimArray } from '../services/Helpers';
 
 const RECIPES_NUMBER = 12;
 const CATEGORIES_NUMBER = 5;
@@ -35,11 +36,6 @@ function MainPage() {
           : fetchDrinksByCategory(selectedCategory)
       );
 
-      const trimArray = (data, size) => {
-        if (path === '/foods') return data.meals.slice(0, size);
-        return data.drinks.slice(0, size);
-      };
-
       const categoriesData = path === '/foods'
         ? await fetchAllMealsCategories()
         : await fetchAllDrinksCategories();
@@ -48,9 +44,9 @@ function MainPage() {
         ? await fetchMeals()
         : await fetchDrinks();
 
-      setRecipes(trimArray(recipesData, RECIPES_NUMBER));
+      setRecipes(trimArray(recipesData, RECIPES_NUMBER, path));
 
-      let catArray = trimArray(categoriesData, CATEGORIES_NUMBER);
+      let catArray = trimArray(categoriesData, CATEGORIES_NUMBER, path);
       catArray = catArray.map((cat) => cat.strCategory);
       catArray.unshift('All');
       setCategories(catArray);
