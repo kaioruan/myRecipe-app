@@ -16,7 +16,9 @@ const RECIPES_NUMBER = 12;
 const CATEGORIES_NUMBER = 5;
 
 function MainPage() {
-  const { recipes, setRecipes } = useContext(RecipesContext);
+  const {
+    recipes, setRecipes, previousPath, setPreviousPath,
+  } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const history = useHistory();
@@ -54,12 +56,13 @@ function MainPage() {
       setRecipes(trimArray(recipesData, RECIPES_NUMBER, path));
     };
 
-    fetchRecipes();
+    if (!previousPath.includes('explore')) fetchRecipes();
     fetchCategories();
-  }, [path, selectedCategory, setRecipes]);
+  }, [path, selectedCategory, setRecipes, previousPath, setPreviousPath]);
 
   const onCategoryButtonClicked = ({ target }) => {
     const newCategory = target.innerText === selectedCategory ? 'All' : target.innerText;
+    setPreviousPath(path);
     setSelectedCategory(newCategory);
   };
 
