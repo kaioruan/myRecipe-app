@@ -9,12 +9,12 @@ function DropDownMenu(props) {
       data-testid="explore-by-nationality-dropdown"
       onChange={ onOptionChanged }
     >
-      {options.map((nat, index) => (
+      {options.map((opt, index) => (
         <option
-          key={ `nationality-option-${index}` }
-          data-testid={ `${nat}-option` }
+          key={ `option-${index}` }
+          data-testid={ `${opt}-option` }
         >
-          {nat}
+          {opt}
         </option>
       ))}
     </select>
