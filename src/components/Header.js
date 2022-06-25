@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 import { fetchMealByName,
   fetchMealsByIngredient,
-  fetchMealsbyFirstLetter, fetchAllNationalities } from '../services/MealsAPI';
+  fetchMealsbyFirstLetter, fetchListAllNationalities } from '../services/MealsAPI';
 import { fetchDrinksByIngredient,
   fetchDrinkByName,
   fetchDrinksbyFirstLetter } from '../services/CocktailsAPI';
@@ -54,7 +54,7 @@ function Header() {
   }, [dataDrinks, dataMeals, history, recipes]);
 
   const fetchNationalities = async () => {
-    const response = await fetchAllNationalities();
+    const response = await fetchListAllNationalities();
     setNationalitiesList(response.meals);
   };
 

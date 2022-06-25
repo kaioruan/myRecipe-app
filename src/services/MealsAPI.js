@@ -42,7 +42,7 @@ export const fetchMealsByArea = async (area) => {
   return data;
 };
 
-export const fetchAllNationalities = async () => {
+export const fetchListAllNationalities = async () => {
   const URL = `${BASE_API}/list.php?a=list`;
   const response = await fetch(URL);
   const data = await response.json();
