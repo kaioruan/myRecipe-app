@@ -15,11 +15,15 @@ function DefaultRecipeCard(props) {
     category,
   } = props;
 
+  const destination = pathname.includes('food')
+    ? `/foods/${recipeId}`
+    : `/drink/${recipeId}`;
+
   return (
     <Link
       className="recipe-card"
       data-testid={ cardTestId }
-      to={ `${pathname}/${recipeId}` }
+      to={ destination }
     >
       <img
         className="card-image"
