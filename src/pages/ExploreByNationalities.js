@@ -11,7 +11,7 @@ import RecipesContext from '../context/RecipesContext';
 
 const MAX_CARDS = 12;
 
-function ExploreNationalities() {
+function ExploreByNationalities() {
   const [selectedArea, setSelectedArea] = useState('All');
   const [areas, setAreas] = useState([]);
   const { setRecipes } = useContext(RecipesContext);
@@ -46,4 +46,4 @@ function ExploreNationalities() {
   );
 }
 
-export default ExploreNationalities;
+export default ExploreByNationalities;

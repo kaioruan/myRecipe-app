@@ -14,7 +14,7 @@ import RecipesContext from '../context/RecipesContext';
 
 const MAX_CARDS = 12;
 
-function ExploreIngredients() {
+function ExploreByIngredients() {
   const { setRecipes, setPreviousPath } = useContext(RecipesContext);
   const [ingredients, setIngredients] = useState([]);
   const history = useHistory();
@@ -64,4 +64,4 @@ function ExploreIngredients() {
   );
 }
 
-export default ExploreIngredients;
+export default ExploreByIngredients;
