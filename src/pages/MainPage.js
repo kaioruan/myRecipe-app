@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
-import DefaultRecipeCard from '../components/DefaultRecipeCard';
 import RecipeFilterButtons from '../components/RecipeFilterButtons';
+import MainPageRecipeList from '../components/MainPageRecipeList';
 import {
   fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
 } from '../services/CocktailsAPI';
@@ -75,19 +75,7 @@ function MainPage() {
           categories={ categories }
           onButtonClicked={ onCategoryButtonClicked }
         />
-        <div className="recipes-list">
-          { recipes && recipes.map((recipe, index) => (
-            <DefaultRecipeCard
-              key={ recipe.idDrink || recipe.idMeal }
-              cardTestId={ `${index}-recipe-card` }
-              titleTestId={ `${index}-card-name` }
-              recipeId={ recipe.idDrink || recipe.idMeal }
-              index={ index }
-              thumb={ recipe.strDrinkThumb || recipe.strMealThumb }
-              name={ recipe.strDrink || recipe.strMeal }
-              category={ recipe.strCategory || '' }
-            />))}
-        </div>
+        <MainPageRecipeList recipes={ recipes } />
       </section>
       <Footer />
     </div>
