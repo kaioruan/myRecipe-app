@@ -35,7 +35,7 @@ function Header() {
   const [pageTitle, setPageTitle] = useState('');
   const [renderSelect, setRenderSelect] = useState(false);
   const [nationalitiesList, setNationalitiesList] = useState([]);
-  const { recipes, setRecipes } = useContext(RecipesContext);
+  const { recipes, setRecipes, setPreviousPath } = useContext(RecipesContext);
 
   const history = useHistory();
   const path = history.location.pathname;
@@ -102,6 +102,7 @@ function Header() {
       const response = await fetchMealByName(searchInput);
       setDataMeals(response.meals);
       setRecipes(trimArray(response, RECIPES_NUMBER, path));
+      setPreviousPath(path);
     }
   };
 
@@ -119,6 +120,7 @@ function Header() {
       const response = await fetchDrinkByName(searchInput);
       setDataDrinks(response.drinks);
       setRecipes(trimArray(response, RECIPES_NUMBER, path));
+      setPreviousPath(path);
     }
   };
 
