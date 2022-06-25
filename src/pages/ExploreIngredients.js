@@ -1,15 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import IngredientCard from '../components/IngredientCard';
-import { fetchDrinksIngredients } from '../services/CocktailsAPI';
-import { fetchMealsIngredients } from '../services/MealsAPI';
+import {
+  fetchDrinksIngredients, fetchDrinksByIngredient,
+} from '../services/CocktailsAPI';
+import {
+  fetchMealsIngredients, fetchMealsByIngredient,
+} from '../services/MealsAPI';
 import { trimArray } from '../services/Helpers';
+import RecipesContext from '../context/RecipesContext';
 
-const INGREDIENTS_NUMBER = 12;
+const MAX_CARDS = 12;
 
 function ExploreIngredients() {
+  const { setRecipes, setPreviousPath } = useContext(RecipesContext);
   const [ingredients, setIngredients] = useState([]);
   const history = useHistory();
   const path = history.location.pathname;
@@ -21,7 +27,7 @@ function ExploreIngredients() {
         ? await fetchMealsIngredients()
         : await fetchDrinksIngredients();
 
-      const trimmedData = trimArray(data, INGREDIENTS_NUMBER, path);
+      const trimmedData = trimArray(data, MAX_CARDS, path);
       const ingredientsNames = trimmedData
         .map((element) => element.strIngredient || element.strIngredient1);
       setIngredients(ingredientsNames);
@@ -29,6 +35,17 @@ function ExploreIngredients() {
 
     fecthAPI();
   }, [isFood, path]);
+
+  const onClickIngredient = async (ingredient) => {
+    const data = isFood
+      ? await fetchMealsByIngredient(ingredient)
+      : await fetchDrinksByIngredient(ingredient);
+
+    console.log(trimArray(data, MAX_CARDS, path));
+    setRecipes(trimArray(data, MAX_CARDS, path));
+    setPreviousPath(path);
+    history.push(isFood ? '/foods' : '/drinks');
+  };
 
   return (
     <div>
@@ -39,6 +56,7 @@ function ExploreIngredients() {
           index={ index }
           name={ ingredient }
           isFood={ isFood }
+          searchRecipes={ onClickIngredient }
         />
       )) }
       <Footer />
