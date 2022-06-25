@@ -17,7 +17,7 @@ function DefaultRecipeCard(props) {
 
   const destination = pathname.includes('food')
     ? `/foods/${recipeId}`
-    : `/drink/${recipeId}`;
+    : `/drinks/${recipeId}`;
 
   return (
     <Link
