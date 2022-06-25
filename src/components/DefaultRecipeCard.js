@@ -22,7 +22,7 @@ function DefaultRecipeCard(props) {
       to={ `${pathname}/${recipeId}` }
     >
       <img
-        className="test"
+        className="card-image"
         data-testid={ `${index}-card-img` }
         src={ thumb }
         alt="card thumb"
