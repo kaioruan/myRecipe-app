@@ -89,7 +89,7 @@ function MainPage() {
               index={ index }
               thumb={ recipe.strDrinkThumb || recipe.strMealThumb }
               name={ recipe.strDrink || recipe.strMeal }
-              category={ recipe.strCategory || recipe.strAlcoholic }
+              category={ recipe.strCategory || '' }
             />))}
         </div>
       </section>
