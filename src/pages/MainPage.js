@@ -23,7 +23,18 @@ function MainPage() {
   const path = history.location.pathname;
 
   useEffect(() => {
-    const fetchAPI = async () => {
+    const fetchCategories = async () => {
+      const categoriesData = path === '/foods'
+        ? await fetchAllMealsCategories()
+        : await fetchAllDrinksCategories();
+
+      let catArray = trimArray(categoriesData, CATEGORIES_NUMBER, path);
+      catArray = catArray.map((cat) => cat.strCategory);
+      catArray.unshift('All');
+      setCategories(catArray);
+    };
+
+    const fetchRecipes = async () => {
       const fetchMeals = async () => (
         selectedCategory === 'All'
           ? fetchAllMeals()
@@ -36,22 +47,15 @@ function MainPage() {
           : fetchDrinksByCategory(selectedCategory)
       );
 
-      const categoriesData = path === '/foods'
-        ? await fetchAllMealsCategories()
-        : await fetchAllDrinksCategories();
-
       const recipesData = path === '/foods'
         ? await fetchMeals()
         : await fetchDrinks();
 
       setRecipes(trimArray(recipesData, RECIPES_NUMBER, path));
-
-      let catArray = trimArray(categoriesData, CATEGORIES_NUMBER, path);
-      catArray = catArray.map((cat) => cat.strCategory);
-      catArray.unshift('All');
-      setCategories(catArray);
     };
-    fetchAPI();
+
+    fetchRecipes();
+    fetchCategories();
   }, [path, selectedCategory, setRecipes]);
 
   const onCategoryButtonClicked = ({ target }) => {
