@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import RecipeFilterButtons from '../components/RecipeFilterButtons';
-import MainPageRecipeList from '../components/MainPageRecipeList';
+import MainRecipeList from '../components/MainRecipeList';
 import {
   fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
 } from '../services/CocktailsAPI';
@@ -18,7 +18,8 @@ const CATEGORIES_NUMBER = 5;
 
 function MainPage() {
   const {
-    recipes, setRecipes, previousPath, setPreviousPath,
+    // recipes,
+    setRecipes, previousPath, setPreviousPath,
   } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -75,7 +76,7 @@ function MainPage() {
           categories={ categories }
           onButtonClicked={ onCategoryButtonClicked }
         />
-        <MainPageRecipeList recipes={ recipes } />
+        <MainRecipeList />
       </section>
       <Footer />
     </div>
