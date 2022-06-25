@@ -8,8 +8,8 @@ import MainPage from './pages/MainPage';
 import RecipePage from './pages/RecipePage';
 import Explore from './pages/Explore';
 import ExploreCategories from './pages/ExploreCategories';
-import ExploreByIngredients from './pages/ExploreByIngredients';
-import ExploreByNationalities from './pages/ExploreByNationalities';
+import ExploreIngredients from './pages/ExploreIngredients';
+import ExploreNationalities from './pages/ExploreNationalities';
 import UserProfile from './pages/UserProfile';
 import UserRecipes from './pages/UserRecipes';
 
@@ -31,17 +31,17 @@ function App() {
           <Route
             exact
             path="/explore/foods/ingredients"
-            component={ ExploreByIngredients }
+            component={ ExploreIngredients }
           />
           <Route
             exact
             path="/explore/drinks/ingredients"
-            component={ ExploreByIngredients }
+            component={ ExploreIngredients }
           />
           <Route
             exact
             path="/explore/foods/nationalities"
-            component={ ExploreByNationalities }
+            component={ ExploreNationalities }
           />
           <Route exact path="/profile" component={ UserProfile } />
           <Route exact path="/done-recipes" component={ UserRecipes } />

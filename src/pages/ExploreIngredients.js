@@ -2,14 +2,14 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
-function ExploreByNationalities() {
+function ExploreIngredients() {
   return (
     <div>
       <Header />
-      <main>Recipes by country</main>
+      <h1>Ingredients</h1>
       <Footer />
     </div>
   );
 }
 
-export default ExploreByNationalities;
+export default ExploreIngredients;
