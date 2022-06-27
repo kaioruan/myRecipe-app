@@ -54,6 +54,7 @@ function FavoriteRecipeCard() {
             >
               <img
                 data-testid={ `${index}-horizontal-image` }
+                className="card-image"
                 src={ recipe.image }
                 alt={ recipe.name }
               />
@@ -72,7 +73,11 @@ function FavoriteRecipeCard() {
                     {recipe.alcoholicOrNot}
                   </p>
                 )}
-              <Link to>
+              <Link
+                to={ recipe.type === 'food'
+                  ? `/foods/${recipe.id}`
+                  : `/drinks/${recipe.id}` }
+              >
                 <h4 data-testid={ `${index}-horizontal-name` }>{recipe.name}</h4>
               </Link>
             </div>
