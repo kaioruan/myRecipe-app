@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { MagnifyingGlass, User } from 'phosphor-react';
 import RecipesContext from '../context/RecipesContext';
 import { fetchMealByName,
   fetchMealsByIngredient,
@@ -8,22 +9,9 @@ import { fetchDrinksByIngredient,
   fetchDrinkByName,
   fetchDrinksbyFirstLetter } from '../services/CocktailsAPI';
 import { trimArray, verifyPageTitle } from '../services/Helpers';
-import ProfileIcon from '../images/profileIcon.svg';
-import SearchIcon from '../images/searchIcon.svg';
 
 const RECIPES_NUMBER = 12;
 const ERROR_MESSAGE = 'Sorry, we haven\'t found any recipes for these filters.';
-// const pageTitles = [
-//   'Foods',
-//   'Drinks',
-//   'Explore',
-//   'Explore Foods',
-//   'Explore Ingredients',
-//   'Explore Nationalities',
-//   'Done Recipes',
-//   'Favorite Recipes',
-//   'Profile',
-// ];
 
 function Header() {
   const [iconSearch, setIconSearch] = useState(false);
@@ -132,25 +120,27 @@ function Header() {
   };
 
   return (
-    <header>
+    <header className="bg-red-600 flex flex-col justify-center items-center">
       <div>
-        <section>
+        <section className="flex space-x-[8rem] mt-1">
           <Link
             to="/profile"
           >
-            <img
-              data-testid="profile-top-btn"
-              src={ ProfileIcon }
-              alt="ProfileIcon"
-            />
+            <User size={ 35 } className="text-white" />
           </Link>
-          <h2 data-testid="page-title">{pageTitle}</h2>
+          <h2
+            data-testid="page-title"
+            className="mt-2
+          text-white font-bold"
+          >
+            {pageTitle}
+          </h2>
           {renderIconSearch && (
             <button
               type="button"
               onClick={ handleIconSearch }
             >
-              <img data-testid="search-top-btn" src={ SearchIcon } alt="SearchIcon" />
+              <MagnifyingGlass size={ 35 } className="text-white" />
             </button>)}
           {renderSelect && (
             <select type="dropdown">
@@ -173,49 +163,59 @@ function Header() {
       <br />
       <div>
         {renderIconSearch && (
-          <section>
-            <label htmlFor="Ingredient">
-              <input
-                data-testid="ingredient-search-radio"
-                id="Ingredient"
-                type="radio"
-                name="filter"
-                value={ inputFilter }
-                onChange={ handleChangeFilters }
-              />
-              Ingredient
-            </label>
-            <label htmlFor="Name">
-              <input
-                data-testid="name-search-radio"
-                id="Name"
-                type="radio"
-                name="filter"
-                value={ inputFilter }
-                onChange={ handleChangeFilters }
-              />
-              Name
-            </label>
-            <label htmlFor="First-Letter">
-              <input
-                data-testid="first-letter-search-radio"
-                id="First-Letter"
-                type="radio"
-                name="filter"
-                value={ inputFilter }
-                onChange={ handleChangeFilters }
-              />
-              First letter
-            </label>
-            <br />
+          <div>
+            <section className="space-x-5 text-white font-semibold">
+              <label
+                htmlFor="Ingredient"
+              >
+                <input
+                  data-testid="ingredient-search-radio"
+                  id="Ingredient"
+                  type="radio"
+                  name="filter"
+                  value={ inputFilter }
+                  onChange={ handleChangeFilters }
+                  className="mr-3"
+                />
+                Ingredient
+              </label>
+              <label htmlFor="Name">
+                <input
+                  data-testid="name-search-radio"
+                  id="Name"
+                  type="radio"
+                  name="filter"
+                  value={ inputFilter }
+                  onChange={ handleChangeFilters }
+                  className="mr-3"
+                />
+                Name
+              </label>
+              <label htmlFor="First-Letter">
+                <input
+                  data-testid="first-letter-search-radio"
+                  id="First-Letter"
+                  type="radio"
+                  name="filter"
+                  value={ inputFilter }
+                  onChange={ handleChangeFilters }
+                  className="mr-3"
+                />
+                First letter
+              </label>
+            </section>
             <button
               type="button"
               data-testid="exec-search-btn"
               onClick={ handleClickSearch }
+              className="ml-[9.5rem]
+              mt-1.5 mb-2 bg-gray-300
+              px-1
+              flex items-center justify-center"
             >
               Search
             </button>
-          </section>
+          </div>
         )}
       </div>
 

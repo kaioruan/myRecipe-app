@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   saveMealsToken, saveCocktailsToken, saveUser,
-  loadUser,
 } from '../services/StorageManager';
 
 function Login() {
@@ -34,40 +33,80 @@ function Login() {
     history.push('/foods');
   };
 
-  console.log(loadUser());
+  // flex items-center justify-center h-screen
 
   return (
-    <form>
-      <div>
-        <input
-          data-testid="email-input"
-          type="email"
-          name="email"
-          value={ input.email }
-          onChange={ handleInputChange }
-        />
-      </div>
+    <section className="flex flex-col items-center justify-center h-screen">
+      <div
+        className="
+        w-0 h-0
+        border-t-[80px] border-t-transparent
+        border-l-[170px] border-l-red-600
+        border-b-[80px] border-b-transparent
 
-      <div>
-        <input
-          data-testid="password-input"
-          type="password"
-          name="password"
-          value={ input.password }
-          onChange={ handleInputChange }
-        />
-      </div>
-      <div>
-        <button
-          data-testid="login-submit-btn"
-          type="button"
-          disabled={ !isLoginValid() }
-          onClick={ onLoginSubmit }
+        lg:border-t-[80px] border-t-transparent
+        lg:border-l-[200px] border-l-red-600
+        lg:border-b-[80px] border-b-transparent"
+      >
+        <p
+          className="relative
+        -left-[10.6rem]
+        -top-[1.7rem] text-white
+        md:-left-[12rem]
+        md:text-[1.6rem]
+        md:-top-[2rem]
+        font-bold
+        italic
+        font-sans
+        text-[1.3rem]"
         >
-          Enter
-        </button>
+          myRecipe-app
+        </p>
       </div>
-    </form>
+      <div
+        className="flex items-center
+      justify-center border-2 w-[10rem] md:w-[35rem] rounded-lg border-none"
+      >
+        <form className="flex flex-col px-8 mt-10">
+          <label htmlFor="email-input">
+            <input
+              className="mt-2 pl-5 py-4 px-20 text-black bg-stone-100 rounded-lg "
+              data-testid="email-input"
+              type="email"
+              name="email"
+              id="email-input"
+              value={ input.email }
+              onChange={ handleInputChange }
+              placeholder="E-mail"
+            />
+          </label>
+
+          <label htmlFor="password-input">
+            <input
+              className="mt-2 pl-5 py-4 px-20 bg-stone-100 rounded-lg"
+              data-testid="password-input"
+              type="password"
+              name="password"
+              id="password-input"
+              value={ input.password }
+              onChange={ handleInputChange }
+              placeholder="Password"
+            />
+          </label>
+
+          <button
+            className="text-white bg-red-600 mt-8 mb-10 pl-2 py-2 px-4
+            rounded-lg disabled:opacity-75"
+            data-testid="login-submit-btn"
+            type="button"
+            disabled={ !isLoginValid() }
+            onClick={ onLoginSubmit }
+          >
+            Enter
+          </button>
+        </form>
+      </div>
+    </section>
   );
 }
 
