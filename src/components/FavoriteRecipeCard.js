@@ -6,7 +6,6 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import RecipesContext from '../context/RecipesContext';
-// import Footer from './Footer';
 
 function FavoriteRecipeCard() {
   const [copied, setCopied] = useState(false);
@@ -114,7 +113,6 @@ function FavoriteRecipeCard() {
           </section>
         ))}
       </div>
-      {/* <Footer /> */}
     </section>
   );
 }
