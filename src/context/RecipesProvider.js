@@ -4,8 +4,9 @@ import RecipesContext from './RecipesContext';
 
 function RecipesProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
+  const [previousPath, setPreviousPath] = useState('');
 
-  const contextType = { recipes, setRecipes };
+  const contextType = { recipes, setRecipes, previousPath, setPreviousPath };
   return (
     <RecipesContext.Provider value={ contextType }>
       {children}
