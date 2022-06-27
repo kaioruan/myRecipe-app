@@ -1,23 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-// import { fetchMealById } from '../services/MealsAPI';
+
 import { removeFavoriteRecipe } from '../services/StorageManager';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import RecipesContext from '../context/RecipesContext';
 
 function FavoriteRecipeCard() {
   const [copied, setCopied] = useState(false);
-  // const [removed, setRemoved] = useState(false);
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [heartIcon, setHeartIcon] = useState(blackHeartIcon);
+  const { renderFavorites } = useContext(RecipesContext);
 
   useEffect(() => {
     const favFromStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    setFavoriteRecipes(favFromStorage);
-  }, []);
-
-  console.log(favoriteRecipes);
+    const favoriteFilter = favFromStorage.filter(
+      (el) => el.type.toLowerCase() === renderFavorites.toLowerCase(),
+    );
+    switch (renderFavorites) {
+    case 'All':
+      setFavoriteRecipes(favFromStorage);
+      break;
+    default:
+      setFavoriteRecipes(favoriteFilter);
+      break;
+    }
+  }, [renderFavorites]);
 
   const handleShareButton = (nameBtn, id) => {
     setCopied(true);
