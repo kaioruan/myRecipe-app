@@ -6,6 +6,7 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import RecipesContext from '../context/RecipesContext';
+// import Footer from './Footer';
 
 function FavoriteRecipeCard() {
   const [copied, setCopied] = useState(false);
@@ -15,16 +16,18 @@ function FavoriteRecipeCard() {
 
   useEffect(() => {
     const favFromStorage = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    const favoriteFilter = favFromStorage.filter(
-      (el) => el.type.toLowerCase() === renderFavorites.toLowerCase(),
-    );
-    switch (renderFavorites) {
-    case 'All':
-      setFavoriteRecipes(favFromStorage);
-      break;
-    default:
-      setFavoriteRecipes(favoriteFilter);
-      break;
+    if (favFromStorage) {
+      const favoriteFilter = favFromStorage.filter(
+        (el) => el.type.toLowerCase() === renderFavorites.toLowerCase(),
+      );
+      switch (renderFavorites) {
+      case 'All':
+        setFavoriteRecipes(favFromStorage);
+        break;
+      default:
+        setFavoriteRecipes(favoriteFilter);
+        break;
+      }
     }
   }, [renderFavorites]);
 
@@ -111,6 +114,7 @@ function FavoriteRecipeCard() {
           </section>
         ))}
       </div>
+      {/* <Footer /> */}
     </section>
   );
 }
