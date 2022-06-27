@@ -71,7 +71,7 @@ function MainPage() {
   return (
     <div>
       <Header />
-      <section className="main-page-content">
+      <section className="flex flex-col justify-center items-center">
         <RecipeFilterButtons
           categories={ categories }
           onButtonClicked={ onCategoryButtonClicked }

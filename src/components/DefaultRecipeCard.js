@@ -20,20 +20,28 @@ function DefaultRecipeCard(props) {
     : `/drinks/${recipeId}`;
 
   return (
-    <Link
-      className="recipe-card"
-      data-testid={ cardTestId }
-      to={ destination }
+    <main
+      className="flex flex-col
+    items-center
+    justify-center"
     >
-      <img
-        className="card-image"
-        data-testid={ `${index}-card-img` }
-        src={ thumb }
-        alt="card thumb"
-      />
-      <p>{ category }</p>
-      <h3 data-testid={ titleTestId }>{ name }</h3>
-    </Link>
+      <Link
+        className="recipe-card"
+        data-testid={ cardTestId }
+        to={ destination }
+      >
+        <img
+          data-testid={ `${index}-card-img` }
+          src={ thumb }
+          alt="card thumb"
+          className="w-[20rem]
+          shadow-2xl
+          rounded-lg"
+        />
+        <p>{ category }</p>
+        <h3 data-testid={ titleTestId }>{ name }</h3>
+      </Link>
+    </main>
   );
 }
 

@@ -50,7 +50,7 @@ function Login() {
       >
         <p
           className="relative
-        -left-[10.6rem]
+        -left-[10.5rem]
         -top-[1.7rem] text-white
         md:-left-[12rem]
         md:text-[1.6rem]

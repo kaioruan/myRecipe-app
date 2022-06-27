@@ -208,9 +208,10 @@ function Header() {
               type="button"
               data-testid="exec-search-btn"
               onClick={ handleClickSearch }
-              className="ml-[9.5rem]
+              className="ml-[8.6rem]
               mt-1.5 mb-2 bg-gray-300
-              px-1
+              px-5
+              rounded-md
               flex items-center justify-center"
             >
               Search
