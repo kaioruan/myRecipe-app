@@ -62,3 +62,10 @@ export const fetchAllDrinks = async () => {
   const data = await response.json();
   return data;
 };
+
+export const fetchDrinksIngredients = async () => {
+  const URL = `${BASE_API}/list.php?i=list`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  return data;
+};
