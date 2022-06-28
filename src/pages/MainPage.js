@@ -18,7 +18,6 @@ const CATEGORIES_NUMBER = 5;
 
 function MainPage() {
   const {
-    // recipes,
     setRecipes, previousPath, setPreviousPath,
   } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);
@@ -71,13 +70,16 @@ function MainPage() {
   return (
     <div>
       <Header />
-      <section className="flex flex-col justify-center items-center">
+      <section className="flex justify-center items-center">
         <RecipeFilterButtons
           categories={ categories }
           onButtonClicked={ onCategoryButtonClicked }
+          path={ path }
         />
-        <MainRecipeList />
       </section>
+      <main>
+        <MainRecipeList />
+      </main>
       <Footer />
     </div>
   );

@@ -134,7 +134,6 @@ export const loadInProgressRecipeIngredients = (recipeId) => {
   let allEntries = [];
   if (recipes.cocktails) allEntries = [...Object.entries(recipes.cocktails)];
   if (recipes.meals) allEntries = [...allEntries, ...Object.entries(recipes.meals)];
-  console.log(allEntries);
   return allEntries.length > 0
     ? allEntries.find((entry) => entry[0] === recipeId)[1]
     : [];

@@ -12,7 +12,6 @@ function DefaultRecipeCard(props) {
     index,
     name,
     thumb,
-    category,
   } = props;
 
   const destination = pathname.includes('food')
@@ -21,7 +20,7 @@ function DefaultRecipeCard(props) {
 
   return (
     <main
-      className="flex flex-col
+      className="flex flex-col mt-3
     items-center
     justify-center"
     >
@@ -34,12 +33,28 @@ function DefaultRecipeCard(props) {
           data-testid={ `${index}-card-img` }
           src={ thumb }
           alt="card thumb"
-          className="w-[20rem]
+          className="w-[18rem]
           shadow-2xl
           rounded-lg"
         />
-        <p>{ category }</p>
-        <h3 data-testid={ titleTestId }>{ name }</h3>
+        <div
+          className="flex flex-col items-center
+            justify-center rounded-lg border-1 border-black shadow-2xl
+            w-[18rem]
+            my-3
+            p-1
+            bg-white"
+        >
+          <h3
+            data-testid={ titleTestId }
+            className="font-bold
+            text-center
+            mt- p-1"
+          >
+            { name }
+
+          </h3>
+        </div>
       </Link>
     </main>
   );
@@ -52,7 +67,6 @@ DefaultRecipeCard.propTypes = {
   index: PropTypes.number.isRequired,
   thumb: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
 };
 
 export default DefaultRecipeCard;

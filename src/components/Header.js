@@ -4,7 +4,7 @@ import { MagnifyingGlass, User } from 'phosphor-react';
 import RecipesContext from '../context/RecipesContext';
 import { fetchMealByName,
   fetchMealsByIngredient,
-  fetchMealsbyFirstLetter, fetchListAllNationalities } from '../services/MealsAPI';
+  fetchMealsbyFirstLetter } from '../services/MealsAPI';
 import { fetchDrinksByIngredient,
   fetchDrinkByName,
   fetchDrinksbyFirstLetter } from '../services/CocktailsAPI';
@@ -21,8 +21,6 @@ function Header() {
   const [dataDrinks, setDataDrinks] = useState([]);
   const [renderIconSearch, setRenderIconSearch] = useState(false);
   const [pageTitle, setPageTitle] = useState('');
-  const [renderSelect, setRenderSelect] = useState(false);
-  const [nationalitiesList, setNationalitiesList] = useState([]);
   const { recipes, setRecipes } = useContext(RecipesContext);
 
   const history = useHistory();
@@ -41,19 +39,10 @@ function Header() {
     }
   }, [dataDrinks, dataMeals, history, recipes]);
 
-  const fetchNationalities = async () => {
-    const response = await fetchListAllNationalities();
-    setNationalitiesList(response.meals);
-  };
-
   useEffect(() => {
     if (path === '/foods'
     || path === '/drinks'
     || path === nationalitiesPath) setRenderIconSearch(true);
-    if (path === '/explore/foods/nationalities') {
-      setRenderSelect(true);
-      fetchNationalities();
-    }
   }, [path]);
 
   useEffect(() => {
@@ -122,19 +111,20 @@ function Header() {
   return (
     <header className="bg-red-600 flex flex-col justify-center items-center">
       <div>
-        <section className="flex space-x-[8rem] mt-1">
+        <section className="flex justify-center items-center space-x-[3rem] mt-1 mb-2">
           <Link
             to="/profile"
           >
             <User size={ 35 } className="text-white" />
           </Link>
-          <h2
+          <p
             data-testid="page-title"
             className="mt-2
-          text-white font-bold"
+            w-[12rem]
+          text-white text-center font-bold"
           >
             {pageTitle}
-          </h2>
+          </p>
           {renderIconSearch && (
             <button
               type="button"
@@ -142,12 +132,8 @@ function Header() {
             >
               <MagnifyingGlass size={ 35 } className="text-white" />
             </button>)}
-          {renderSelect && (
-            <select type="dropdown">
-              {nationalitiesList
-                .map((area, i) => <option key={ i }>{area.strArea}</option>)}
-            </select>
-          )}
+        </section>
+        <div>
           {iconSearch && (
             <input
               type="text"
@@ -155,12 +141,11 @@ function Header() {
               name="searchInput"
               value={ searchInput }
               onChange={ handleChangeInputName }
+              className="flex justify-center items-center mt-4 mb-4 ml-[4rem]"
             />
           )}
-        </section>
-        <br />
+        </div>
       </div>
-      <br />
       <div>
         {renderIconSearch && (
           <div>
@@ -199,7 +184,7 @@ function Header() {
                   name="filter"
                   value={ inputFilter }
                   onChange={ handleChangeFilters }
-                  className="mr-3"
+                  className="mr-3 "
                 />
                 First letter
               </label>
@@ -208,8 +193,8 @@ function Header() {
               type="button"
               data-testid="exec-search-btn"
               onClick={ handleClickSearch }
-              className="ml-[8.6rem]
-              mt-1.5 mb-2 bg-gray-300
+              className="ml-[8.3rem]
+              mt-2 mb-3 bg-gray-300
               px-5
               rounded-md
               flex items-center justify-center"
@@ -219,9 +204,15 @@ function Header() {
           </div>
         )}
       </div>
-
     </header>
   );
 }
 
 export default Header;
+
+// className={
+// const verifyRoute = path !== '/foods' || path !== '/drinks' ? HEADER_SMALL : HEADER_COMPLETE
+// }
+
+// const HEADER_COMPLETE = 'flex space-x-[7rem] mt-1 mb-2';
+// const HEADER_SMALL = 'mt-10 flex';

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
-import Header from '../components/Header';
 import IngredientCard from '../components/IngredientCard';
 import {
   fetchDrinksIngredients, fetchDrinksByIngredient,
@@ -11,6 +10,7 @@ import {
 } from '../services/MealsAPI';
 import { trimArray } from '../services/Helpers';
 import RecipesContext from '../context/RecipesContext';
+import HeaderSimple from '../components/HeaderSimple';
 
 const MAX_CARDS = 12;
 
@@ -49,16 +49,20 @@ function ExploreByIngredients() {
 
   return (
     <div>
-      <Header />
-      {ingredients.map((ingredient, index) => (
-        <IngredientCard
-          key={ `ingredient${index}` }
-          index={ index }
-          name={ ingredient }
-          isFood={ isFood }
-          searchRecipes={ onClickIngredient }
-        />
-      )) }
+      <HeaderSimple />
+      <section
+        className="flex flex-wrap mx-2 justify-center items-center mb-6 mt-4"
+      >
+        {ingredients.map((ingredient, index) => (
+          <IngredientCard
+            key={ `ingredient${index}` }
+            index={ index }
+            name={ ingredient }
+            isFood={ isFood }
+            searchRecipes={ onClickIngredient }
+          />
+        )) }
+      </section>
       <Footer />
     </div>
   );

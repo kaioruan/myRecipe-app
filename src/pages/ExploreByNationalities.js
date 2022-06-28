@@ -36,11 +36,13 @@ function ExploreByNationalities() {
   return (
     <div>
       <Header />
-      <DropDownMenu
-        options={ areas }
-        onOptionChanged={ onOptionChanged }
-      />
-      <MainRecipeList />
+      <main className="flex flex-col justify-center items-center">
+        <DropDownMenu
+          options={ areas }
+          onOptionChanged={ onOptionChanged }
+        />
+        <MainRecipeList />
+      </main>
       <Footer />
     </div>
   );

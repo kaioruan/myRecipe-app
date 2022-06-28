@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
-import Header from '../components/Header';
 import { fetchRandomMeal } from '../services/MealsAPI';
 import { fetchRandomDrink } from '../services/CocktailsAPI';
+import HeaderSimple from '../components/HeaderSimple';
 
 function ExploreCategories() {
   const history = useHistory();
@@ -35,12 +35,16 @@ function ExploreCategories() {
 
   return (
     <div>
-      <Header />
-      <div>
+      <HeaderSimple />
+      <section
+        className="flex justify-center items-center space-x-4
+      my-8 mx-2 "
+      >
         <button
           data-testid="explore-by-ingredient"
           type="button"
           onClick={ onClickToIngredients }
+          className="bg-white px-2 rounded-md "
         >
           By Ingredient
         </button>
@@ -50,6 +54,7 @@ function ExploreCategories() {
             data-testid="explore-by-nationality"
             type="button"
             onClick={ onClickToNationality }
+            className="bg-white  px-2 rounded-md"
           >
             By Nationality
 
@@ -58,10 +63,11 @@ function ExploreCategories() {
           data-testid="explore-surprise"
           type="button"
           onClick={ onClickToSurprise }
+          className="bg-white  px-2 rounded-md"
         >
           Surprise me!
         </button>
-      </div>
+      </section>
       <Footer />
     </div>
   );

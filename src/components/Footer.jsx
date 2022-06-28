@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './CSS/Footer.module.css';
 import drinkIcon from '../images/drinkIcon.svg';
 import exploreIcon from '../images/exploreIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
 
 function Footer() {
   return (
-    <footer className={ styles.footerContainer } data-testid="footer">
+    <footer
+      data-testid="footer"
+      className=" flex justify-center items-center space-x-[6rem]
+      mt-4 mb-4
+      bottom-0 position-fixed"
+    >
       <Link to="/drinks">
         <img
           src={ drinkIcon }
