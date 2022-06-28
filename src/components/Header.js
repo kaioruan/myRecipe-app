@@ -1,133 +1,95 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
-import { fetchMealByName,
-  fetchMealsByIngredient,
-  fetchMealsbyFirstLetter, fetchListAllNationalities } from '../services/MealsAPI';
-import { fetchDrinksByIngredient,
-  fetchDrinkByName,
-  fetchDrinksbyFirstLetter } from '../services/CocktailsAPI';
+import {
+  MEALS_TYPE, COCKTAILS_TYPE,
+  fetchRecipesByName, fetchRecipesByIngredient,
+  fetchRecipesByFirstLetter, fetchAllRecipes,
+} from '../services/RecipesAPI';
 import { trimArray, verifyPageTitle } from '../services/Helpers';
 import ProfileIcon from '../images/profileIcon.svg';
 import SearchIcon from '../images/searchIcon.svg';
+import DropDownMenu from './DropDownMenu';
 
 const RECIPES_NUMBER = 12;
 const ERROR_MESSAGE = 'Sorry, we haven\'t found any recipes for these filters.';
-// const pageTitles = [
-//   'Foods',
-//   'Drinks',
-//   'Explore',
-//   'Explore Foods',
-//   'Explore Ingredients',
-//   'Explore Nationalities',
-//   'Done Recipes',
-//   'Favorite Recipes',
-//   'Profile',
-// ];
+const getType = (path) => (path.includes('food') ? MEALS_TYPE : COCKTAILS_TYPE);
+const getNewPath = (path, recipe) => (path.includes('food')
+  ? `/foods/${recipe.idMeal}`
+  : `/drinks/${recipe.idDrink}`);
 
 function Header() {
-  const [iconSearch, setIconSearch] = useState(false);
+  const [renderSearchBar, setRenderSearchBar] = useState(false);
   const [searchInput, setSearchInput] = useState('');
-  const [inputFilter, setInputFilter] = useState('');
-  const [dataMeals, setDataMeals] = useState([]);
-  const [dataDrinks, setDataDrinks] = useState([]);
-  const [renderIconSearch, setRenderIconSearch] = useState(false);
+  const [serchFilter, setSearchFilter] = useState('');
   const [pageTitle, setPageTitle] = useState('');
-  const [renderSelect, setRenderSelect] = useState(false);
-  const [nationalitiesList, setNationalitiesList] = useState([]);
   const { recipes, setRecipes } = useContext(RecipesContext);
 
   const history = useHistory();
   const path = history.location.pathname;
-  const nationalitiesPath = '/explore/foods/nationalities';
+  const renderDropDown = path.includes('nationalities');
+  const renderSearchIcon = path === '/foods' || path === '/drinks' || renderDropDown;
 
   useEffect(() => {
-    if (dataDrinks?.length === 1) { // se dataDrinks for null, não faz a checagem
-      history.push(`/drinks/${dataDrinks[0].idDrink}`);
-    }
-    if (recipes === null) {
-      global.alert(ERROR_MESSAGE);
-    }
-    if (dataMeals?.length === 1) {
-      history.push(`/foods/${dataMeals[0].idMeal}`);
-    }
-  }, [dataDrinks, dataMeals, history, recipes]);
-
-  const fetchNationalities = async () => {
-    const response = await fetchListAllNationalities();
-    setNationalitiesList(response.meals);
-  };
-
-  useEffect(() => {
-    if (path === '/foods'
-    || path === '/drinks'
-    || path === nationalitiesPath) setRenderIconSearch(true);
-    if (path === '/explore/foods/nationalities') {
-      setRenderSelect(true);
-      fetchNationalities();
-    }
-  }, [path]);
+    const fetchAPI = async () => {
+      if (!recipes || recipes.length === 0) {
+        const data = await fetchAllRecipes(getType(path));
+        setRecipes(trimArray(data, RECIPES_NUMBER, path));
+      }
+    };
+    fetchAPI();
+  }, [path, recipes, setRecipes]);
 
   useEffect(() => {
     verifyPageTitle(path, setPageTitle);
   }, [path]);
 
   const handleChangeFilters = ({ target }) => {
-    setInputFilter(target.id);
+    setSearchFilter(target.id);
   };
 
-  const handleIconSearch = () => {
-    if (iconSearch) {
-      setIconSearch(false);
-    } else {
-      setIconSearch(true);
-    }
+  const handleSearchIcon = () => {
+    setRenderSearchBar(!renderSearchBar);
   };
 
-  const handleChangeInputName = ({ target }) => {
+  const handleInputBarChange = ({ target }) => {
     setSearchInput(target.value);
   };
 
-  const clickRequestFoods = async () => {
-    if (searchInput.length > 1 && inputFilter === 'First-Letter') {
+  const onClickSearch = async () => {
+    if (searchInput.length > 1 && serchFilter === 'First-Letter') {
       global.alert('Your search must have only 1 (one) character');
+      return;
     }
-    if (searchInput.length === 1) {
-      await fetchMealsbyFirstLetter(searchInput);
-    }
-    if (inputFilter === 'Ingredient') {
-      await fetchMealsByIngredient(searchInput);
-    }
-    if (inputFilter === 'Name') {
-      const response = await fetchMealByName(searchInput);
-      setDataMeals(response.meals);
-      setRecipes(trimArray(response, RECIPES_NUMBER, path));
-    }
-  };
 
-  const clickRequestDrinks = async () => {
-    if (searchInput.length > 1 && inputFilter === 'First-Letter') {
-      global.alert('Your search must have only 1 (one) character');
-    }
-    if (searchInput.length === 1) {
-      await fetchDrinksbyFirstLetter(searchInput);
-    }
-    if (inputFilter === 'Ingredient') {
-      await fetchDrinksByIngredient(searchInput);
-    }
-    if (inputFilter === 'Name') {
-      const response = await fetchDrinkByName(searchInput);
-      setDataDrinks(response.drinks);
-      setRecipes(trimArray(response, RECIPES_NUMBER, path));
-    }
-  };
+    let data;
 
-  const handleClickSearch = async () => {
-    if (path === '/foods') {
-      await clickRequestFoods();
+    switch (serchFilter) {
+    case 'Ingredient':
+      data = await fetchRecipesByIngredient(getType(path), searchInput);
+      break;
+    case 'Name':
+      data = await fetchRecipesByName(getType(path), searchInput);
+      break;
+    case 'First-Letter':
+      data = await fetchRecipesByFirstLetter(getType(path), searchInput);
+      break;
+    default:
+      data = await fetchAllRecipes(getType(path));
+      break;
     }
-    if (path === '/drinks') {
-      await clickRequestDrinks();
+
+    const newRecipes = trimArray(data, RECIPES_NUMBER, path);
+
+    if (!newRecipes || (newRecipes && newRecipes.length === 0)) {
+      global.alert(ERROR_MESSAGE);
+      return;
+    }
+
+    if (newRecipes && newRecipes.length === 1) {
+      history.push(getNewPath(path, newRecipes[0]));
+    } else {
+      setRecipes(newRecipes);
     }
   };
 
@@ -145,34 +107,29 @@ function Header() {
             />
           </Link>
           <h2 data-testid="page-title">{pageTitle}</h2>
-          {renderIconSearch && (
+          {renderSearchIcon && (
             <button
               type="button"
-              onClick={ handleIconSearch }
+              onClick={ handleSearchIcon }
             >
               <img data-testid="search-top-btn" src={ SearchIcon } alt="SearchIcon" />
             </button>)}
-          {renderSelect && (
-            <select type="dropdown">
-              {nationalitiesList
-                .map((area, i) => <option key={ i }>{area.strArea}</option>)}
-            </select>
-          )}
-          {iconSearch && (
+          {renderSearchBar && (
             <input
               type="text"
               data-testid="search-input"
               name="searchInput"
               value={ searchInput }
-              onChange={ handleChangeInputName }
+              onChange={ handleInputBarChange }
             />
           )}
+          {renderDropDown && <DropDownMenu />}
         </section>
         <br />
       </div>
       <br />
       <div>
-        {renderIconSearch && (
+        {renderSearchIcon && (
           <section>
             <label htmlFor="Ingredient">
               <input
@@ -180,7 +137,7 @@ function Header() {
                 id="Ingredient"
                 type="radio"
                 name="filter"
-                value={ inputFilter }
+                value={ serchFilter }
                 onChange={ handleChangeFilters }
               />
               Ingredient
@@ -191,7 +148,7 @@ function Header() {
                 id="Name"
                 type="radio"
                 name="filter"
-                value={ inputFilter }
+                value={ serchFilter }
                 onChange={ handleChangeFilters }
               />
               Name
@@ -202,7 +159,7 @@ function Header() {
                 id="First-Letter"
                 type="radio"
                 name="filter"
-                value={ inputFilter }
+                value={ serchFilter }
                 onChange={ handleChangeFilters }
               />
               First letter
@@ -211,7 +168,7 @@ function Header() {
             <button
               type="button"
               data-testid="exec-search-btn"
-              onClick={ handleClickSearch }
+              onClick={ onClickSearch }
             >
               Search
             </button>

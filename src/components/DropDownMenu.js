@@ -1,8 +1,34 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useContext, useEffect } from 'react';
+import RecipesContext from '../context/RecipesContext';
+import {
+  MEALS_TYPE,
+  fetchMealsByArea, fetchAllMealsAreas, fetchAllRecipes,
+} from '../services/RecipesAPI';
+import { trimArray } from '../services/Helpers';
 
-function DropDownMenu(props) {
-  const { options, onOptionChanged } = props;
+const MAX_CARDS = 12;
+
+function DropDownMenu() {
+  const [selectedArea, setSelectedArea] = useState('All');
+  const [options, setOptions] = useState([]);
+  const { setRecipes } = useContext(RecipesContext);
+
+  const onOptionChanged = async ({ target }) => {
+    setSelectedArea(target.value);
+  };
+
+  useEffect(() => {
+    const fetchAPI = async () => {
+      const areasData = await fetchAllMealsAreas();
+      const recipesData = selectedArea === 'All'
+        ? await fetchAllRecipes(MEALS_TYPE)
+        : await fetchMealsByArea(selectedArea);
+      setOptions(['All', ...areasData.meals.map((area) => area.strArea)]);
+      setRecipes(trimArray(recipesData, MAX_CARDS, 'foods'));
+    };
+
+    fetchAPI();
+  }, [selectedArea, setRecipes]);
 
   return (
     <select
@@ -20,10 +46,5 @@ function DropDownMenu(props) {
     </select>
   );
 }
-
-DropDownMenu.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onOptionChanged: PropTypes.func.isRequired,
-};
 
 export default DropDownMenu;

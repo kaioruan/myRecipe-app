@@ -3,12 +3,17 @@ import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import RecipeFilterButtons from '../components/RecipeFilterButtons';
 import MainRecipeList from '../components/MainRecipeList';
+// import {
+//   fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
+// } from '../services/CocktailsAPI';
+// import {
+//   fetchAllMealsCategories, fetchAllMeals, fetchMealsByCategory,
+// } from '../services/MealsAPI';
 import {
-  fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
-} from '../services/CocktailsAPI';
-import {
-  fetchAllMealsCategories, fetchAllMeals, fetchMealsByCategory,
-} from '../services/MealsAPI';
+  MEALS_TYPE, COCKTAILS_TYPE,
+  fetchCategories, fetchAllRecipes, fetchRecipesByCategory,
+} from '../services/RecipesAPI';
+
 import RecipesContext from '../context/RecipesContext';
 import Footer from '../components/Footer';
 import { trimArray } from '../services/Helpers';
@@ -27,28 +32,28 @@ function MainPage() {
   const path = history.location.pathname;
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCategoriesLocal = async () => {
       const categoriesData = path === '/foods'
-        ? await fetchAllMealsCategories()
-        : await fetchAllDrinksCategories();
+        ? await fetchCategories(MEALS_TYPE)
+        : await fetchCategories(COCKTAILS_TYPE);
 
-      let catArray = trimArray(categoriesData, CATEGORIES_NUMBER, path);
-      catArray = catArray.map((cat) => cat.strCategory);
-      catArray.unshift('All');
-      setCategories(catArray);
+      let categoriesList = trimArray(categoriesData, CATEGORIES_NUMBER, path);
+      categoriesList = categoriesList.map((cat) => cat.strCategory);
+      categoriesList.unshift('All');
+      setCategories(categoriesList);
     };
 
     const fetchRecipes = async () => {
       const fetchMeals = async () => (
         selectedCategory === 'All'
-          ? fetchAllMeals()
-          : fetchMealsByCategory(selectedCategory)
+          ? fetchAllRecipes(MEALS_TYPE)
+          : fetchRecipesByCategory(MEALS_TYPE, selectedCategory)
       );
 
       const fetchDrinks = async () => (
         selectedCategory === 'All'
-          ? fetchAllDrinks()
-          : fetchDrinksByCategory(selectedCategory)
+          ? fetchAllRecipes(COCKTAILS_TYPE)
+          : fetchRecipesByCategory(COCKTAILS_TYPE, selectedCategory)
       );
 
       const recipesData = path === '/foods'
@@ -59,7 +64,7 @@ function MainPage() {
     };
 
     if (!previousPath.includes('explore')) fetchRecipes();
-    fetchCategories();
+    fetchCategoriesLocal();
   }, [path, selectedCategory, setRecipes, previousPath, setPreviousPath]);
 
   const onCategoryButtonClicked = ({ target }) => {

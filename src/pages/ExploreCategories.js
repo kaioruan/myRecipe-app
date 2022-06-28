@@ -2,8 +2,9 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { fetchRandomMeal } from '../services/MealsAPI';
-import { fetchRandomDrink } from '../services/CocktailsAPI';
+// import { fetchRandomMeal } from '../services/MealsAPI';
+// import { fetchRandomDrink } from '../services/CocktailsAPI';
+import { MEALS_TYPE, COCKTAILS_TYPE, fetchRandomRecipe } from '../services/RecipesAPI';
 
 function ExploreCategories() {
   const history = useHistory();
@@ -22,8 +23,8 @@ function ExploreCategories() {
 
   const onClickToSurprise = async () => {
     const randomRecipes = path === '/explore/drinks'
-      ? await fetchRandomDrink()
-      : await fetchRandomMeal();
+      ? await fetchRandomRecipe(COCKTAILS_TYPE)
+      : await fetchRandomRecipe(MEALS_TYPE);
     if (randomRecipes.drinks) {
       const idRandom = randomRecipes.drinks[0].idDrink;
       history.push(`/drinks/${idRandom}`);
