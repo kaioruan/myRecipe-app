@@ -68,13 +68,10 @@ export const recipeIsFavorite = (recipeId) => {
 
 export const loadInProgressRecipes = () => {
   const inProgressRecipes = JSON.parse(localStorage.getItem(IN_PROGRESS_RECIPES));
-  // if (inProgressRecipes === null) return { cocktails: {}, meals: {} };
   return inProgressRecipes || { cocktails: {}, meals: {} };
 };
 
 export const saveInProgressRecipe = (recipe, usedIngredients) => {
-  // let inProgressRecipes = loadInProgressRecipes();
-  // const isFood = recipe.idMeal !== undefined;
   const type = recipe.idMeal ? 'meals' : 'cocktails';
   const id = recipe.idMeal || recipe.idDrink;
 
@@ -84,28 +81,6 @@ export const saveInProgressRecipe = (recipe, usedIngredients) => {
       [id]: usedIngredients,
     },
   };
-
-  // if (isFood) {
-  //   inProgressRecipes = {
-  //     meals: {
-  //       ...inProgressRecipes.meals,
-  //       [id]: usedIngredients,
-  //     },
-  //     cocktails: {
-  //       ...inProgressRecipes.cocktails,
-  //     },
-  //   };
-  // } else {
-  //   inProgressRecipes = {
-  //     meals: {
-  //       ...inProgressRecipes.meals,
-  //     },
-  //     cocktails: {
-  //       ...inProgressRecipes.cocktails,
-  //       [id]: usedIngredients,
-  //     },
-  //   };
-  // }
 
   localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(inProgressRecipes));
 };
@@ -137,22 +112,8 @@ const getEntries = (object) => (object ? Object.entries(object) : []);
 export const loadInProgressRecipeIngredients = (recipeId) => {
   const { cocktails, meals } = loadInProgressRecipes();
   const allEntries = [...getEntries(cocktails), ...getEntries(meals)];
-  return allEntries.find((entry) => entry[0] === recipeId)[1] || [];
-
-  // let allEntries = [];
-  // if (cocktails) {
-  //   allEntries = Object.keys(cocktails).length > 1
-  //     ? [...Object.entries(recipes.cocktails)]
-  //     : [Object.entries(recipes.cocktails)];
-  // }
-  // if (meals) {
-  //   allEntries = Object.keys(meals).length > 1
-  //     ? [...allEntries, ...Object.entries(recipes.meals)]
-  //     : [...allEntries, Object.entries(recipes.meals)];
-  // }
-  // return allEntries.length > 0
-  //   ? allEntries.find((entry) => entry[0] === recipeId)[1]
-  //   : [];
+  const result = allEntries.find((entry) => entry[0] === recipeId);
+  return result ? result[1] : [];
 };
 
 export const loadDoneRecipes = () => JSON.parse(localStorage.getItem(DONE_RECIPES)) || [];
@@ -171,7 +132,7 @@ export const saveDoneRecipe = (recipe) => {
     type: recipe.idMeal ? 'Food' : 'Drink',
     nationality: recipe.strArea || '',
     category: recipe.strCategory || '',
-    alcoholicOrNot: getAlcoholicString(recipe),
+    alcoholicOrNot: recipe.idDrink ? recipe.strAlcoholic : '',
     name: recipe.strMeal || recipe.strDrink,
     image: recipe.strMealThumb || recipe.strDrinkThumb,
     doneDate: `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`,
