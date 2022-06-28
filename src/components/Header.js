@@ -97,14 +97,20 @@ function Header() {
     if (searchInput.length > 1 && inputFilter === 'First-Letter') {
       global.alert('Your search must have only 1 (one) character');
     }
+
+    let response;
+
     if (searchInput.length === 1) {
-      await fetchRecipesByFirstLetter(MEALS_TYPE, searchInput);
+      response = await fetchRecipesByFirstLetter(MEALS_TYPE, searchInput);
     }
     if (inputFilter === 'Ingredient') {
-      await fetchRecipesByIngredient(MEALS_TYPE, searchInput);
+      response = await fetchRecipesByIngredient(MEALS_TYPE, searchInput);
     }
     if (inputFilter === 'Name') {
-      const response = await fetchRecipesByName(MEALS_TYPE, searchInput);
+      response = await fetchRecipesByName(MEALS_TYPE, searchInput);
+    }
+
+    if (response) {
       setDataMeals(response.meals);
       setRecipes(trimArray(response, RECIPES_NUMBER, path));
     }
@@ -114,14 +120,20 @@ function Header() {
     if (searchInput.length > 1 && inputFilter === 'First-Letter') {
       global.alert('Your search must have only 1 (one) character');
     }
+
+    let response;
+
     if (searchInput.length === 1) {
-      await fetchRecipesByFirstLetter(COCKTAILS_TYPE, searchInput);
+      response = await fetchRecipesByFirstLetter(COCKTAILS_TYPE, searchInput);
     }
     if (inputFilter === 'Ingredient') {
-      await fetchRecipesByIngredient(COCKTAILS_TYPE, searchInput);
+      response = await fetchRecipesByIngredient(COCKTAILS_TYPE, searchInput);
     }
     if (inputFilter === 'Name') {
-      const response = await fetchRecipesByName(COCKTAILS_TYPE, searchInput);
+      response = await fetchRecipesByName(COCKTAILS_TYPE, searchInput);
+    }
+
+    if (response) {
       setDataDrinks(response.drinks);
       setRecipes(trimArray(response, RECIPES_NUMBER, path));
     }
