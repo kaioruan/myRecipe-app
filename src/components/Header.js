@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
-import { fetchMealByName,
-  fetchMealsByIngredient,
-  fetchMealsbyFirstLetter, fetchListAllNationalities } from '../services/MealsAPI';
-import { fetchDrinksByIngredient,
-  fetchDrinkByName,
-  fetchDrinksbyFirstLetter } from '../services/CocktailsAPI';
+// import { fetchMealByName,
+//   fetchMealsByIngredient,
+//   fetchMealsbyFirstLetter, fetchListAllNationalities } from '../services/MealsAPI';
+// import { fetchDrinksByIngredient,
+//   fetchDrinkByName,
+//   fetchDrinksbyFirstLetter } from '../services/CocktailsAPI';
+import {
+  MEALS_TYPE, COCKTAILS_TYPE,
+  fetchRecipesByName, fetchRecipesByIngredient, fetchRecipesByFirstLetter,
+  fetchAllMealsAreas,
+} from '../services/RecipesAPI';
 import { trimArray, verifyPageTitle } from '../services/Helpers';
 import ProfileIcon from '../images/profileIcon.svg';
 import SearchIcon from '../images/searchIcon.svg';
@@ -54,7 +59,7 @@ function Header() {
   }, [dataDrinks, dataMeals, history, recipes]);
 
   const fetchNationalities = async () => {
-    const response = await fetchListAllNationalities();
+    const response = await fetchAllMealsAreas();
     setNationalitiesList(response.meals);
   };
 
@@ -93,13 +98,13 @@ function Header() {
       global.alert('Your search must have only 1 (one) character');
     }
     if (searchInput.length === 1) {
-      await fetchMealsbyFirstLetter(searchInput);
+      await fetchRecipesByFirstLetter(MEALS_TYPE, searchInput);
     }
     if (inputFilter === 'Ingredient') {
-      await fetchMealsByIngredient(searchInput);
+      await fetchRecipesByIngredient(MEALS_TYPE, searchInput);
     }
     if (inputFilter === 'Name') {
-      const response = await fetchMealByName(searchInput);
+      const response = await fetchRecipesByName(MEALS_TYPE, searchInput);
       setDataMeals(response.meals);
       setRecipes(trimArray(response, RECIPES_NUMBER, path));
     }
@@ -110,13 +115,13 @@ function Header() {
       global.alert('Your search must have only 1 (one) character');
     }
     if (searchInput.length === 1) {
-      await fetchDrinksbyFirstLetter(searchInput);
+      await fetchRecipesByFirstLetter(COCKTAILS_TYPE, searchInput);
     }
     if (inputFilter === 'Ingredient') {
-      await fetchDrinksByIngredient(searchInput);
+      await fetchRecipesByIngredient(COCKTAILS_TYPE, searchInput);
     }
     if (inputFilter === 'Name') {
-      const response = await fetchDrinkByName(searchInput);
+      const response = await fetchRecipesByName(COCKTAILS_TYPE, searchInput);
       setDataDrinks(response.drinks);
       setRecipes(trimArray(response, RECIPES_NUMBER, path));
     }
