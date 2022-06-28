@@ -3,9 +3,13 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import DropDownMenu from '../components/DropDownMenu';
 import MainRecipeList from '../components/MainRecipeList';
+// import {
+//   fetchListAllNationalities, fetchAllMeals,
+// } from '../services/MealsAPI';
 import {
-  fetchListAllNationalities, fetchMealsByArea, fetchAllMeals,
-} from '../services/MealsAPI';
+  MEALS_TYPE,
+  fetchMealsByArea, fetchAllMealsAreas, fetchAllRecipes,
+} from '../services/RecipesAPI';
 import { trimArray } from '../services/Helpers';
 import RecipesContext from '../context/RecipesContext';
 
@@ -18,9 +22,9 @@ function ExploreByNationalities() {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const areasData = await fetchListAllNationalities();
+      const areasData = await fetchAllMealsAreas();
       const recipesData = selectedArea === 'All'
-        ? await fetchAllMeals()
+        ? await fetchAllRecipes(MEALS_TYPE)
         : await fetchMealsByArea(selectedArea);
       setAreas(['All', ...areasData.meals.map((area) => area.strArea)]);
       setRecipes(trimArray(recipesData, MAX_CARDS, 'foods'));
