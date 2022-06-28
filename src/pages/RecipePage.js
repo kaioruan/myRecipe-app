@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import ReactPlayer from 'react-player';
-import { fetchMealById, fetchAllMeals } from '../services/MealsAPI';
-import { fetchDrinkById, fetchAllDrinks } from '../services/CocktailsAPI';
+// import { fetchMealById, fetchAllMeals } from '../services/MealsAPI';
+// import { fetchDrinkById, fetchAllDrinks } from '../services/CocktailsAPI';
+import {
+  MEALS_TYPE, COCKTAILS_TYPE,
+  fetchRecipeById, fetchAllRecipes,
+} from '../services/RecipesAPI';
 import DefaultRecipeCard from '../components/DefaultRecipeCard';
 import {
   recipeIsDone, recipeIsInProgress, recipeIsFavorite,
@@ -47,16 +51,16 @@ function RecipePage() {
   useEffect(() => {
     const fetchAPI = async () => {
       const recipeData = isFood
-        ? await fetchMealById(id)
-        : await fetchDrinkById(id);
+        ? await fetchRecipeById(MEALS_TYPE, id)
+        : await fetchRecipeById(COCKTAILS_TYPE, id);
 
       const recipeObject = isFood
         ? recipeData.meals[0]
         : recipeData.drinks[0];
 
       const recommendationsData = isFood
-        ? await fetchAllDrinks()
-        : await fetchAllMeals();
+        ? await fetchAllRecipes(COCKTAILS_TYPE)
+        : await fetchAllRecipes(MEALS_TYPE);
 
       setRecommendations(isFood
         ? recommendationsData.drinks.slice(0, RECOMMENDATIONS_NUMBER)
