@@ -27,11 +27,6 @@ export const saveCocktailsToken = (token) => {
 export const loadCocktailsToken = () => JSON
   .parse(localStorage.getItem(COCKTAILS_TOKEN)) || 1;
 
-const getAlcoholicString = (recipe) => {
-  if (recipe.idDrink) return recipe.strAlcoholic;
-  return '';
-};
-
 export const loadFavoriteRecipes = () => JSON
   .parse(localStorage.getItem(FAVORITE_RECIPES)) || [];
 
@@ -46,7 +41,7 @@ export const saveFavoriteRecipe = (recipe) => {
     type: recipe.idMeal ? 'food' : 'drink',
     nationality: recipe.strArea || '',
     category: recipe.strCategory || '',
-    alcoholicOrNot: getAlcoholicString(recipe),
+    alcoholicOrNot: recipe.idDrink ? recipe.strAlcoholic : '',
     name: recipe.strMeal || recipe.strDrink,
     image: recipe.strMealThumb || recipe.strDrinkThumb,
   };
@@ -78,31 +73,45 @@ export const loadInProgressRecipes = () => {
 };
 
 export const saveInProgressRecipe = (recipe, usedIngredients) => {
-  let inProgressRecipes = loadInProgressRecipes();
-  const isFood = recipe.idMeal !== undefined;
+  // const isFood = recipe.idMeal !== undefined;
+  const type = recipe.idMeal ? 'meals' : 'cocktails';
   const id = recipe.idMeal || recipe.idDrink;
 
-  if (isFood) {
-    inProgressRecipes = {
-      meals: {
-        ...inProgressRecipes.meals,
-        [id]: usedIngredients,
-      },
-      cocktails: {
-        ...inProgressRecipes.cocktails,
-      },
-    };
-  } else {
-    inProgressRecipes = {
-      meals: {
-        ...inProgressRecipes.meals,
-      },
-      cocktails: {
-        ...inProgressRecipes.cocktails,
-        [id]: usedIngredients,
-      },
-    };
-  }
+  // const test = {
+  //   ...inProgressRecipes,
+  //   wieee: 'wieeeeeee',
+  // };
+  // console.log(inProgressRecipes);
+  // console.log(test);
+
+  const inProgressRecipes = {
+    ...loadInProgressRecipes(),
+    [type]: {
+      [id]: usedIngredients,
+    },
+  };
+
+  // if (isFood) {
+  //   inProgressRecipes = {
+  //     meals: {
+  //       ...inProgressRecipes.meals,
+  //       [id]: usedIngredients,
+  //     },
+  //     cocktails: {
+  //       ...inProgressRecipes.cocktails,
+  //     },
+  //   };
+  // } else {
+  //   inProgressRecipes = {
+  //     meals: {
+  //       ...inProgressRecipes.meals,
+  //     },
+  //     cocktails: {
+  //       ...inProgressRecipes.cocktails,
+  //       [id]: usedIngredients,
+  //     },
+  //   };
+  // }
 
   localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(inProgressRecipes));
 };
@@ -134,7 +143,6 @@ export const loadInProgressRecipeIngredients = (recipeId) => {
   let allEntries = [];
   if (recipes.cocktails) allEntries = [...Object.entries(recipes.cocktails)];
   if (recipes.meals) allEntries = [...allEntries, ...Object.entries(recipes.meals)];
-  console.log(allEntries);
   return allEntries.length > 0
     ? allEntries.find((entry) => entry[0] === recipeId)[1]
     : [];
