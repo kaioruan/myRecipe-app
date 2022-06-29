@@ -2,12 +2,16 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import IngredientCard from '../components/IngredientCard';
+// import {
+//   fetchDrinksIngredients, fetchDrinksByIngredient,
+// } from '../services/CocktailsAPI';
+// import {
+//   fetchMealsIngredients, fetchMealsByIngredient,
+// } from '../services/MealsAPI';
 import {
-  fetchDrinksIngredients, fetchDrinksByIngredient,
-} from '../services/CocktailsAPI';
-import {
-  fetchMealsIngredients, fetchMealsByIngredient,
-} from '../services/MealsAPI';
+  MEALS_TYPE, COCKTAILS_TYPE,
+  fetchIngredients, fetchRecipesByIngredient,
+} from '../services/RecipesAPI';
 import { trimArray } from '../services/Helpers';
 import RecipesContext from '../context/RecipesContext';
 import HeaderSimple from '../components/HeaderSimple';
@@ -24,8 +28,8 @@ function ExploreByIngredients() {
   useEffect(() => {
     const fecthAPI = async () => {
       const data = isFood
-        ? await fetchMealsIngredients()
-        : await fetchDrinksIngredients();
+        ? await fetchIngredients(MEALS_TYPE)
+        : await fetchIngredients(COCKTAILS_TYPE);
 
       const trimmedData = trimArray(data, MAX_CARDS, path);
       const ingredientsNames = trimmedData
@@ -38,8 +42,8 @@ function ExploreByIngredients() {
 
   const onClickIngredient = async (ingredient) => {
     const data = isFood
-      ? await fetchMealsByIngredient(ingredient)
-      : await fetchDrinksByIngredient(ingredient);
+      ? await fetchRecipesByIngredient(MEALS_TYPE, ingredient)
+      : await fetchRecipesByIngredient(COCKTAILS_TYPE, ingredient);
 
     console.log(trimArray(data, MAX_CARDS, path));
     setRecipes(trimArray(data, MAX_CARDS, path));
