@@ -5,11 +5,11 @@ import App from '../App';
 import renderWithRouter from './Helpers/renderWithRouter';
 // import mock from './Helpers/testData';
 
-describe('Testa a página Explore Nationalities', () => {
-  it('Testa se a página de nacionalidades é renderizada', () => {
+describe('Testa a página NotFound', () => {
+  it('Testa se o texto Not Found é renderizado.', () => {
     const { history } = renderWithRouter(<App />);
-    history.push('/explore/foods/nationalities');
-    const main = screen.getByTestId('nationalities-page');
-    expect(main).toBeInTheDocument();
+    history.push('/xablau');
+    const notFound = screen.getByText(/Not Found/i);
+    expect(notFound).toBeInTheDocument();
   });
 });
