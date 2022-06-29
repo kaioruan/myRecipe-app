@@ -55,4 +55,4 @@ const mealsAreasData = {
   ],
 };
 
-module.exports = { recipesData, categoriesData, mealsAreasData };
+export default { recipesData, categoriesData, mealsAreasData };
