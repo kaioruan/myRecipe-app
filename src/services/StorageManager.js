@@ -33,7 +33,7 @@ const getAlcoholicString = (recipe) => {
 };
 
 export const loadFavoriteRecipes = () => JSON
-  .parse(localStorage.getItem(FAVORITE_RECIPES));
+  .parse(localStorage.getItem(FAVORITE_RECIPES)) || [];
 
 export const saveFavoriteRecipe = (recipe) => {
   const doneRecipes = loadFavoriteRecipes();
@@ -134,7 +134,6 @@ export const loadInProgressRecipeIngredients = (recipeId) => {
   let allEntries = [];
   if (recipes.cocktails) allEntries = [...Object.entries(recipes.cocktails)];
   if (recipes.meals) allEntries = [...allEntries, ...Object.entries(recipes.meals)];
-  console.log(allEntries);
   return allEntries.length > 0
     ? allEntries.find((entry) => entry[0] === recipeId)[1]
     : [];
@@ -158,7 +157,7 @@ export const saveDoneRecipe = (recipe) => {
     category: recipe.strCategory || '',
     alcoholicOrNot: getAlcoholicString(recipe),
     name: recipe.strMeal || recipe.strDrink,
-    image: recipe.strMealThumb || recipe.strMealDrink,
+    image: recipe.strMealThumb || recipe.strDrinkThumb,
     doneDate: `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`,
     tags: recipe.strTags || '',
   };

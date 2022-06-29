@@ -40,8 +40,6 @@ function ExploreByIngredients() {
     const data = isFood
       ? await fetchMealsByIngredient(ingredient)
       : await fetchDrinksByIngredient(ingredient);
-
-    console.log(trimArray(data, MAX_CARDS, path));
     setRecipes(trimArray(data, MAX_CARDS, path));
     setPreviousPath(path);
     history.push(isFood ? '/foods' : '/drinks');

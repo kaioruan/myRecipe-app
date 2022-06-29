@@ -1,24 +1,16 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 // import { loadFavoriteRecipes, saveFavoriteRecipe } from '../services/StorageManager';
 import RecipesContext from '../context/RecipesContext';
 
-export default function RecipesHeader() {
-  const history = useHistory();
-  const path = history.location.pathname;
-  // const [filter, setFilter] = useState('All');
-  const { setRenderFavorites } = useContext(RecipesContext);
+export default function UserRecipesFilter() {
+  const { setUserRecipesFilter } = useContext(RecipesContext);
 
   const handleClickFilter = ({ target }) => {
-    setRenderFavorites(target.name);
-    // console.log(filter);
+    setUserRecipesFilter(target.name);
   };
 
   return (
     <header>
-      <h1>
-        {path === '/favorite-recipes' ? 'Favorite Recipes' : 'Done Recipes'}
-      </h1>
       <button
         data-testid="filter-by-all-btn"
         type="button"

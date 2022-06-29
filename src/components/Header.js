@@ -31,15 +31,13 @@ function Header() {
   const [inputFilter, setInputFilter] = useState('');
   const [dataMeals, setDataMeals] = useState([]);
   const [dataDrinks, setDataDrinks] = useState([]);
-  const [renderIconSearch, setRenderIconSearch] = useState(false);
   const [pageTitle, setPageTitle] = useState('');
   const [renderSelect, setRenderSelect] = useState(false);
   const [nationalitiesList, setNationalitiesList] = useState([]);
   const { recipes, setRecipes } = useContext(RecipesContext);
-
   const history = useHistory();
   const path = history.location.pathname;
-  const nationalitiesPath = '/explore/foods/nationalities';
+  const renderIconSearch = path === '/foods' || path === '/drinks';
 
   useEffect(() => {
     if (dataDrinks?.length === 1) { // se dataDrinks for null, não faz a checagem
@@ -59,9 +57,6 @@ function Header() {
   };
 
   useEffect(() => {
-    if (path === '/foods'
-    || path === '/drinks'
-    || path === nationalitiesPath) setRenderIconSearch(true);
     if (path === '/explore/foods/nationalities') {
       setRenderSelect(true);
       fetchNationalities();
@@ -160,6 +155,7 @@ function Header() {
           )}
           {iconSearch && (
             <input
+              placeholder="Digite Aqui"
               type="text"
               data-testid="search-input"
               name="searchInput"

@@ -4,15 +4,17 @@ import RecipesContext from './RecipesContext';
 
 function RecipesProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
-  const [renderFavorites, setRenderFavorites] = useState('All');
+  const [userRecipesFilter, setUserRecipesFilter] = useState('All');
   const [previousPath, setPreviousPath] = useState('');
 
-  const contextType = { recipes,
+  const contextType = {
+    recipes,
     setRecipes,
-    setRenderFavorites,
-    renderFavorites,
+    setUserRecipesFilter,
+    userRecipesFilter,
     previousPath,
-    setPreviousPath };
+    setPreviousPath,
+  };
 
   return (
     <RecipesContext.Provider value={ contextType }>
