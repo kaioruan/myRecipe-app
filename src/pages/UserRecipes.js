@@ -4,13 +4,13 @@ import RecipesContext from '../context/RecipesContext';
 import FavoriteRecipeCard from '../components/FavoriteRecipeCard';
 import DoneRecipeCard from '../components/DoneRecipeCard';
 import UserRecipesFilter from '../components/UserRecipesFilter';
-import Header from '../components/Header';
 import { loadFavoriteRecipes, loadDoneRecipes } from '../services/StorageManager';
+import HeaderSimple from '../components/HeaderSimple';
+import Footer from '../components/Footer';
 
 function UserRecipes() {
   const history = useHistory();
   const isFavoritePage = history.location.pathname.includes('favorite');
-  const [copied, setCopied] = useState(false);
   const [renderList, setRenderList] = useState([]);
   const { userRecipesFilter } = useContext(RecipesContext);
 
@@ -29,38 +29,32 @@ function UserRecipes() {
     }
   }, [userRecipesFilter, isFavoritePage]);
 
-  const handleShareButton = (type, id) => {
-    setCopied(true);
-    const URL = `http://localhost:3000/${type}s/${id}`;
-    navigator.clipboard.writeText(URL);
-  };
-
   return (
     <div>
-      <Header />
-      <UserRecipesFilter />
-      {copied && <p>Link copied!</p>}
-      <section className="recipeContainter">
-        <div className="infoRecipes">
-          {renderList && renderList.map((recipe, index) => (
-            <div key={ `userRecipe${index}` }>
-              {isFavoritePage ? (
-                <FavoriteRecipeCard
-                  favoriteRecipe={ recipe }
-                  index={ index }
-                  handleShareButton={ handleShareButton }
-                />
-              ) : (
-                <DoneRecipeCard
-                  index={ index }
-                  handleShareButton={ handleShareButton }
-                  doneRecipe={ recipe }
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
+      <HeaderSimple />
+      <main className="flex flex-col items-center">
+        <UserRecipesFilter />
+        <section className="recipeContainter">
+          <div className="infoRecipes">
+            {renderList && renderList.map((recipe, index) => (
+              <div key={ `userRecipe${index}` }>
+                {isFavoritePage ? (
+                  <FavoriteRecipeCard
+                    favoriteRecipe={ recipe }
+                    index={ index }
+                  />
+                ) : (
+                  <DoneRecipeCard
+                    index={ index }
+                    doneRecipe={ recipe }
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+      <Footer />
     </div>
   );
 }

@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Heart } from 'phosphor-react';
 import PropTypes from 'prop-types';
 import { removeFavoriteRecipe } from '../services/StorageManager';
 import shareIcon from '../images/shareIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
 
-function FavoriteRecipeCard({ favoriteRecipe, index, handleShareButton }) {
+function FavoriteRecipeCard({ favoriteRecipe, index }) {
+  const [copied, setCopied] = useState(false);
   const cardId = `favoriteCard${index}`;
+
+  const handleShareButton = (type, id) => {
+    setCopied(true);
+    const URL = `http://localhost:3000/${type}s/${id}`;
+    navigator.clipboard.writeText(URL);
+  };
 
   const onClickFavorite = (id) => {
     removeFavoriteRecipe(id);
@@ -15,7 +22,7 @@ function FavoriteRecipeCard({ favoriteRecipe, index, handleShareButton }) {
   };
 
   return (
-    <section id={ cardId }>
+    <section id={ cardId } className="my-4">
       <Link
         to={ favoriteRecipe.type === 'food'
           ? `/foods/${favoriteRecipe.id}`
@@ -23,13 +30,27 @@ function FavoriteRecipeCard({ favoriteRecipe, index, handleShareButton }) {
       >
         <img
           data-testid={ `${index}-horizontal-image` }
-          className="card-image"
           src={ favoriteRecipe.image }
           alt={ favoriteRecipe.name }
+          className="w-[18rem]
+          shadow-2xl
+          rounded-lg"
         />
       </Link>
 
-      <div>
+      <div className="flex flex-col items-center my-2">
+        <Link
+          to={ favoriteRecipe.type === 'food'
+            ? `/foods/${favoriteRecipe.id}`
+            : `/drinks/${favoriteRecipe.id}` }
+        >
+          <p
+            data-testid={ `${index}-horizontal-name` }
+            className="font-bold text-red-700"
+          >
+            {favoriteRecipe.name}
+          </p>
+        </Link>
         {favoriteRecipe.type === 'food'
           ? (
             <p data-testid={ `${index}-horizontal-top-text` }>
@@ -42,15 +63,8 @@ function FavoriteRecipeCard({ favoriteRecipe, index, handleShareButton }) {
               {favoriteRecipe.alcoholicOrNot}
             </p>
           )}
-        <Link
-          to={ favoriteRecipe.type === 'food'
-            ? `/foods/${favoriteRecipe.id}`
-            : `/drinks/${favoriteRecipe.id}` }
-        >
-          <h4 data-testid={ `${index}-horizontal-name` }>{favoriteRecipe.name}</h4>
-        </Link>
       </div>
-      <div>
+      <div className="flex justify-center space-x-40">
         <button
           id={ favoriteRecipe.id }
           name={ favoriteRecipe.type }
@@ -69,13 +83,10 @@ function FavoriteRecipeCard({ favoriteRecipe, index, handleShareButton }) {
           type="button"
           onClick={ () => onClickFavorite(favoriteRecipe.id) }
         >
-          <img
-            data-testid={ `${index}-horizontal-favorite-btn` }
-            src={ blackHeartIcon }
-            alt="favorite icon"
-          />
+          <Heart size={ 31 } color="red" weight="fill" />
         </button>
       </div>
+      {copied && <p className="text-center italic mb-2">Link copied!</p>}
     </section>
   );
 }
@@ -83,7 +94,6 @@ function FavoriteRecipeCard({ favoriteRecipe, index, handleShareButton }) {
 FavoriteRecipeCard.propTypes = {
   index: PropTypes.number.isRequired,
   favoriteRecipe: PropTypes.shape.isRequired,
-  handleShareButton: PropTypes.func.isRequired,
 };
 
 export default FavoriteRecipeCard;

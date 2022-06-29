@@ -52,7 +52,6 @@ function DefaultRecipeCard(props) {
             mt- p-1"
           >
             { name }
-
           </h3>
         </div>
       </Link>

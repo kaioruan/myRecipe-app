@@ -101,14 +101,14 @@ function Header() {
           >
             <User size={ 35 } className="text-white" />
           </Link>
-          <h2
+          <p
             data-testid="page-title"
             className="mt-2
             w-[12rem]
-          text-white text-center font-bold"
+            text-white text-center font-bold tracking-wide"
           >
             {pageTitle}
-          </h2>
+          </p>
           {renderSearchIcon && (
             <button
               type="button"
@@ -116,23 +116,25 @@ function Header() {
             >
               <MagnifyingGlass size={ 35 } className="text-white" />
             </button>)}
-          {renderSearchBar && (
-            <input
-              type="text"
-              data-testid="search-input"
-              name="searchInput"
-              value={ searchInput }
-              onChange={ handleInputBarChange }
-            />
-          )}
-          {renderDropDown && <DropDownMenu />}
         </section>
-        <br />
       </div>
       <div>
+        {renderSearchBar && (
+          <input
+            type="text"
+            data-testid="search-input"
+            name="searchInput"
+            value={ searchInput }
+            onChange={ handleInputBarChange }
+            className="flex justify-center items-center mt-4 mb-4 pl-1"
+          />
+        )}
+      </div>
+      {renderDropDown && <DropDownMenu />}
+      <div>
         {renderSearchIcon && (
-          <section>
-            <label htmlFor="Ingredient">
+          <section className="mt-1">
+            <label htmlFor="Ingredient" className="mr-2 text-white tracking-wide">
               <input
                 data-testid="ingredient-search-radio"
                 id="Ingredient"
@@ -140,10 +142,11 @@ function Header() {
                 name="filter"
                 value={ serchFilter }
                 onChange={ handleChangeFilters }
+                className="mr-1"
               />
               Ingredient
             </label>
-            <label htmlFor="Name">
+            <label htmlFor="Name" className="mr-2 text-white tracking-wide">
               <input
                 data-testid="name-search-radio"
                 id="Name"
@@ -151,10 +154,11 @@ function Header() {
                 name="filter"
                 value={ serchFilter }
                 onChange={ handleChangeFilters }
+                className="mr-1"
               />
               Name
             </label>
-            <label htmlFor="First-Letter">
+            <label htmlFor="First-Letter" className="mr-1 text-white tracking-wide">
               <input
                 data-testid="first-letter-search-radio"
                 id="First-Letter"
@@ -162,22 +166,23 @@ function Header() {
                 name="filter"
                 value={ serchFilter }
                 onChange={ handleChangeFilters }
+                className="mr-1"
               />
               First letter
             </label>
-            <br />
-            <button
-              type="button"
-              data-testid="exec-search-btn"
-              onClick={ onClickSearch }
-              className="ml-[8.3rem]
-              mt-2 mb-3 bg-gray-300
-              px-5
-              rounded-md
-              flex items-center justify-center"
-            >
-              Search
-            </button>
+            <div className="flex justify-center items-center my-1">
+              <button
+                type="button"
+                data-testid="exec-search-btn"
+                onClick={ onClickSearch }
+                className="tracking-wide
+                mt-2 mb-3 bg-gray-300
+                px-5
+                rounded-md"
+              >
+                Search
+              </button>
+            </div>
           </section>
         )}
       </div>
@@ -187,9 +192,6 @@ function Header() {
 
 export default Header;
 
-// className="mt-2
-// w-[12rem]
-// text-white text-center font-bold"
 // className="flex justify-center items-center mt-4 mb-4 ml-[4rem]"
 // className="space-x-5 text-white font-semibold"
 // className="mr-3"

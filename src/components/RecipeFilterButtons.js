@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function RecipeFilterButtons(props) {
-  const { categories, onButtonClicked, path } = props;
-  console.log(path);
+  const { categories, onButtonClicked } = props;
   return (
     <section
       className="
@@ -29,7 +28,6 @@ function RecipeFilterButtons(props) {
 RecipeFilterButtons.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.string).isRequired,
   onButtonClicked: PropTypes.func.isRequired,
-  path: PropTypes.string.isRequired,
 };
 
 export default RecipeFilterButtons;

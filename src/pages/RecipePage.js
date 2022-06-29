@@ -2,17 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { Heart } from 'phosphor-react';
-import {
-  MEALS_TYPE, COCKTAILS_TYPE,
-  fetchRecipeById, fetchAllRecipes,
+import { MEALS_TYPE, COCKTAILS_TYPE, fetchRecipeById, fetchAllRecipes,
 } from '../services/RecipesAPI';
 import DefaultRecipeCard from '../components/DefaultRecipeCard';
-import {
-  recipeIsDone, recipeIsInProgress, recipeIsFavorite,
+import { recipeIsDone, recipeIsInProgress, recipeIsFavorite,
   saveFavoriteRecipe, saveInProgressRecipe, saveDoneRecipe,
   removeFavoriteRecipe, loadInProgressRecipeIngredients,
 } from '../services/StorageManager';
 import shareIcon from '../images/shareIcon.svg';
+import IngredientList from '../components/IngredientList';
+import Footer from '../components/Footer';
 
 const RECOMMENDATIONS_NUMBER = 6;
 const getCheckboxes = () => Array.from(document.querySelectorAll('.ingredient-checkbox'));
@@ -30,6 +29,7 @@ const renderVideo = (isFood, url) => (isFood && (
     <ReactPlayer data-testid="video" url={ url } width="23rem" />
   </>
 ));
+
 const getHeartState = (id) => ({
   color: recipeIsFavorite(id) ? 'red' : 'black',
   weight: recipeIsFavorite(id) ? 'fill' : 'regular',
@@ -86,10 +86,10 @@ function RecipePage() {
 
   const onClickShare = () => {
     const url = `http://localhost:3000${path.split('/in')[0]}`;
-    console.log(url);
     navigator.clipboard.writeText(url);
     setCopied(true);
   };
+
   const onClickFavorite = () => {
     if (recipeIsFavorite(id)) {
       removeFavoriteRecipe(id);
@@ -101,16 +101,19 @@ function RecipePage() {
       setHeartWeight('fill');
     }
   };
+
   const onClickStart = () => {
     if (!recipeIsInProgress(id)) {
       saveInProgressRecipe(recipe, []);
     }
     history.push(`${path}/in-progress`);
   };
+
   const onClickFinish = () => {
     saveDoneRecipe(recipe);
     history.push('/done-recipes');
   };
+
   const handleProgressChange = () => {
     const checkedIngredients = getCheckboxes()
       .filter((box) => box.checked)
@@ -118,133 +121,114 @@ function RecipePage() {
     saveInProgressRecipe(recipe, checkedIngredients);
     setUsedIngredients(checkedIngredients);
   };
+
   const areAllIngredientsChecked = () => getCheckboxes()
     .every((box) => usedIngredients.includes(box.name));
 
-  const renderIngredientsList = () => {
-    if (isInProgressPath) {
-      return (
-        <ul>
-          {ingredientsList.map((el, index) => (
-            <li
-              key={ `${el.ingredient}${index}` }
-              data-testid={ `${index}-ingredient-step` }
-            >
-              <input
-                name={ el.ingredient }
-                className="mr-1 mt-2"
-                type="checkbox"
-                defaultChecked={ usedIngredients.includes(el.ingredient) }
-                onChange={ handleProgressChange }
-              />
-              { `${el.ingredient} - ${el.measure}` }
-            </li>
-          ))}
-        </ul>);
-    }
-    return (
-      <ul>
-        {ingredientsList.map((el, index) => (
-          <li
-            key={ `${el.ingredient}${index}` }
-            data-testid={ `${index}-ingredient-name-and-measure` }
-          >
-            { `${el.ingredient} - ${el.measure}` }
-          </li>
-        ))}
-      </ul>);
-  };
+  const renderIngredientsList = () => (
+    <IngredientList
+      handleProgressChange={ handleProgressChange }
+      ingredientsList={ ingredientsList }
+      isInProgressPath={ isInProgressPath }
+      usedIngredients={ usedIngredients }
+    />
+  );
+
   return (
-    <main className="mx-2">
-      <div className="flex justify-center mt-3 border-2 border-black">
-        <img
-          data-testid="recipe-photo"
-          src={ recipe.strMealThumb || recipe.strDrinkThumb }
-          alt="recipe thumb"
-          className="w-full"
-        />
-      </div>
-      <header className=" mt-3">
-        <h2
-          data-testid="recipe-title"
-          className="text-center font-bold"
-        >
-          { recipe.strMeal || recipe.strDrink }
-        </h2>
-        <p data-testid="recipe-category" className="text-center text-red-700 font-bold">
-          {getRecipeCategoryText(isFood, recipe)}
-        </p>
-      </header>
-      <section className="flex justify-center space-x-40 mt-1">
-        <button type="button" data-testid="share-btn" onClick={ onClickShare }>
-          <img src={ shareIcon } alt="share icon" />
-        </button>
-        <button type="button" onClick={ onClickFavorite }>
-          <Heart size={ 31 } color={ heartColor } weight={ heartWeight } />
-        </button>
-      </section>
-      {copied && <p className="text-center italic">Link copied!</p>}
-      <article className="mb-4">
-        <h3 className="text-center font-bold mt-3">Ingredients</h3>
-        {renderIngredientsList()}
-        <h3 className="font-bold mt-3">Instructions:</h3>
-        <p
-          data-testid="instructions"
-          className="text-justify"
-        >
-          { recipe.strInstructions }
-        </p>
-      </article>
-      {!isInProgressPath && (
-        <div>
-          <section>
-            <div className="w-full">
-              {renderVideo(isFood, recipe.strYoutube)}
-            </div>
-            <div>
-              {!recipeIsDone(id) && !isInProgressPath
+    <div>
+      <main className="mx-2">
+        <div className="flex justify-center mt-3 border-2 border-black">
+          <img
+            data-testid="recipe-photo"
+            src={ recipe.strMealThumb || recipe.strDrinkThumb }
+            alt="recipe thumb"
+            className="w-full"
+          />
+        </div>
+
+        <header className=" mt-3">
+          <h2 data-testid="recipe-title" className="text-center font-bold">
+            { recipe.strMeal || recipe.strDrink }
+          </h2>
+          <p data-testid="recipe-category" className="text-center text-red-700 font-bold">
+            {getRecipeCategoryText(isFood, recipe)}
+          </p>
+        </header>
+
+        <section className="flex justify-center space-x-40 mt-1">
+          <button type="button" data-testid="share-btn" onClick={ onClickShare }>
+            <img src={ shareIcon } alt="share icon" />
+          </button>
+          <button type="button" onClick={ onClickFavorite }>
+            <Heart size={ 31 } color={ heartColor } weight={ heartWeight } />
+          </button>
+        </section>
+
+        {copied && <p className="text-center italic">Link copied!</p>}
+
+        <article className="mb-4">
+          <h3 className="text-center font-bold my-3">Ingredients</h3>
+          {renderIngredientsList()}
+          <h3 className="font-bold mt-3">Instructions:</h3>
+          <p data-testid="instructions" className="text-justify">
+            { recipe.strInstructions }
+          </p>
+        </article>
+        {isInProgressPath && (
+          <div className="flex justify-center mb-4">
+            <button
+              data-testid="finish-recipe-btn"
+              type="button"
+              onClick={ onClickFinish }
+              disabled={ !areAllIngredientsChecked() }
+              className="bg-white font-bold rounded-lg p-1 w-[15rem] my-3"
+            >
+              Finish Recipe
+            </button>
+          </div>
+        )}
+        {!isInProgressPath && (
+          <div>
+            <section>
+              <div className="w-full">
+                {renderVideo(isFood, recipe.strYoutube)}
+              </div>
+              <div>
+                {!recipeIsDone(id) && !isInProgressPath
       && (
         <div className="flex items-center justify-center">
           <button
             data-testid="start-recipe-btn"
             type="button"
             onClick={ onClickStart }
-            className="bg-white font-bold rounded-lg p-1 w-[18rem] my-3 flex items-center
-          justify-center"
+            className="bg-white font-bold rounded-lg p-1 w-[15rem] my-3 "
           >
             { getStartButtonInnerText(recipeIsInProgress(id)) }
           </button>
         </div>
       )}
-              {isInProgressPath && (
-                <button
-                  className="details-button"
-                  data-testid="finish-recipe-btn"
-                  type="button"
-                  onClick={ onClickFinish }
-                  disabled={ !areAllIngredientsChecked() }
-                >
-                  Finish Recipe
-                </button>)}
-            </div>
-          </section>
-          <h3 className="mt-3 font-bold">Recommended:</h3>
-          <nav className="recommendations">
-            {recommendations.map((rec, index) => (
-              <DefaultRecipeCard
-                cardTestId={ `${index}-recomendation-card` }
-                titleTestId={ `${index}-recomendation-title` }
-                key={ rec.idDrink || rec.idMeal }
-                recipeId={ rec.idDrink || rec.idMeal }
-                index={ index }
-                thumb={ rec.strDrinkThumb || rec.strMealThumb }
-                name={ rec.strDrink || rec.strMeal }
-                category={ isFood ? rec.strAlcoholic : rec.strCategory }
-              />))}
-          </nav>
-        </div>
-      )}
-    </main>
+              </div>
+            </section>
+            <h3 className="mt-3 font-bold">Recommended:</h3>
+
+            <nav className="recommendations">
+              {recommendations.map((rec, index) => (
+                <DefaultRecipeCard
+                  cardTestId={ `${index}-recomendation-card` }
+                  titleTestId={ `${index}-recomendation-title` }
+                  key={ rec.idDrink || rec.idMeal }
+                  recipeId={ rec.idDrink || rec.idMeal }
+                  index={ index }
+                  thumb={ rec.strDrinkThumb || rec.strMealThumb }
+                  name={ rec.strDrink || rec.strMeal }
+                  category={ isFood ? rec.strAlcoholic : rec.strCategory }
+                />))}
+            </nav>
+          </div>
+        )}
+      </main>
+      <Footer />
+    </div>
   );
 }
 export default RecipePage;

@@ -9,12 +9,13 @@ export default function UserRecipesFilter() {
   };
 
   return (
-    <header>
+    <header className="flex justify-center space-x-8 my-4 ml-1">
       <button
         data-testid="filter-by-all-btn"
         type="button"
         name="All"
         onClick={ handleClickFilter }
+        className="bg-white py-1 px-3 rounded-lg"
       >
         All
       </button>
@@ -23,6 +24,7 @@ export default function UserRecipesFilter() {
         type="button"
         name="Food"
         onClick={ handleClickFilter }
+        className="bg-white py-1 px-3 rounded-lg"
       >
         Foods
       </button>
@@ -31,6 +33,7 @@ export default function UserRecipesFilter() {
         type="button"
         name="Drink"
         onClick={ handleClickFilter }
+        className="bg-white py-1 px-3 rounded-lg"
       >
         Drinks
       </button>
