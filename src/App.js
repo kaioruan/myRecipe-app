@@ -16,7 +16,6 @@ import NotFound from './pages/NotFound';
 
 function App() {
   return (
-
     <RecipesProvider>
       <Switch>
         <Route exact path="/" component={ Login } />

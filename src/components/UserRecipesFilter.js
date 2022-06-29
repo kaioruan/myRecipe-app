@@ -1,14 +1,11 @@
 import React, { useContext } from 'react';
-// import { loadFavoriteRecipes, saveFavoriteRecipe } from '../services/StorageManager';
 import RecipesContext from '../context/RecipesContext';
 
 export default function UserRecipesFilter() {
-  // const [filter, setFilter] = useState('All');
   const { setUserRecipesFilter } = useContext(RecipesContext);
 
   const handleClickFilter = ({ target }) => {
     setUserRecipesFilter(target.name);
-    // console.log(filter);
   };
 
   return (

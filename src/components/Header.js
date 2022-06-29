@@ -24,7 +24,6 @@ function Header() {
   const [serchFilter, setSearchFilter] = useState('');
   const [pageTitle, setPageTitle] = useState('');
   const { recipes, setRecipes } = useContext(RecipesContext);
-
   const history = useHistory();
   const path = history.location.pathname;
   const renderDropDown = path.includes('nationalities');
@@ -116,6 +115,7 @@ function Header() {
             </button>)}
           {renderSearchBar && (
             <input
+              placeholder="Digite Aqui"
               type="text"
               data-testid="search-input"
               name="searchInput"
