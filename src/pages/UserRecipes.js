@@ -35,6 +35,8 @@ function UserRecipes() {
     navigator.clipboard.writeText(URL);
   };
 
+  console.log(JSON.parse(localStorage.favoriteRecipes)[0]);
+
   return (
     <div>
       <Header />
