@@ -104,6 +104,12 @@ describe('Teste o componente <Header.js />', () => {
   });
 
   it('Testa se os botões de filtro da pesquisa funcionam.', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValue({
+        json: jest.fn()
+          .mockResolvedValue(mock.categoriesData)
+          .mockResolvedValueOnce(mock.recipesData),
+      });
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
 
@@ -128,5 +134,38 @@ describe('Teste o componente <Header.js />', () => {
 
     userEvent.click(searchButton);
     expect(global.alert).toHaveBeenCalled();
+    const nameEl = screen.getByLabelText(/Name/i);
+    userEvent.click(nameEl);
+    userEvent.type(inputField, 'blackberry');
+    userEvent.click(searchButton);
+    const blackBerrySearch = await screen.findByRole(
+      'heading', { name: /BlackBerry Fool/i, level: 3 },
+    );
+    const blackBerryImg = await screen.findByTestId('0-card-img');
+    expect(blackBerrySearch).toBeInTheDocument();
+    expect(blackBerryImg).toHaveAttribute('src', 'https://www.themealdb.com/images/media/meals/rpvptu1511641092.jpg');
+    userEvent.click(firstLetterFilter);
+    userEvent.type(inputField, 'e');
+    userEvent.click(searchButton);
+    const etonMessSearch = await screen.findByRole(
+      'heading', { name: /Eton Mess/i, level: 3 },
+    );
+    const etonMessImg = await screen.findByTestId('0-card-img');
+    expect(etonMessSearch).toBeInTheDocument();
+    expect(etonMessImg).toHaveAttribute('src', 'https://www.themealdb.com/images/media/meals/uuxwvq1483907861.jpg');
+    jest.restoreAllMocks();
+  });
+  it('Testando Categorias de buscas renderizados na Página de bebidas', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValue({
+        json: jest.fn()
+          .mockResolvedValue(mock.categoriesData)
+          .mockResolvedValueOnce(mock.recipesData),
+      });
+
+    const { history } = renderWithRouter(<App />);
+    history.push('/drinks');
+
+    jest.restoreAllMocks();
   });
 });
