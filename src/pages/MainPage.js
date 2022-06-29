@@ -3,12 +3,6 @@ import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import RecipeFilterButtons from '../components/RecipeFilterButtons';
 import MainRecipeList from '../components/MainRecipeList';
-// import {
-//   fetchAllDrinksCategories, fetchAllDrinks, fetchDrinksByCategory,
-// } from '../services/CocktailsAPI';
-// import {
-//   fetchAllMealsCategories, fetchAllMeals, fetchMealsByCategory,
-// } from '../services/MealsAPI';
 import {
   MEALS_TYPE, COCKTAILS_TYPE,
   fetchCategories, fetchAllRecipes, fetchRecipesByCategory,
@@ -23,7 +17,6 @@ const CATEGORIES_NUMBER = 5;
 
 function MainPage() {
   const {
-    // recipes,
     setRecipes, previousPath, setPreviousPath,
   } = useContext(RecipesContext);
   const [categories, setCategories] = useState([]);

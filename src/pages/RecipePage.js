@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import ReactPlayer from 'react-player';
-// import { fetchMealById, fetchAllMeals } from '../services/MealsAPI';
-// import { fetchDrinkById, fetchAllDrinks } from '../services/CocktailsAPI';
 import {
   MEALS_TYPE, COCKTAILS_TYPE,
   fetchRecipeById, fetchAllRecipes,
@@ -87,7 +85,6 @@ function RecipePage() {
 
   const onClickShare = () => {
     const url = `http://localhost:3000${path.split('/in')[0]}`;
-    console.log(url);
     navigator.clipboard.writeText(url);
     setCopied(true);
   };

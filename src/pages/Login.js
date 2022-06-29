@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   saveMealsToken, saveCocktailsToken, saveUser,
-  loadUser,
 } from '../services/StorageManager';
 
 function Login() {
@@ -33,8 +32,6 @@ function Login() {
     saveUser(input.email);
     history.push('/foods');
   };
-
-  console.log(loadUser());
 
   return (
     <form>
