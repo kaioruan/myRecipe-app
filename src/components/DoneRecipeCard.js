@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
-import { Heart } from 'phosphor-react';
+// import { Heart } from 'phosphor-react';
 import PropTypes from 'prop-types';
-import { Link, useParams } from 'react-router-dom';
-import { recipeIsFavorite, saveFavoriteRecipe, removeFavoriteRecipe,
-} from '../services/StorageManager';
+import { Link } from 'react-router-dom';
+// import { recipeIsFavorite, saveFavoriteRecipe, removeFavoriteRecipe }
+// from '../services/StorageManager';
 import shareIcon from '../images/shareIcon.svg';
 
-const getHeartState = (id) => ({
-  color: recipeIsFavorite(id) ? 'red' : 'black',
-  weight: recipeIsFavorite(id) ? 'fill' : 'regular',
-});
+// const getHeartState = (id) => ({
+//   color: recipeIsFavorite(id) ? 'red' : 'black',
+//   weight: recipeIsFavorite(id) ? 'fill' : 'regular',
+// });
 
 function DoneRecipeCard({ index, doneRecipe }) {
-  const params = useParams();
-  const recipeId = params.foodId || params.drinkId;
   const [copied, setCopied] = useState(false);
-  const [heartColor, setHeartColor] = useState(getHeartState(recipeId).color);
-  const [heartWeight, setHeartWeight] = useState(getHeartState(recipeId).weight);
+  // const [heartColor, setHeartColor] = useState(getHeartState(doneRecipe.id).color);
+  // const [heartWeight, setHeartWeight] = useState(getHeartState(doneRecipe.id).weight);
 
   const isFood = doneRecipe.type.toLowerCase() === 'food';
   const tagsArray = Array.isArray(doneRecipe.tags)
@@ -32,17 +30,17 @@ function DoneRecipeCard({ index, doneRecipe }) {
     navigator.clipboard.writeText(URL);
   };
 
-  const onClickFavorite = () => {
-    if (recipeIsFavorite(recipeId)) {
-      removeFavoriteRecipe(recipeId);
-      setHeartColor('black');
-      setHeartWeight('regular');
-    } else {
-      saveFavoriteRecipe(doneRecipe);
-      setHeartColor('red');
-      setHeartWeight('fill');
-    }
-  };
+  // const onClickFavorite = () => {
+  //   if (recipeIsFavorite(doneRecipe.id)) {
+  //     removeFavoriteRecipe(doneRecipe.id);
+  //     setHeartColor('black');
+  //     setHeartWeight('regular');
+  //   } else {
+  //     saveFavoriteRecipe(doneRecipe);
+  //     setHeartColor('red');
+  //     setHeartWeight('fill');
+  //   }
+  // };
 
   return (
     <section className="my-4">
@@ -78,7 +76,7 @@ function DoneRecipeCard({ index, doneRecipe }) {
           { topText }
         </p>
         <div className="flex justify-center space-x-2">
-          {tagsArray.map((tag) => (
+          {tagsArray.filter((tag) => tag !== '').map((tag) => (
             <div
               key={ `tag${tag}${index}` }
               data-testid={ `${index}-${tag}-horizontal-tag` }
@@ -101,12 +99,12 @@ function DoneRecipeCard({ index, doneRecipe }) {
               alt="done recipe thumb"
             />
           </button>
-          <button
+          {/* <button
             type="button"
             onClick={ () => onClickFavorite() }
           >
             <Heart size={ 31 } color={ heartColor } weight={ heartWeight } />
-          </button>
+          </button> */}
         </div>
 
         {copied && <p className="text-center italic mb-2">Link copied!</p>}
@@ -120,8 +118,8 @@ function DoneRecipeCard({ index, doneRecipe }) {
 }
 
 DoneRecipeCard.propTypes = {
-  index: PropTypes.number.isRequired,
   doneRecipe: PropTypes.shape.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default DoneRecipeCard;

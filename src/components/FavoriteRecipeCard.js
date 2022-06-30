@@ -12,7 +12,7 @@ function FavoriteRecipeCard({ favoriteRecipe, index }) {
   const handleShareButton = (type, id) => {
     setCopied(true);
     const URL = `http://localhost:3000/${type}s/${id}`;
-    navigator.clipboard.writeText(URL);
+    navigator.clipboard?.writeText(URL);
   };
 
   const onClickFavorite = (id) => {

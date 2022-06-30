@@ -11,20 +11,23 @@ function IngredientList({
             key={ `${el.ingredient}${index}` }
             data-testid={ `${index}-ingredient-step` }
           >
-            <input
-              name={ el.ingredient }
-              className="mr-1 mt-2"
-              type="checkbox"
-              defaultChecked={ usedIngredients.includes(el.ingredient) }
-              onChange={ handleProgressChange }
-            />
-            <span className="text-red-700 font-bold tracking-wide">
-              { `${el.ingredient}`}
-            </span>
-            {' '}
-            -
-            {' '}
-            {`${el.measure}` }
+            <label htmlFor={ index }>
+              <input
+                name={ el.ingredient }
+                id={ index }
+                className="mr-1 mt-2"
+                type="checkbox"
+                defaultChecked={ usedIngredients.includes(el.ingredient) }
+                onChange={ handleProgressChange }
+              />
+              <span className="text-red-700 font-bold tracking-wide">
+                { `${el.ingredient}`}
+              </span>
+              {' '}
+              -
+              {' '}
+              {`${el.measure}` }
+            </label>
           </li>
         ))}
       </ul>

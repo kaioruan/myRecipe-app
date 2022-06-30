@@ -5,8 +5,6 @@ import renderWithRouter from './Helpers/renderWithRouter';
 import App from '../App';
 import mock from './Helpers/testData';
 
-// const URL = 'http://localhost:3000/drinks/15997';
-
 const localStorage = {
   favoriteRecipes: [mock.recipesData.meals[0]],
 };
