@@ -6,7 +6,7 @@ import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function FavoriteRecipeCard({ favoriteRecipe, index, handleShareButton }) {
-  const cardId = `favoriteCard${index}`;
+  const cardId = `favorite-card-${index}`;
 
   const onClickFavorite = (id) => {
     removeFavoriteRecipe(id);
@@ -15,7 +15,7 @@ function FavoriteRecipeCard({ favoriteRecipe, index, handleShareButton }) {
   };
 
   return (
-    <section id={ cardId }>
+    <section id={ cardId } data-testid={ cardId }>
       <Link
         to={ favoriteRecipe.type === 'food'
           ? `/foods/${favoriteRecipe.id}`

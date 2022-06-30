@@ -85,7 +85,7 @@ function RecipePage() {
 
   const onClickShare = () => {
     const url = `http://localhost:3000${path.split('/in')[0]}`;
-    navigator.clipboard.writeText(url);
+    navigator.clipboard?.writeText(url);
     setCopied(true);
   };
 
@@ -133,6 +133,7 @@ function RecipePage() {
             >
               <input
                 name={ el.ingredient }
+                data-testid={ `${index}-ingredient-checkbox` }
                 className="ingredient-checkbox"
                 type="checkbox"
                 defaultChecked={ usedIngredients.includes(el.ingredient) }

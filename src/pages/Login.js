@@ -37,6 +37,7 @@ function Login() {
     <form>
       <div>
         <input
+          placeholder="E-mail"
           data-testid="email-input"
           type="email"
           name="email"
@@ -47,6 +48,7 @@ function Login() {
 
       <div>
         <input
+          placeholder="Password"
           data-testid="password-input"
           type="password"
           name="password"
