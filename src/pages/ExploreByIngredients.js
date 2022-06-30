@@ -2,12 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import IngredientCard from '../components/IngredientCard';
-// import {
-//   fetchDrinksIngredients, fetchDrinksByIngredient,
-// } from '../services/CocktailsAPI';
-// import {
-//   fetchMealsIngredients, fetchMealsByIngredient,
-// } from '../services/MealsAPI';
 import {
   MEALS_TYPE, COCKTAILS_TYPE,
   fetchIngredients, fetchRecipesByIngredient,
@@ -44,8 +38,6 @@ function ExploreByIngredients() {
     const data = isFood
       ? await fetchRecipesByIngredient(MEALS_TYPE, ingredient)
       : await fetchRecipesByIngredient(COCKTAILS_TYPE, ingredient);
-
-    console.log(trimArray(data, MAX_CARDS, path));
     setRecipes(trimArray(data, MAX_CARDS, path));
     setPreviousPath(path);
     history.push(isFood ? '/foods' : '/drinks');

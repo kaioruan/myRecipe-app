@@ -33,8 +33,6 @@ function Login() {
     history.push('/foods');
   };
 
-  // flex items-center justify-center h-screen
-
   return (
     <section className="flex flex-col items-center justify-center h-screen">
       <div
