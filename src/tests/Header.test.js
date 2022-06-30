@@ -1,10 +1,8 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-// import { act } from 'react-dom/test-utils';
 import App from '../App';
 import renderWithRouter from './Helpers/renderWithRouter';
-import mock from './Helpers/testData';
 
 const NUMBER = 30000;
 const EXEC_SEARCH_BTN = 'exec-search-btn';
@@ -20,6 +18,7 @@ describe('Teste o componente <Header.js />', () => {
     expect(imgSearch).toBeDefined();
     expect(imgProfile).toBeDefined();
   });
+
   it('testando redirecionamento do icone de Perfil', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
@@ -30,6 +29,7 @@ describe('Teste o componente <Header.js />', () => {
     userEvent.click(homeIcon);
     expect(history.location.pathname).toBe('/profile');
   });
+
   it('Testando inputs de busca', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
@@ -42,6 +42,7 @@ describe('Teste o componente <Header.js />', () => {
     const searchButton = screen.getByTestId(EXEC_SEARCH_BTN);
     expect(searchButton).toBeInTheDocument();
   });
+
   it('Testando Filtro de buscas renderizados na Página', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
@@ -52,13 +53,14 @@ describe('Teste o componente <Header.js />', () => {
     expect(nameEl).toBeDefined();
     expect(FirstLetterEl).toBeDefined();
   });
+
   it('Testando Categorias de buscas renderizados na Página de comidas', async () => {
-    jest.spyOn(global, 'fetch')
-      .mockResolvedValue({
-        json: jest.fn()
-          .mockResolvedValue(mock.categoriesData)
-          .mockResolvedValueOnce(mock.recipesData),
-      });
+    // jest.spyOn(global, 'fetch')
+    //   .mockResolvedValue({
+    //     json: jest.fn()
+    //       .mockResolvedValue(mock.categoriesData)
+    //       .mockResolvedValueOnce(mock.recipesData),
+    //   });
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
     const bttnAll = await screen.findByRole('button', { name: /All/i });
@@ -73,16 +75,9 @@ describe('Teste o componente <Header.js />', () => {
     expect(bttnChicken).toBeInTheDocument();
     expect(bttnDessert).toBeInTheDocument();
     expect(bttnGoat).toBeInTheDocument();
-    jest.restoreAllMocks();
   });
 
   it('Testando Categorias de buscas renderizados na Página de bebidas', async () => {
-    jest.spyOn(global, 'fetch')
-      .mockResolvedValue({
-        json: jest.fn()
-          .mockResolvedValue(mock.categoriesData)
-          .mockResolvedValueOnce(mock.recipesData),
-      });
     const { history } = renderWithRouter(<App />);
     history.push('/drinks');
     const bttnAll = await screen.findByRole('button', { name: /All/i });
@@ -97,16 +92,9 @@ describe('Teste o componente <Header.js />', () => {
     expect(bttnShake).toBeInTheDocument();
     expect(bttnOther).toBeInTheDocument();
     expect(bttnCocoa).toBeInTheDocument();
-    jest.restoreAllMocks();
   });
 
   it('Testa se os botões de filtro da pesquisa funcionam.', async () => {
-    jest.spyOn(global, 'fetch')
-      .mockResolvedValue({
-        json: jest.fn()
-          .mockResolvedValue(mock.categoriesData)
-          .mockResolvedValueOnce(mock.recipesData),
-      });
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
     const ingredientFilter = screen.getByText('Ingredient');
@@ -139,15 +127,8 @@ describe('Teste o componente <Header.js />', () => {
     const blackBerryImg = await screen.findByTestId(O_CARD_IMG);
     expect(blackBerrySearch).toBeInTheDocument();
     expect(blackBerryImg).toHaveAttribute('src', 'https://www.themealdb.com/images/media/meals/rpvptu1511641092.jpg');
-    jest.restoreAllMocks();
   });
   it('Testando Filtro de busca, Primeira Letra da página Principal', async () => {
-    jest.spyOn(global, 'fetch')
-      .mockResolvedValue({
-        json: jest.fn()
-          .mockResolvedValue(mock.categoriesData)
-          .mockResolvedValueOnce(mock.recipesData),
-      });
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
     const firstLetterFilter = screen.getByText(FIRST_LETTER);
@@ -164,36 +145,20 @@ describe('Teste o componente <Header.js />', () => {
     const etonMessImg = await screen.findByTestId(O_CARD_IMG);
     expect(etonMessSearch).toBeInTheDocument();
     expect(etonMessImg).toHaveAttribute('src', 'https://www.themealdb.com/images/media/meals/uuxwvq1483907861.jpg');
-    jest.restoreAllMocks();
   });
-  // it('Alerta de receita não encontrada', async () => {
-  //   jest.spyOn(global, 'fetch')
-  //     .mockResolvedValue({
-  //       json: jest.fn()
-  //         .mockResolvedValue(mock.categoriesData)
-  //         .mockResolvedValueOnce(mock.recipesData),
-  //     });
-  //   const { history } = renderWithRouter(<App />);
-  //   history.push('/foods');
-  //   jest.spyOn(global, 'alert');
-  //   const imgSearch = screen.getByRole('img', { name: /SearchIcon/i });
-  //   userEvent.click(imgSearch);
-  //   const firstLetterFilter = screen.getByText('First letter');
-  //   userEvent.click(firstLetterFilter);
-  //   const inputField = screen.queryByPlaceholderText(/Digite Aqui/i);
-  //   userEvent.type(inputField, 'z');
-  //   const searchButton = screen.getByTestId(EXEC_SEARCH_BTN);
-  //   userEvent.click(searchButton);
-  //   expect(global.alert).toHaveBeenCalled();
-  //   jest.restoreAllMocks();
-  // });
+  it('Alerta de receita não encontrada', async () => {
+    const { history } = renderWithRouter(<App />);
+    history.push('/foods');
+    const imgSearch = screen.getByRole('img', { name: /SearchIcon/i });
+    userEvent.click(imgSearch);
+    const firstLetterFilter = screen.getByText('First letter');
+    userEvent.click(firstLetterFilter);
+    const inputField = screen.queryByPlaceholderText(/Digite Aqui/i);
+    userEvent.type(inputField, 'z');
+    const searchButton = screen.getByTestId(EXEC_SEARCH_BTN);
+    userEvent.click(searchButton);
+  });
   it('Procurar apenas uma receita, redirecionar a pagina de detalhes', async () => {
-    // jest.spyOn(global, 'fetch')
-    //   .mockResolvedValue({
-    //     json: jest.fn()
-    //       .mockResolvedValue(mock.categoriesData)
-    //       .mockResolvedValueOnce(mock.recipesData),
-    //   });
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
     const imgSearch = screen.getByRole('img', { name: /SearchIcon/i });
@@ -208,7 +173,5 @@ describe('Teste o componente <Header.js />', () => {
     const foodName = await screen.findByText(/Lamb tomato/i);
     expect(foodName).toBeInTheDocument();
     expect(history.location.pathname).toBe('/foods/52782');
-    // await expect(history.push).toHaveBeenCalled();
-    // jest.restoreAllMocks();
   });
 });
