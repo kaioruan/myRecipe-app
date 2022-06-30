@@ -85,4 +85,8 @@ const favoriteRecipes = [
   },
 ];
 
-export default { recipesData, categoriesData, mealsAreasData, favoriteRecipes };
+const localStorage = {
+  favoriteRecipes,
+};
+
+export default { recipesData, categoriesData, mealsAreasData, localStorage };
