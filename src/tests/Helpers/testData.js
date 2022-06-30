@@ -55,4 +55,34 @@ const mealsAreasData = {
   ],
 };
 
-export default { recipesData, categoriesData, mealsAreasData };
+const favoriteRecipes = [
+  {
+    id: '52977',
+    type: 'food',
+    nationality: 'Turkish',
+    category: 'Side',
+    alcoholicOrNot: '',
+    name: 'Corba',
+    image: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+  },
+  {
+    id: '52978',
+    type: 'food',
+    nationality: 'Turkish',
+    category: 'Side',
+    alcoholicOrNot: '',
+    name: 'Kumpir',
+    image: 'https://www.themealdb.com/images/media/meals/mlchx21564916997.jpg',
+  },
+  {
+    id: '13501',
+    type: 'drink',
+    nationality: '',
+    category: 'Shot',
+    alcoholicOrNot: 'Alcoholic',
+    name: 'ABC',
+    image: 'https://www.thecocktaildb.com/images/media/drink/tqpvqp1472668328.jpg',
+  },
+];
+
+export default { recipesData, categoriesData, mealsAreasData, favoriteRecipes };
