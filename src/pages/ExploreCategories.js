@@ -2,13 +2,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-// import { fetchRandomMeal } from '../services/MealsAPI';
-// import { fetchRandomDrink } from '../services/CocktailsAPI';
 import { MEALS_TYPE, COCKTAILS_TYPE, fetchRandomRecipe } from '../services/RecipesAPI';
 
 function ExploreCategories() {
   const history = useHistory();
   const path = history.location.pathname;
+  const isFood = path.includes('food');
 
   const onClickToIngredients = () => {
     const newPath = path === '/explore/foods'
@@ -21,17 +20,17 @@ function ExploreCategories() {
     history.push('/explore/foods/nationalities');
   };
 
+  const getRandomId = async () => {
+    const random = isFood
+      ? await fetchRandomRecipe(MEALS_TYPE)
+      : await fetchRandomRecipe(COCKTAILS_TYPE);
+    return isFood ? random.meals[0].idMeal : random.drinks[0].idDrink;
+  };
+
   const onClickToSurprise = async () => {
-    const randomRecipes = path === '/explore/drinks'
-      ? await fetchRandomRecipe(COCKTAILS_TYPE)
-      : await fetchRandomRecipe(MEALS_TYPE);
-    if (randomRecipes.drinks) {
-      const idRandom = randomRecipes.drinks[0].idDrink;
-      history.push(`/drinks/${idRandom}`);
-    } else {
-      const idRandom = randomRecipes.meals[0].idMeal;
-      history.push(`/foods/${idRandom}`);
-    }
+    const id = await getRandomId();
+    const newPath = isFood ? `/foods/${id}` : `/drinks/${id}`;
+    history.push(newPath);
   };
 
   return (
