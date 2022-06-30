@@ -69,11 +69,8 @@ function Header() {
     case 'Name':
       data = await fetchRecipesByName(getType(path), searchInput);
       break;
-    case 'First-Letter':
-      data = await fetchRecipesByFirstLetter(getType(path), searchInput);
-      break;
     default:
-      data = await fetchAllRecipes(getType(path));
+      data = await fetchRecipesByFirstLetter(getType(path), searchInput);
       break;
     }
 

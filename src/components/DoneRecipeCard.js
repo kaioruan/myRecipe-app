@@ -19,7 +19,6 @@ function DoneRecipeCard({ index, doneRecipe }) {
   const [heartWeight, setHeartWeight] = useState(getHeartState(recipeId).weight);
 
   const isFood = doneRecipe.type.toLowerCase() === 'food';
-  console.log(doneRecipe);
   const tagsArray = Array.isArray(doneRecipe.tags)
     ? doneRecipe.tags : doneRecipe.tags.split(',');
 
@@ -44,8 +43,6 @@ function DoneRecipeCard({ index, doneRecipe }) {
       setHeartWeight('fill');
     }
   };
-
-  console.log(tagsArray);
 
   return (
     <section className="my-4">

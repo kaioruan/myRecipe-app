@@ -86,7 +86,7 @@ function RecipePage() {
 
   const onClickShare = () => {
     const url = `http://localhost:3000${path.split('/in')[0]}`;
-    navigator.clipboard.writeText(url);
+    navigator.clipboard?.writeText(url);
     setCopied(true);
   };
 

@@ -5,7 +5,7 @@ import MainRecipeList from '../components/MainRecipeList';
 
 function ExploreByNationalities() {
   return (
-    <div>
+    <div data-testid="nationalities-page">
       <Header />
       <main className="flex flex-col justify-center items-center">
         <MainRecipeList />
