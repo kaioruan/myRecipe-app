@@ -139,9 +139,7 @@ describe('Teste o componente <Header.js />', () => {
     userEvent.type(inputField, 'e');
     const searchButton = screen.getByTestId(EXEC_SEARCH_BTN);
     userEvent.click(searchButton);
-    const etonMessSearch = await screen.findByRole(
-      'heading', { name: /Eton Mess/i, level: 3 },
-    );
+    const etonMessSearch = await screen.findByText(/Eton Mess/i);
     const etonMessImg = await screen.findByTestId(O_CARD_IMG);
     expect(etonMessSearch).toBeInTheDocument();
     expect(etonMessImg).toHaveAttribute('src', 'https://www.themealdb.com/images/media/meals/uuxwvq1483907861.jpg');
