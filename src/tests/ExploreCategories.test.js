@@ -35,12 +35,14 @@ describe('Testa a página de explorar por categorias.', () => {
     expect(history.location.pathname).toBe('/explore/foods/nationalities');
   });
 
-  it('Verifica se o botão Surprise Me funciona em foods.', () => {
+  it('Verifica se o botão Surprise Me funciona em foods.', async () => {
     const { history } = renderWithRouter(<App />);
     history.push(exploreFoods);
     const button = screen.getByText(/surprise/i);
     userEvent.click(button);
     expect(history.location.pathname.includes('foods')).toBe(true);
+    const recipeTitle = await screen.findByTestId('recipe-title');
+    expect(recipeTitle).toBeInTheDocument();
   });
 
   it('Verifica se o botão By Ingredients funciona em drinks.', () => {
