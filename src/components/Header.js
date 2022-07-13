@@ -95,7 +95,7 @@ function Header() {
           <Link
             to="/profile"
           >
-            <User size={ 35 } className="text-white" />
+            <User size={ 35 } className="text-white" data-testid="to-profile" />
           </Link>
           <p
             data-testid="page-title"
@@ -110,7 +110,11 @@ function Header() {
               type="button"
               onClick={ handleSearchIcon }
             >
-              <MagnifyingGlass size={ 35 } className="text-white" />
+              <MagnifyingGlass
+                size={ 35 }
+                className="text-white"
+                data-testid="searchIcon"
+              />
             </button>)}
         </section>
       </div>
@@ -118,6 +122,7 @@ function Header() {
         {renderSearchBar && (
           <input
             type="text"
+            placeholder="Digite Aqui"
             data-testid="search-input"
             name="searchInput"
             value={ searchInput }
@@ -187,13 +192,3 @@ function Header() {
 }
 
 export default Header;
-
-// className="flex justify-center items-center mt-4 mb-4 ml-[4rem]"
-// className="space-x-5 text-white font-semibold"
-// className="mr-3"
-
-//
-//
-//
-//
-//

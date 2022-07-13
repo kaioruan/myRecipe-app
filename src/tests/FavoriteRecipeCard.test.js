@@ -9,7 +9,7 @@ describe.only('Testa o componente FavoriteRecipesCard', () => {
   it('Testar renderização de itens favoritados e remoção deles', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods/52791');
-    const bttnFavorite = await screen.findByAltText('favorite icon');
+    const bttnFavorite = await screen.findByTestId('favorite icon');
     userEvent.click(bttnFavorite);
     history.push(FAVORITE_RECIPES);
     expect(history.location.pathname).toBe(FAVORITE_RECIPES);
@@ -25,7 +25,7 @@ describe.only('Testa o componente FavoriteRecipesCard', () => {
   it('Testar button de compartilhar da pagina Favoritos', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods/52791');
-    const bttnFavorite = await screen.findByAltText('favorite icon');
+    const bttnFavorite = await screen.findByTestId('favorite icon');
     userEvent.click(bttnFavorite);
     history.push(FAVORITE_RECIPES);
     const bttnCopyLink = await screen.findByTestId('0-horizontal-share-btn');

@@ -66,10 +66,10 @@ describe('Testa os elementos de RecipePage.', () => {
   it('Testando coloração do button Favoritar', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods/52791');
-    const favoriteBttn = await screen.findByAltText('favorite icon');
-    expect(favoriteBttn.src.includes('whiteHeartIcon')).toBe(true);
+    const favoriteBttn = await screen.findByTestId('favorite icon');
+    expect(favoriteBttn.color).toBe('black');
     userEvent.click(favoriteBttn);
-    expect(favoriteBttn.src.includes('whiteHeartIcon')).not.toBe(true);
-    expect(favoriteBttn.src.includes('blackHeartIcon')).toBe(true);
+    expect(favoriteBttn.color).not.toBe('black');
+    expect(favoriteBttn.color).toBe('red');
   });
 });

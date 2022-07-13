@@ -13,8 +13,8 @@ describe('Teste o componente <Header.js />', () => {
   it('Testando icones de Perfil e Search na página de Foods', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
-    const imgProfile = screen.getByRole('img', { name: /ProfileIcon/i });
-    const imgSearch = screen.getByRole('img', { name: /SearchIcon/i });
+    const imgProfile = screen.getByTestId(/to-profile/i);
+    const imgSearch = screen.getByTestId(/SearchIcon/i);
     expect(imgSearch).toBeDefined();
     expect(imgProfile).toBeDefined();
   });
@@ -24,7 +24,7 @@ describe('Teste o componente <Header.js />', () => {
     history.push('/foods');
     const { location: { pathname } } = history;
     expect(pathname).toBe('/foods');
-    const homeIcon = screen.getByRole('img', { name: /ProfileIcon/i });
+    const homeIcon = screen.getByTestId(/to-profile/i);
     expect(homeIcon).toBeInTheDocument();
     userEvent.click(homeIcon);
     expect(history.location.pathname).toBe('/profile');
@@ -33,7 +33,7 @@ describe('Teste o componente <Header.js />', () => {
   it('Testando inputs de busca', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
-    const imgSearch = screen.getByAltText(/SearchIcon/i);
+    const imgSearch = screen.getByTestId(/SearchIcon/i);
     let btnInputText = screen.queryByPlaceholderText(/Digite Aqui/i);
     expect(btnInputText).not.toBeInTheDocument();
     userEvent.click(imgSearch);
@@ -99,7 +99,7 @@ describe('Teste o componente <Header.js />', () => {
     history.push('/foods');
     const ingredientFilter = screen.getByText('Ingredient');
     const firstLetterFilter = screen.getByText(FIRST_LETTER);
-    const imgSearch = screen.getByRole('img', { name: /SearchIcon/i });
+    const imgSearch = screen.getByTestId(/SearchIcon/i);
     userEvent.click(imgSearch);
     const inputField = screen.queryByPlaceholderText(/Digite Aqui/i);
     userEvent.click(ingredientFilter);
@@ -132,7 +132,7 @@ describe('Teste o componente <Header.js />', () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
     const firstLetterFilter = screen.getByText(FIRST_LETTER);
-    const imgSearch = screen.getByRole('img', { name: /SearchIcon/i });
+    const imgSearch = screen.getByTestId(/SearchIcon/i);
     userEvent.click(imgSearch);
     const inputField = screen.queryByPlaceholderText(/Digite Aqui/i);
     userEvent.click(firstLetterFilter);
@@ -147,7 +147,7 @@ describe('Teste o componente <Header.js />', () => {
   it('Alerta de receita não encontrada', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
-    const imgSearch = screen.getByRole('img', { name: /SearchIcon/i });
+    const imgSearch = screen.getByTestId(/SearchIcon/i);
     userEvent.click(imgSearch);
     const firstLetterFilter = screen.getByText('First letter');
     userEvent.click(firstLetterFilter);
@@ -159,7 +159,7 @@ describe('Teste o componente <Header.js />', () => {
   it('Procurar apenas uma receita, redirecionar a pagina de detalhes', async () => {
     const { history } = renderWithRouter(<App />);
     history.push('/foods');
-    const imgSearch = screen.getByRole('img', { name: /SearchIcon/i });
+    const imgSearch = screen.getByTestId(/SearchIcon/i);
     userEvent.click(imgSearch);
     const ingredientFilter = screen.getByText('Ingredient');
     userEvent.click(ingredientFilter);

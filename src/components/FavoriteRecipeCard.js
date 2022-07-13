@@ -83,7 +83,12 @@ function FavoriteRecipeCard({ favoriteRecipe, index }) {
           type="button"
           onClick={ () => onClickFavorite(favoriteRecipe.id) }
         >
-          <Heart size={ 31 } color="red" weight="fill" />
+          <Heart
+            size={ 31 }
+            color="red"
+            weight="fill"
+            data-testid={ `${index}-horizontal-favorite-btn` }
+          />
         </button>
       </div>
       {copied && <p className="text-center italic mb-2">Link copied!</p>}

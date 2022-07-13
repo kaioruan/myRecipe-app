@@ -48,6 +48,7 @@ function RecipePage() {
   const isFood = path.includes('/foods');
   const isInProgressPath = path.includes('/in-progress');
   const [heartColor, setHeartColor] = useState(getHeartState(id).color);
+  const [heartTrue, setHeartTrue] = useState('black');
   const [heartWeight, setHeartWeight] = useState(getHeartState(id).weight);
 
   useEffect(() => {
@@ -94,10 +95,12 @@ function RecipePage() {
     if (recipeIsFavorite(id)) {
       removeFavoriteRecipe(id);
       setHeartColor('black');
+      setHeartTrue('black');
       setHeartWeight('regular');
     } else {
       saveFavoriteRecipe(recipe);
       setHeartColor('red');
+      setHeartTrue('red');
       setHeartWeight('fill');
     }
   };
@@ -160,7 +163,13 @@ function RecipePage() {
             <img src={ shareIcon } alt="share icon" />
           </button>
           <button type="button" onClick={ onClickFavorite }>
-            <Heart size={ 31 } color={ heartColor } weight={ heartWeight } />
+            <Heart
+              size={ 31 }
+              color={ heartColor }
+              name={ heartTrue }
+              weight={ heartWeight }
+              data-testid="favorite icon"
+            />
           </button>
         </section>
 

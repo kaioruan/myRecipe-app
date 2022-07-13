@@ -17,6 +17,7 @@ function IngredientList({
                 id={ index }
                 className="mr-1 mt-2"
                 type="checkbox"
+                data-testid={ `${index}-ingredient-checkbox` }
                 defaultChecked={ usedIngredients.includes(el.ingredient) }
                 onChange={ handleProgressChange }
               />
