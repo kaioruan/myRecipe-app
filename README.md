@@ -1,4 +1,4 @@
-# Boas vindas ao repositório do Projeto Trivia!
+# Boas vindas ao repositório do Projeto MyRecipe-app!
 
 Esse projeto foi desenvolvido durante o módulo de FrontEnd na Trybe! #vqv 🚀
 
@@ -13,7 +13,6 @@ Neste projeto, fui capaz de:
 Utilizar a Context API do React para gerenciar estado;
 
 Utilizar metodologias ágeis.
-
 
 Utilizar consumo de diversas API's.
 
