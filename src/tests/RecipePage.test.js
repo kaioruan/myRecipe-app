@@ -6,6 +6,7 @@ import App from '../App';
 
 const recipePath = '/drinks/15254';
 const startButtonId = 'start-recipe-btn';
+const FAVORITE_ICON = 'favorite icon';
 
 describe('Testa os elementos de RecipePage.', () => {
   it('Verifica se os elementos existem na página.', async () => {
@@ -18,7 +19,7 @@ describe('Testa os elementos de RecipePage.', () => {
     const shareButton = screen.getByTestId('share-btn');
     expect(shareButton).toBeInTheDocument();
 
-    const favoriteButton = screen.getByTestId('favorite-btn');
+    const favoriteButton = screen.getByTestId(FAVORITE_ICON);
     expect(favoriteButton).toBeInTheDocument();
   });
 
@@ -46,7 +47,7 @@ describe('Testa os elementos de RecipePage.', () => {
     const { history } = renderWithRouter(<App />);
     history.push(recipePath);
 
-    const favoriteButton = screen.getByTestId('favorite-btn');
+    const favoriteButton = screen.getByTestId(FAVORITE_ICON);
     userEvent.click(favoriteButton);
   });
 
@@ -62,14 +63,5 @@ describe('Testa os elementos de RecipePage.', () => {
 
     const finishButton = screen.getByTestId('finish-recipe-btn');
     userEvent.click(finishButton);
-  });
-  it('Testando coloração do button Favoritar', async () => {
-    const { history } = renderWithRouter(<App />);
-    history.push('/foods/52791');
-    const favoriteBttn = await screen.findByTestId('favorite icon');
-    expect(favoriteBttn.color).toBe('black');
-    userEvent.click(favoriteBttn);
-    expect(favoriteBttn.color).not.toBe('black');
-    expect(favoriteBttn.color).toBe('red');
   });
 });
