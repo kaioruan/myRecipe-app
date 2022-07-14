@@ -16,5 +16,3 @@ function ExploreByNationalities() {
 }
 
 export default ExploreByNationalities;
-
-// main "
