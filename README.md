@@ -19,7 +19,7 @@ Utilizar consumo de diversas API's.
 Componentização de arquivos.
 
 Escrever testes para garantir que sua aplicação possua uma boa cobertura de testes.
----
+
 
 # Funcionamento da aplicação
 
