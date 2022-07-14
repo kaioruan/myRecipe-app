@@ -53,6 +53,6 @@ Ex: Para executar o teste referente ao **login**, basta digitar `npm test login`
 
 ---
 ## Clique na imagem para rodar um video demonstrativo.
-<center>
-[![Watch the video](https://user-images.githubusercontent.com/98183352/179066953-4e7e68a4-744c-4fde-ba35-6525a411bbb1.png)](https://user-images.githubusercontent.com/98183352/179066487-abb5edf9-3fef-4411-8b73-17bdcfc8523f.mp4)
-</center>
+
+:[![Watch the video](https://user-images.githubusercontent.com/98183352/179066953-4e7e68a4-744c-4fde-ba35-6525a411bbb1.png)](https://user-images.githubusercontent.com/98183352/179066487-abb5edf9-3fef-4411-8b73-17bdcfc8523f.mp4):
+
