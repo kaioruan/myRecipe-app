@@ -31,9 +31,6 @@ Instalação de Dependência.
 ```sh
 npm install
 ```
-```sh
-npm i phosphor-react
-```
 
 Para rodar a aplicação é necessário executar o comando abaixo.
 ```sh
