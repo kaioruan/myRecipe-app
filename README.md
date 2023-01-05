@@ -4,6 +4,8 @@ Esse projeto foi desenvolvido durante o módulo de FrontEnd na Trybe! #vqv 🚀
 
 Aqui você vai encontrar os detalhes de como foi o desenvolvimento do projeto e quais foram os requisitos obrigatórios para o desenvolvimento.
 
+# Descrição:
+Aplicação frontend de receitas culinárias voltadas a mobile.
 ---
 
 # Habilidades desenvolvidas
